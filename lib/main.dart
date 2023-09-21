@@ -18,8 +18,8 @@ class MyApp extends StatelessWidget {
       title: 'ExpenseKit',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blueGrey,
-          brightness: Brightness.dark,
+          seedColor: Colors.deepPurple,
+          brightness: Brightness.light,
         ),
         useMaterial3: true,
         textTheme: GoogleFonts.openSansTextTheme(textTheme),

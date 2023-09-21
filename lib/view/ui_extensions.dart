@@ -13,9 +13,7 @@ extension NavigationExtension on BuildContext {
   }
 
   TextStyle? body() {
-    return Theme.of(this).textTheme.bodyLarge?.copyWith(
-          color: Colors.white,
-        );
+    return Theme.of(this).textTheme.bodyLarge?.copyWith();
   }
 
   TextStyle? medium() {
@@ -40,6 +38,16 @@ extension NavigationExtension on BuildContext {
   TextStyle? boldBody() {
     return Theme.of(this).textTheme.bodyLarge?.copyWith(
           color: Colors.white,
+          fontWeight: FontWeight.bold,
+        );
+  }
+
+  TextStyle? titleLarge() {
+    return Theme.of(this).textTheme.titleLarge;
+  }
+
+  TextStyle? titleMedium() {
+    return Theme.of(this).textTheme.titleMedium?.copyWith(
           fontWeight: FontWeight.bold,
         );
   }

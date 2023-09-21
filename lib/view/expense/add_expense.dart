@@ -1,13 +1,29 @@
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'package:expense_kit/model/entity/expense_entity.dart';
+import 'package:expense_kit/utils/currency_utils.dart';
 import 'package:expense_kit/view/decorations.dart';
 import 'package:expense_kit/view/ui_extensions.dart';
+import 'package:expense_kit/view_model/create_expense.dart';
+import 'package:expense_kit/view_model/expense_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AddExpense extends StatelessWidget {
+class AddExpense extends ConsumerStatefulWidget {
   const AddExpense({super.key});
 
   @override
+  ConsumerState<AddExpense> createState() => _AddExpenseState();
+}
+
+class _AddExpenseState extends ConsumerState<AddExpense> {
+  @override
   Widget build(BuildContext context) {
+    final CurrencyTextInputFormatter formatter = CurrencyTextInputFormatter(
+      symbol: '${CurrencyUtils.currencySymbol} ',
+      locale: 'en_IN',
+    );
+    Expense expense = ref.watch(createExpense);
     return Material(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -20,66 +36,100 @@ class AddExpense extends StatelessWidget {
                 'Choose Type',
                 style: context.boldBody(),
               ),
-              DropdownButton(
-                underline: Container(
-                  height: 1,
-                  width: double.infinity,
-                  color: Colors.blueGrey,
+              DropdownButtonFormField(
+                decoration: textDecoration.copyWith(
+                  labelText: 'Expense Type',
+                  labelStyle: context.titleLarge(),
                 ),
                 style: context.body(),
                 isExpanded: true,
-                // value: selectedDropDownValue,
-                onChanged: (value) {},
-                items: [
-                  DropdownMenuItem(
-                    value: 'income',
-                    child: Text(
-                      'Income',
-                      style: context.body(),
-                    ),
-                  ),
-                  DropdownMenuItem(
-                    value: 'expense',
-                    child: Text(
-                      'Expense',
-                      style: context.body(),
-                    ),
-                  ),
-                  DropdownMenuItem(
-                    value: 'savings',
-                    child: Text(
-                      'Savings',
-                      style: context.body(),
-                    ),
-                  ),
-                ],
+                value: expense.type,
+                onChanged: (value) {
+                  ref.read(createExpense.notifier).updateExpense(
+                        expense.copyWith(
+                          type: value as ExpenseType,
+                        ),
+                      );
+                },
+                items: ExpenseType.values
+                    .map(
+                      (e) => DropdownMenuItem(
+                        value: e,
+                        child: Text(
+                          e.name.toUpperCase(),
+                          style: context.body(),
+                        ),
+                      ),
+                    )
+                    .toList(),
               ),
               const SizedBox(height: 16),
               Text('Amount', style: context.boldBody()),
               TextField(
-                style: context.body(),
+                style: context.titleMedium(),
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
+                  formatter,
                 ],
-                decoration: textDecoration,
+                decoration: textDecoration.copyWith(
+                  labelText: 'Enter the amount',
+                  hintText: '$currencySymbol 0.00',
+                  labelStyle: context.titleLarge(),
+                ),
+                onChanged: (value) {
+                  ref.read(createExpense.notifier).amount(
+                        formatter.getUnformattedValue().toDouble(),
+                      );
+                },
               ),
               const SizedBox(height: 16),
               Text('Description', style: context.boldBody()),
               TextField(
-                style: context.body(),
-                maxLines: 2,
-                decoration: textDecoration,
-              ),
-              const SizedBox(height: 32),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    elevation: 2,
+                  style: context.body(),
+                  maxLines: 2,
+                  decoration: textDecoration.copyWith(
+                    labelText: 'Enter the Description',
+                    hintText: 'Optional',
+                    labelStyle: context.titleLarge(),
                   ),
-                  onPressed: () {},
-                  child: const Text('Add Expense'),
-                ),
+                  onChanged: (value) {
+                    ref.read(createExpense.notifier).updateExpense(
+                          expense.copyWith(
+                            description: value,
+                          ),
+                        );
+                  }),
+              const SizedBox(height: 32),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () {
+                        ref.invalidate(createExpense);
+                        context.pop();
+                      },
+                      child: const Text('Cancel'),
+                    ),
+                  ),
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 4,
+                      ),
+                      onPressed: expense.amount > 0
+                          ? () {
+                              ref
+                                ..read(expenseProvider.notifier)
+                                    .addExpense(expense)
+                                ..invalidate(createExpense);
+
+                              context.pop();
+                            }
+                          : null,
+                      child: const Text('Add Expense'),
+                    ),
+                  ),
+                ],
               )
             ],
           ),
@@ -92,6 +142,8 @@ class AddExpense extends StatelessWidget {
 extension Sheets on BuildContext {
   void expenseSheet() {
     showModalBottomSheet(
+      isDismissible: false,
+      enableDrag: false,
       context: this,
       builder: (context) => const AddExpense(),
     );

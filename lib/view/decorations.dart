@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 InputDecoration textDecoration = const InputDecoration(
-  hintText: 'Please enter the amount.',
-  border: UnderlineInputBorder(
+  floatingLabelBehavior: FloatingLabelBehavior.always,
+  border: OutlineInputBorder(
     borderSide: BorderSide(color: Colors.blueGrey),
   ),
-  focusedBorder: UnderlineInputBorder(
+  focusedBorder: OutlineInputBorder(
     borderSide: BorderSide(color: Colors.blueGrey),
   ),
-  enabledBorder: UnderlineInputBorder(
+  enabledBorder: OutlineInputBorder(
     borderSide: BorderSide(color: Colors.blueGrey),
   ),
 );

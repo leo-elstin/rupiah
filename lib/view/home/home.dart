@@ -1,4 +1,6 @@
 import 'package:expense_kit/view/expense/add_expense.dart';
+import 'package:expense_kit/view/expense/balance_card.dart';
+import 'package:expense_kit/view/expense/expense_list.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
@@ -7,8 +9,11 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const Center(
-        child: Text('Hello, World!'),
+      body: const Column(
+        children: [
+          SafeArea(child: BalanceCard()),
+          Expanded(child: ExpenseList()),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.expenseSheet(),

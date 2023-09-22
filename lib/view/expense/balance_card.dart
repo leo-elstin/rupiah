@@ -1,11 +1,22 @@
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'package:expense_kit/model/entity/expense_card_entity.dart';
 import 'package:expense_kit/utils/currency_utils.dart';
+import 'package:expense_kit/view_model/expense_card_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class BalanceCard extends StatelessWidget {
+final CurrencyTextInputFormatter formatter = CurrencyTextInputFormatter(
+  symbol: '$currencySymbol ',
+  locale: 'en_IN',
+  decimalDigits: 2,
+);
+
+class BalanceCard extends ConsumerWidget {
   const BalanceCard({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ExpenseCardEntity value = ref.watch(expenseCardState);
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Card(
@@ -25,7 +36,7 @@ class BalanceCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '${CurrencyUtils.currencySymbol} 1,000,000',
+                    formatter.formatDouble(value.totalBalance),
                     style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -74,12 +85,11 @@ class BalanceCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
               Row(
                 children: [
                   Expanded(
                     child: Text(
-                      '+ ${CurrencyUtils.currencySymbol} 1,10,000',
+                      '+ ${formatter.formatDouble(value.income)}',
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -88,7 +98,7 @@ class BalanceCard extends StatelessWidget {
                   ),
                   Expanded(
                     child: Text(
-                      '- ${CurrencyUtils.currencySymbol} 10,000',
+                      '- ${formatter.formatDouble(value.expense)}',
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,

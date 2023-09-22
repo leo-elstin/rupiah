@@ -18,19 +18,25 @@ class AddExpense extends ConsumerStatefulWidget {
 
 class _AddExpenseState extends ConsumerState<AddExpense> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final CurrencyTextInputFormatter formatter = CurrencyTextInputFormatter(
       symbol: '${CurrencyUtils.currencySymbol} ',
       locale: 'en_IN',
     );
-    Expense expense = ref.watch(createExpense);
-    return Material(
-      child: Padding(
+    ExpenseEntity expense = ref.watch(createExpense);
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Add Expense'),
+      ),
+      body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
             children: [
               Text(
                 'Choose Type',
@@ -66,6 +72,8 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
               const SizedBox(height: 16),
               Text('Amount', style: context.boldBody()),
               TextField(
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
                 style: context.titleMedium(),
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
@@ -86,7 +94,6 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
               Text('Description', style: context.boldBody()),
               TextField(
                   style: context.body(),
-                  maxLines: 2,
                   decoration: textDecoration.copyWith(
                     labelText: 'Enter the Description',
                     hintText: 'Optional',
@@ -99,53 +106,44 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
                           ),
                         );
                   }),
-              const SizedBox(height: 32),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextButton(
-                      onPressed: () {
-                        ref.invalidate(createExpense);
-                        context.pop();
-                      },
-                      child: const Text('Cancel'),
-                    ),
-                  ),
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 4,
-                      ),
-                      onPressed: expense.amount > 0
-                          ? () {
-                              ref
-                                ..read(expenseProvider.notifier)
-                                    .addExpense(expense)
-                                ..invalidate(createExpense);
-
-                              context.pop();
-                            }
-                          : null,
-                      child: const Text('Add Expense'),
-                    ),
-                  ),
-                ],
-              )
             ],
           ),
         ),
       ),
-    );
-  }
-}
+      bottomNavigationBar: BottomAppBar(
+        child: SafeArea(
+          child: Row(
+            children: [
+              Expanded(
+                child: TextButton(
+                  onPressed: () {
+                    ref.invalidate(createExpense);
+                    context.pop();
+                  },
+                  child: const Text('Cancel'),
+                ),
+              ),
+              Expanded(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    elevation: 4,
+                  ),
+                  onPressed: expense.amount > 0
+                      ? () {
+                          ref
+                            ..read(expenseProvider.notifier).addExpense(expense)
+                            ..invalidate(createExpense);
 
-extension Sheets on BuildContext {
-  void expenseSheet() {
-    showModalBottomSheet(
-      isDismissible: false,
-      enableDrag: false,
-      context: this,
-      builder: (context) => const AddExpense(),
+                          context.pop();
+                        }
+                      : null,
+                  child: const Text('Add Expense'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

@@ -1,27 +1,34 @@
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 
 @immutable
-class Expense {
+class ExpenseEntity {
   final double amount;
+  final int id;
 
   final ExpenseType type;
   final DateTime? dateTime;
   final String? description;
 
-  const Expense({
+  const ExpenseEntity({
+    this.id = 0,
     this.amount = 0.0,
     this.type = ExpenseType.outgoing,
     this.dateTime,
     this.description,
   });
 
-  Expense copyWith({
+  String formattedDate() {
+    return DateFormat('hh:mm aa').format(dateTime!);
+  }
+
+  ExpenseEntity copyWith({
     double? amount,
     ExpenseType? type,
     DateTime? dateTime,
     String? description,
   }) {
-    return Expense(
+    return ExpenseEntity(
       amount: amount ?? this.amount,
       type: type ?? this.type,
       dateTime: dateTime ?? this.dateTime,

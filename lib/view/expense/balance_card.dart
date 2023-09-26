@@ -29,7 +29,7 @@ class BalanceCard extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Balance',
+                    'Total Balance',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -91,7 +91,7 @@ class BalanceCard extends ConsumerWidget {
                     child: Text(
                       '+ ${formatter.formatDouble(value.income)}',
                       style: const TextStyle(
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -100,7 +100,7 @@ class BalanceCard extends ConsumerWidget {
                     child: Text(
                       '- ${formatter.formatDouble(value.expense)}',
                       style: const TextStyle(
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

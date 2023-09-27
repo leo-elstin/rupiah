@@ -17,15 +17,11 @@ extension NavigationExtension on BuildContext {
   }
 
   TextStyle? medium() {
-    return Theme.of(this).textTheme.bodyMedium?.copyWith(
-          color: Colors.white,
-        );
+    return Theme.of(this).textTheme.bodyMedium?.copyWith();
   }
 
   TextStyle? small() {
-    return Theme.of(this).textTheme.bodySmall?.copyWith(
-          color: Colors.white,
-        );
+    return Theme.of(this).textTheme.bodySmall?.copyWith();
   }
 
   TextStyle? smaller() {

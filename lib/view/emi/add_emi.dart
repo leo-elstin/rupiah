@@ -1,24 +1,22 @@
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
-import 'package:expense_kit/model/entity/expense_entity.dart';
 import 'package:expense_kit/utils/currency_utils.dart';
 import 'package:expense_kit/view/decorations.dart';
 import 'package:expense_kit/view/ui_extensions.dart';
 import 'package:expense_kit/view_model/create_expense.dart';
-import 'package:expense_kit/view_model/expense_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-class AddExpense extends ConsumerStatefulWidget {
-  const AddExpense({super.key});
+class AddEMI extends ConsumerStatefulWidget {
+  const AddEMI({super.key});
 
   @override
-  ConsumerState<AddExpense> createState() => _AddExpenseState();
+  ConsumerState<AddEMI> createState() => _AddEMIState();
 }
 
-class _AddExpenseState extends ConsumerState<AddExpense> {
+class _AddEMIState extends ConsumerState<AddEMI> {
   TextEditingController dateController = TextEditingController();
 
   @override
@@ -38,7 +36,6 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
       symbol: '${CurrencyUtils.currencySymbol} ',
       locale: 'en_IN',
     );
-    ExpenseEntity expense = ref.watch(createExpense);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Expense'),
@@ -48,38 +45,6 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
         child: SafeArea(
           child: ListView(
             children: [
-              Text(
-                'Choose Type',
-                style: context.boldBody(),
-              ),
-              DropdownButtonFormField(
-                decoration: textDecoration.copyWith(
-                  labelText: 'Expense Type',
-                  labelStyle: context.titleLarge(),
-                ),
-                style: context.body(),
-                isExpanded: true,
-                value: expense.type,
-                onChanged: (value) {
-                  ref.read(createExpense.notifier).updateExpense(
-                        expense.copyWith(
-                          type: value as ExpenseType,
-                        ),
-                      );
-                },
-                items: ExpenseType.values
-                    .map(
-                      (e) => DropdownMenuItem(
-                        value: e,
-                        child: Text(
-                          e.name.toUpperCase(),
-                          style: context.body(),
-                        ),
-                      ),
-                    )
-                    .toList(),
-              ),
-              const SizedBox(height: 16),
               Text('Amount', style: context.boldBody()),
               TextField(
                 keyboardType:
@@ -112,13 +77,7 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
                     // This shows day of week alongside day of month
                     showDayOfWeek: true,
                     // This is called when the user changes the date.
-                    onDateTimeChanged: (DateTime newDate) {
-                      ref.read(createExpense.notifier).updateExpense(
-                            expense.copyWith(
-                              dateTime: newDate.add(const Duration(hours: 12)),
-                            ),
-                          );
-                    },
+                    onDateTimeChanged: (DateTime newDate) {},
                   ),
                 ),
                 style: context.titleMedium(),
@@ -143,13 +102,7 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
                     hintText: 'Optional',
                     labelStyle: context.titleLarge(),
                   ),
-                  onChanged: (value) {
-                    ref.read(createExpense.notifier).updateExpense(
-                          expense.copyWith(
-                            description: value,
-                          ),
-                        );
-                  }),
+                  onChanged: (value) {}),
             ],
           ),
         ),
@@ -172,15 +125,7 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
                   style: ElevatedButton.styleFrom(
                     elevation: 4,
                   ),
-                  onPressed: expense.amount > 0
-                      ? () {
-                          ref
-                            ..read(expenseProvider.notifier).addExpense(expense)
-                            ..invalidate(createExpense);
-
-                          context.pop();
-                        }
-                      : null,
+                  onPressed: () {},
                   child: const Text('Add Expense'),
                 ),
               ),

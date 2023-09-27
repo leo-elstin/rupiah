@@ -1,3 +1,5 @@
+import 'package:drift_db_viewer/drift_db_viewer.dart';
+import 'package:expense_kit/model/database/database.dart';
 import 'package:expense_kit/utils/currency_utils.dart';
 import 'package:expense_kit/view/expense/add_expense.dart';
 import 'package:expense_kit/view/expense/balance_card.dart';
@@ -24,10 +26,20 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: Text('$currencySymbol Rupiah'),
       ),
-      body: const Column(
+      body: Column(
         children: [
-          BalanceCard(),
-          Expanded(child: ExpenseList()),
+          InkWell(
+            child: const BalanceCard(),
+            onTap: () {
+              //This should be a singleton
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => DriftDbViewer(database),
+                ),
+              );
+            },
+          ),
+          const Expanded(child: ExpenseList()),
         ],
       ),
       floatingActionButton: FloatingActionButton(

@@ -5,9 +5,11 @@ import 'package:expense_kit/view/decorations.dart';
 import 'package:expense_kit/view/ui_extensions.dart';
 import 'package:expense_kit/view_model/create_expense.dart';
 import 'package:expense_kit/view_model/expense_viewmodel.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 class AddExpense extends ConsumerStatefulWidget {
   const AddExpense({super.key});
@@ -17,6 +19,8 @@ class AddExpense extends ConsumerStatefulWidget {
 }
 
 class _AddExpenseState extends ConsumerState<AddExpense> {
+  TextEditingController dateController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -24,6 +28,12 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(createExpense, (previous, next) {
+      if (next.dateTime != null) {
+        dateController.text = DateFormat.yMMM().format(next.dateTime!);
+      }
+    });
+
     final CurrencyTextInputFormatter formatter = CurrencyTextInputFormatter(
       symbol: '${CurrencyUtils.currencySymbol} ',
       locale: 'en_IN',
@@ -72,6 +82,7 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
               const SizedBox(height: 16),
               Text('Amount', style: context.boldBody()),
               TextField(
+                obscureText: true,
                 keyboardType:
                     const TextInputType.numberWithOptions(decimal: true),
                 style: context.titleMedium(),
@@ -82,6 +93,40 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
                 decoration: textDecoration.copyWith(
                   labelText: 'Enter the amount',
                   hintText: '$currencySymbol 0.00',
+                  labelStyle: context.titleLarge(),
+                ),
+                onChanged: (value) {
+                  ref.read(createExpense.notifier).amount(
+                        formatter.getUnformattedValue().toDouble(),
+                      );
+                },
+              ),
+              const SizedBox(height: 16),
+              Text('Month & Year', style: context.boldBody()),
+              TextField(
+                controller: dateController,
+                onTap: () => _showDialog(
+                  CupertinoDatePicker(
+                    initialDateTime: DateTime.now(),
+                    mode: CupertinoDatePickerMode.date,
+                    use24hFormat: true,
+                    // This shows day of week alongside day of month
+                    showDayOfWeek: true,
+                    // This is called when the user changes the date.
+                    onDateTimeChanged: (DateTime newDate) {
+                      ref.read(createExpense.notifier).updateExpense(
+                            expense.copyWith(
+                              dateTime: newDate.add(const Duration(hours: 12)),
+                            ),
+                          );
+                    },
+                  ),
+                ),
+                style: context.titleMedium(),
+                readOnly: true,
+                decoration: textDecoration.copyWith(
+                  labelText: 'Pick year & month',
+                  hintText: DateFormat.yMMM().format(DateTime.now()),
                   labelStyle: context.titleLarge(),
                 ),
                 onChanged: (value) {
@@ -142,6 +187,28 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  void _showDialog(Widget child) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => Container(
+        height: 216,
+        padding: const EdgeInsets.only(top: 6.0),
+        // The Bottom margin is provided to align the popup above the system
+        // navigation bar.
+        margin: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        // Provide a background color for the popup.
+        color: CupertinoColors.systemBackground.resolveFrom(context),
+        // Use a SafeArea widget to avoid system overlaps.
+        child: SafeArea(
+          top: false,
+          child: child,
         ),
       ),
     );

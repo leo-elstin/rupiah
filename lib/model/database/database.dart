@@ -9,6 +9,8 @@ import 'package:path_provider/path_provider.dart';
 
 part 'database.g.dart';
 
+final database = Database();
+
 @DriftDatabase(tables: [Expense])
 class Database extends _$Database {
   Database() : super(_openConnection());

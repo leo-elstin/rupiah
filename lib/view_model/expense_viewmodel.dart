@@ -16,7 +16,7 @@ class ExpenseNotifier extends StateNotifier<List<ExpenseEntity>> {
   }
 
   Future getAll() async {
-    state = await ExpenseTable().allExpenses();
+    state = await ExpenseTable().allExpensesBeforeToday();
   }
 }
 

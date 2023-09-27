@@ -14,8 +14,6 @@ class Expense extends Table {
   DateTimeColumn get date => dateTime().nullable()();
 }
 
-final database = Database();
-
 class ExpenseTable {
   Future insert(ExpenseEntity entity) async {
     var companion = ExpenseCompanion.insert(
@@ -23,7 +21,7 @@ class ExpenseTable {
       amount: entity.amount,
       type: entity.type,
       date: Value(
-        DateTime.now(),
+        entity.dateTime ?? DateTime.now(),
       ),
     );
     return database.into(database.expense).insert(companion);
@@ -47,6 +45,31 @@ class ExpenseTable {
         .toList();
   }
 
-  Stream<List<ExpenseData>> stream() =>
-      database.select(database.expense).watch();
+  // get all expenses before today date
+  Future<List<ExpenseEntity>> allExpensesBeforeToday() async {
+    var query = database.select(database.expense)
+      ..where(
+        (tbl) => Variable(
+          tbl.date.month == Variable(DateTime.now().month) &&
+              tbl.date.year == Variable(DateTime.now().year),
+        ),
+      );
+
+    var customQuery = database.customSelect(
+      'SELECT * FROM expense WHERE date < 1695793200 ORDER BY date ASC LIMIT 20',
+    );
+    final expenses = await customQuery.get();
+
+    return expenses.map((e) {
+      return ExpenseEntity.fromMap(e.data);
+    }).toList();
+  }
+
+  Stream<List<ExpenseData>> stream() {
+    var query = database.select(database.expense)
+      ..where(
+        (tbl) => tbl.date.isSmallerOrEqual(currentDate),
+      );
+    return query.watch();
+  }
 }

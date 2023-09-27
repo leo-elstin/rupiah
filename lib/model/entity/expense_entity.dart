@@ -18,6 +18,22 @@ class ExpenseEntity {
     this.description,
   });
 
+  factory ExpenseEntity.fromMap(
+    Map<String, dynamic> map,
+  ) {
+    print(map);
+
+    int seconds = map['date'] ?? 0;
+    var date = DateTime.fromMillisecondsSinceEpoch(seconds * 1000);
+    return ExpenseEntity(
+      dateTime: map['date'] != null ? date : null,
+      amount: map['amount'] ?? 0.0,
+      type: ExpenseType.values[map['type']],
+      description: map['description'],
+      id: map['id'],
+    );
+  }
+
   String formattedDate() {
     return DateFormat('hh:mm aa').format(dateTime!);
   }

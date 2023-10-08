@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class EMIEntity {
   final String? description;
   final double amount;
@@ -10,6 +12,12 @@ class EMIEntity {
     this.endDate,
     this.id,
   });
+
+  String formattedDate() {
+    return endDate != null
+        ? DateFormat('MMM, dd hh:mm a').format(endDate!)
+        : '';
+  }
 
   EMIEntity copyWith({
     String? description,

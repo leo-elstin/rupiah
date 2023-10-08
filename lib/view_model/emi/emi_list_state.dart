@@ -10,7 +10,7 @@ class EMIListState extends StateNotifier<List<EMIEntity>> {
   }
 }
 
-final emiListState =
+final emiListProvider =
     StateNotifierProvider<EMIListState, List<EMIEntity>>((ref) {
   return EMIListState();
 });

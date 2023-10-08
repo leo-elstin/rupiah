@@ -91,7 +91,9 @@ class _ExpenseListState extends ConsumerState<ExpenseList> {
                 final expense = expenseMap.value[index];
                 return ListTile(
                   onLongPress: () =>
-                      ref.read(expenseProvider.notifier).removeExpense(expense),
+                      ref.read(expenseProvider.notifier).removeExpense(
+                            expense,
+                          ),
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

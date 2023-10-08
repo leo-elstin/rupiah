@@ -3,7 +3,8 @@ import 'package:expense_kit/model/entity/emi_entity.dart';
 import 'package:expense_kit/utils/currency_utils.dart';
 import 'package:expense_kit/view/decorations.dart';
 import 'package:expense_kit/view/ui_extensions.dart';
-import 'package:expense_kit/view_model/emi/create_emi.dart';
+import 'package:expense_kit/view_model/emi/create_emi_state.dart';
+import 'package:expense_kit/view_model/emi/emi_list_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -143,7 +144,8 @@ class _AddEMIState extends ConsumerState<AddEMI> {
                       ? () {
                           ref
                             ..read(emiState.notifier).addEMI(emiEntity)
-                            ..invalidate(emiState);
+                            ..invalidate(emiState)
+                            ..read(emiListProvider.notifier).getAll();
                         }
                       : null,
                   child: const Text('Add Expense'),

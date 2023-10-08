@@ -1,13 +1,15 @@
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'package:expense_kit/model/entity/emi_entity.dart';
 import 'package:expense_kit/utils/currency_utils.dart';
 import 'package:expense_kit/view/decorations.dart';
 import 'package:expense_kit/view/ui_extensions.dart';
-import 'package:expense_kit/view_model/create_expense.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:expense_kit/view_model/emi/create_emi.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:jiffy/jiffy.dart';
 
 class AddEMI extends ConsumerStatefulWidget {
   const AddEMI({super.key});
@@ -26,9 +28,9 @@ class _AddEMIState extends ConsumerState<AddEMI> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(createExpense, (previous, next) {
-      if (next.dateTime != null) {
-        dateController.text = DateFormat.yMMM().format(next.dateTime!);
+    ref.listen(emiState, (previous, next) {
+      if (next.endDate != null) {
+        dateController.text = DateFormat.yMMM().format(next.endDate!);
       }
     });
 
@@ -36,16 +38,19 @@ class _AddEMIState extends ConsumerState<AddEMI> {
       symbol: '${CurrencyUtils.currencySymbol} ',
       locale: 'en_IN',
     );
+
+    var uiState = ref.read(emiState.notifier);
+
+    EMIEntity emiEntity = ref.watch(emiState);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Expense'),
+        title: const Text('Add EMI'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: SafeArea(
           child: ListView(
             children: [
-              Text('Amount', style: context.boldBody()),
               TextField(
                 keyboardType:
                     const TextInputType.numberWithOptions(decimal: true),
@@ -55,54 +60,63 @@ class _AddEMIState extends ConsumerState<AddEMI> {
                   formatter,
                 ],
                 decoration: textDecoration.copyWith(
-                  labelText: 'Enter the amount',
+                  labelText: 'EMI Amount',
                   hintText: '$currencySymbol 0.00',
                   labelStyle: context.titleLarge(),
                 ),
                 onChanged: (value) {
-                  ref.read(createExpense.notifier).amount(
-                        formatter.getUnformattedValue().toDouble(),
-                      );
+                  uiState.amount(
+                    formatter.getUnformattedValue().toDouble(),
+                  );
                 },
               ),
-              const SizedBox(height: 16),
-              Text('Month & Year', style: context.boldBody()),
+              const SizedBox(height: 32),
+              TextField(
+                style: context.titleMedium(),
+                decoration: textDecoration.copyWith(
+                  labelText: 'Pending EMIs',
+                  hintText: '0',
+                  labelStyle: context.titleLarge(),
+                ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                onChanged: (value) {
+                  if (value.isNotEmpty) {
+                    var jiffy = Jiffy.now().add(
+                      months: int.parse(value),
+                    );
+                    if (kDebugMode) {
+                      print(jiffy.dateTime);
+                    }
+
+                    uiState.updateEMI(emiEntity.copyWith(
+                      endDate: jiffy.dateTime,
+                    ));
+                  }
+                },
+              ),
+              const SizedBox(height: 32),
               TextField(
                 controller: dateController,
-                onTap: () => _showDialog(
-                  CupertinoDatePicker(
-                    initialDateTime: DateTime.now(),
-                    mode: CupertinoDatePickerMode.date,
-                    use24hFormat: true,
-                    // This shows day of week alongside day of month
-                    showDayOfWeek: true,
-                    // This is called when the user changes the date.
-                    onDateTimeChanged: (DateTime newDate) {},
-                  ),
-                ),
                 style: context.titleMedium(),
                 readOnly: true,
                 decoration: textDecoration.copyWith(
-                  labelText: 'Pick year & month',
-                  hintText: DateFormat.yMMM().format(DateTime.now()),
+                  labelText: 'EMI End Date',
                   labelStyle: context.titleLarge(),
                 ),
-                onChanged: (value) {
-                  ref.read(createExpense.notifier).amount(
-                        formatter.getUnformattedValue().toDouble(),
-                      );
-                },
+                onChanged: (value) {},
               ),
-              const SizedBox(height: 16),
-              Text('Description', style: context.boldBody()),
+              const SizedBox(height: 32),
               TextField(
-                  style: context.body(),
-                  decoration: textDecoration.copyWith(
-                    labelText: 'Enter the Description',
-                    hintText: 'Optional',
-                    labelStyle: context.titleLarge(),
-                  ),
-                  onChanged: (value) {}),
+                style: context.body(),
+                decoration: textDecoration.copyWith(
+                  labelText: 'Description',
+                  hintText: 'Optional',
+                  labelStyle: context.titleLarge(),
+                ),
+                onChanged: (value) {},
+              ),
             ],
           ),
         ),
@@ -114,7 +128,7 @@ class _AddEMIState extends ConsumerState<AddEMI> {
               Expanded(
                 child: TextButton(
                   onPressed: () {
-                    ref.invalidate(createExpense);
+                    ref.invalidate(emiState);
                     context.pop();
                   },
                   child: const Text('Cancel'),
@@ -125,34 +139,18 @@ class _AddEMIState extends ConsumerState<AddEMI> {
                   style: ElevatedButton.styleFrom(
                     elevation: 4,
                   ),
-                  onPressed: () {},
+                  onPressed: emiEntity.amount > 0 && emiEntity.endDate != null
+                      ? () {
+                          ref
+                            ..read(emiState.notifier).addEMI(emiEntity)
+                            ..invalidate(emiState);
+                        }
+                      : null,
                   child: const Text('Add Expense'),
                 ),
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  void _showDialog(Widget child) {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) => Container(
-        height: 216,
-        padding: const EdgeInsets.only(top: 6.0),
-        // The Bottom margin is provided to align the popup above the system
-        // navigation bar.
-        margin: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-        ),
-        // Provide a background color for the popup.
-        color: CupertinoColors.systemBackground.resolveFrom(context),
-        // Use a SafeArea widget to avoid system overlaps.
-        child: SafeArea(
-          top: false,
-          child: child,
         ),
       ),
     );

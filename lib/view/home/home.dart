@@ -1,7 +1,6 @@
 import 'package:expense_kit/utils/currency_utils.dart';
-import 'package:expense_kit/view/expense/add_expense.dart';
+import 'package:expense_kit/view/emi/emi_view.dart';
 import 'package:expense_kit/view/expense/expense_view.dart';
-import 'package:expense_kit/view/ui_extensions.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -27,13 +26,18 @@ class _HomeState extends State<Home> {
         title: Text('$currencySymbol Rupiah'),
       ),
       body: view,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.push(page: const AddExpense()),
-        child: const Icon(Icons.add),
-      ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: currentIndex,
         onDestinationSelected: (index) {
+          if (index == 0) {
+            view = const ExpenseView();
+          } else if (index == 1) {
+            view = const EMIView();
+          } else if (index == 2) {
+            view = const ExpenseView();
+          } else if (index == 3) {
+            view = const ExpenseView();
+          }
           setState(() {
             currentIndex = index;
           });

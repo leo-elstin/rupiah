@@ -33,7 +33,6 @@ extension NavigationExtension on BuildContext {
 
   TextStyle? boldBody() {
     return Theme.of(this).textTheme.bodyLarge?.copyWith(
-          color: Colors.white,
           fontWeight: FontWeight.bold,
         );
   }

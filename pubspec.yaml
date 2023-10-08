@@ -41,6 +41,7 @@ dependencies:
   google_fonts: ^5.1.0
   currency_text_input_formatter: ^2.1.10
   intl: ^0.18.1
+  jiffy: ^6.2.1
   drift_db_viewer: ^2.0.0
 
   # database

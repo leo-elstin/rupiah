@@ -1,4 +1,3 @@
-import 'package:expense_kit/utils/currency_utils.dart';
 import 'package:expense_kit/view/emi/emi_view.dart';
 import 'package:expense_kit/view/expense/expense_view.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +21,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('$currencySymbol Rupiah'),
-      ),
       body: view,
       bottomNavigationBar: NavigationBar(
         selectedIndex: currentIndex,

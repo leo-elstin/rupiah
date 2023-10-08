@@ -31,6 +31,15 @@ class _EMIViewState extends ConsumerState<EMIView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Existing EMIs'),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.sort_rounded),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.push(page: const AddEMI()),
         child: const Icon(Icons.add),
@@ -40,13 +49,34 @@ class _EMIViewState extends ConsumerState<EMIView> {
         itemBuilder: (context, index) {
           EMIEntity entity = ref.watch(emiListProvider)[index];
           return ListTile(
-              title: Text(
-                entity.description?.toString() ?? 'EMI',
-                style: context.titleMedium(),
+              onLongPress: () {
+                ref.read(emiListProvider.notifier).delete(entity);
+              },
+              title: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      entity.description?.toString() ?? 'EMI',
+                      style: context.body(),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      formatter.formatDouble(entity.amount),
+                      textAlign: TextAlign.end,
+                      style: context.boldBody(),
+                    ),
+                  ),
+                ],
               ),
-              subtitle: Text(
-                formatter.formatDouble(entity.amount),
-                style: context.boldBody(),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    entity.formattedDate(),
+                    style: context.small(),
+                  ),
+                ],
               ),
               leading: Container(
                 padding: const EdgeInsets.all(8),

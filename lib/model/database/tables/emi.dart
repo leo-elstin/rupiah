@@ -24,6 +24,10 @@ class EMITable {
     return database.into(database.emi).insert(companion);
   }
 
+  Future remove(EMIEntity entity) async {
+    return database.emi.deleteWhere((tbl) => tbl.id.isValue(entity.id!));
+  }
+
   Future<List<EMIEntity>> get() async {
     final emiList = await database.select(database.emi).get();
 

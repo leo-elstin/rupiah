@@ -116,7 +116,11 @@ class _AddEMIState extends ConsumerState<AddEMI> {
                   hintText: 'Optional',
                   labelStyle: context.titleLarge(),
                 ),
-                onChanged: (value) {},
+                onChanged: (value) {
+                  uiState.updateEMI(emiEntity.copyWith(
+                    description: value,
+                  ));
+                },
               ),
             ],
           ),
@@ -146,6 +150,8 @@ class _AddEMIState extends ConsumerState<AddEMI> {
                             ..read(emiState.notifier).addEMI(emiEntity)
                             ..invalidate(emiState)
                             ..read(emiListProvider.notifier).getAll();
+
+                          context.pop();
                         }
                       : null,
                   child: const Text('Add Expense'),

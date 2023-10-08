@@ -8,6 +8,11 @@ class EMIListState extends StateNotifier<List<EMIEntity>> {
   Future getAll() async {
     state = await EMITable().get();
   }
+
+  void delete(EMIEntity entity) {
+    EMITable().remove(entity);
+    state = state.where((e) => e.id != entity.id).toList();
+  }
 }
 
 final emiListProvider =

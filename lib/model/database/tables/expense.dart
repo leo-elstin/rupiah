@@ -47,17 +47,18 @@ class ExpenseTable {
 
   // get all expenses before today date
   Future<List<ExpenseEntity>> allExpensesBeforeToday() async {
-    var query = database.select(database.expense)
-      ..where(
-        (tbl) => Variable(
-          tbl.date.month == Variable(DateTime.now().month) &&
-              tbl.date.year == Variable(DateTime.now().year),
-        ),
-      );
+    // var query = database.select(database.expense)
+    //   ..where(
+    //     (tbl) => Variable(
+    //       tbl.date.month == Variable(DateTime.now().month) &&
+    //           tbl.date.year == Variable(DateTime.now().year),
+    //     ),
+    //   );
 
     var customQuery = database.customSelect(
-      'SELECT * FROM expense WHERE date < 1695793200 ORDER BY date ASC LIMIT 20',
+      'SELECT * FROM expense WHERE date < ${DateTime.now().microsecondsSinceEpoch.toString().substring(0, 10)}',
     );
+
     final expenses = await customQuery.get();
 
     return expenses.map((e) {
@@ -65,11 +66,12 @@ class ExpenseTable {
     }).toList();
   }
 
-  Stream<List<ExpenseData>> stream() {
-    var query = database.select(database.expense)
-      ..where(
-        (tbl) => tbl.date.isSmallerOrEqual(currentDate),
-      );
-    return query.watch();
+  Stream<List<QueryRow>> stream() {
+    var customQuery = database.customSelect(
+      'SELECT * FROM expense WHERE date < ${DateTime.now().microsecondsSinceEpoch.toString().substring(0, 10)}',
+    );
+
+    // var query = database.select(database.expense);
+    return customQuery.watch();
   }
 }

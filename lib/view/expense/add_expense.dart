@@ -48,10 +48,6 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
         child: SafeArea(
           child: ListView(
             children: [
-              Text(
-                'Choose Type',
-                style: context.boldBody(),
-              ),
               DropdownButtonFormField(
                 decoration: textDecoration.copyWith(
                   labelText: 'Expense Type',
@@ -79,10 +75,8 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
                     )
                     .toList(),
               ),
-              const SizedBox(height: 16),
-              Text('Amount', style: context.boldBody()),
+              const SizedBox(height: 32),
               TextField(
-                obscureText: true,
                 keyboardType:
                     const TextInputType.numberWithOptions(decimal: true),
                 style: context.titleMedium(),
@@ -91,7 +85,7 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
                   formatter,
                 ],
                 decoration: textDecoration.copyWith(
-                  labelText: 'Enter the amount',
+                  labelText: 'Amount',
                   hintText: '$currencySymbol 0.00',
                   labelStyle: context.titleLarge(),
                 ),
@@ -101,8 +95,7 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
                       );
                 },
               ),
-              const SizedBox(height: 16),
-              Text('Month & Year', style: context.boldBody()),
+              const SizedBox(height: 32),
               TextField(
                 controller: dateController,
                 onTap: () => _showDialog(
@@ -125,7 +118,7 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
                 style: context.titleMedium(),
                 readOnly: true,
                 decoration: textDecoration.copyWith(
-                  labelText: 'Pick year & month',
+                  labelText: 'Year & month',
                   hintText: DateFormat.yMMM().format(DateTime.now()),
                   labelStyle: context.titleLarge(),
                 ),
@@ -135,12 +128,11 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
                       );
                 },
               ),
-              const SizedBox(height: 16),
-              Text('Description', style: context.boldBody()),
+              const SizedBox(height: 32),
               TextField(
                   style: context.body(),
                   decoration: textDecoration.copyWith(
-                    labelText: 'Enter the Description',
+                    labelText: 'Description',
                     hintText: 'Optional',
                     labelStyle: context.titleLarge(),
                   ),

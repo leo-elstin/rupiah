@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.deepPurple,
-          brightness: Brightness.light,
+          brightness: Brightness.dark,
         ),
         useMaterial3: true,
         textTheme: GoogleFonts.openSansTextTheme(textTheme),

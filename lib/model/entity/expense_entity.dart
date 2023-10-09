@@ -21,8 +21,6 @@ class ExpenseEntity {
   factory ExpenseEntity.fromMap(
     Map<String, dynamic> map,
   ) {
-    print(map);
-
     int seconds = map['date'] ?? 0;
     var date = DateTime.fromMillisecondsSinceEpoch(seconds * 1000);
     return ExpenseEntity(
@@ -35,7 +33,7 @@ class ExpenseEntity {
   }
 
   String formattedDate() {
-    return DateFormat('hh:mm aa').format(dateTime!);
+    return DateFormat('MMM, dd hh:mm a').format(dateTime!);
   }
 
   ExpenseEntity copyWith({

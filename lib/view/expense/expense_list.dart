@@ -16,7 +16,7 @@ class ExpenseList extends ConsumerStatefulWidget {
 }
 
 class _ExpenseListState extends ConsumerState<ExpenseList> {
-  String format = 'EEE, d MMM yyyy';
+  String format = 'MMM, yyyy';
 
   final CurrencyTextInputFormatter formatter = CurrencyTextInputFormatter(
     symbol: '$currencySymbol ',
@@ -91,7 +91,9 @@ class _ExpenseListState extends ConsumerState<ExpenseList> {
                 final expense = expenseMap.value[index];
                 return ListTile(
                   onLongPress: () =>
-                      ref.read(expenseProvider.notifier).removeExpense(expense),
+                      ref.read(expenseProvider.notifier).removeExpense(
+                            expense,
+                          ),
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -105,7 +107,10 @@ class _ExpenseListState extends ConsumerState<ExpenseList> {
                       ),
                     ],
                   ),
-                  subtitle: Text(expense.formattedDate()),
+                  subtitle: Text(
+                    expense.formattedDate(),
+                    style: context.small(),
+                  ),
                   leading: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
@@ -120,13 +125,6 @@ class _ExpenseListState extends ConsumerState<ExpenseList> {
                       size: 16,
                     ),
                   ),
-                  // trailing: IconButton(
-                  //   icon: const Icon(Icons.delete),
-                  //   onPressed: () =>
-                  //       ref.read(expenseProvider.notifier).removeExpense(
-                  //             expense,
-                  //           ),
-                  // ),
                 );
               },
             ),

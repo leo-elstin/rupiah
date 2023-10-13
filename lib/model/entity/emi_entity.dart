@@ -14,9 +14,7 @@ class EMIEntity {
   });
 
   String formattedDate() {
-    return endDate != null
-        ? DateFormat('MMM, dd hh:mm a').format(endDate!)
-        : '';
+    return endDate != null ? DateFormat('yyyy MMM').format(endDate!) : '';
   }
 
   EMIEntity copyWith({

@@ -90,20 +90,25 @@ class _ExpenseListState extends ConsumerState<ExpenseList> {
               itemBuilder: (context, index) {
                 final expense = expenseMap.value[index];
                 return ListTile(
+                  dense: true,
                   onLongPress: () =>
                       ref.read(expenseProvider.notifier).removeExpense(
                             expense,
                           ),
                   title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        expense.description?.toString() ?? expense.type.name,
-                        style: context.titleMedium(),
+                      Expanded(
+                        child: Text(
+                          expense.description?.toString() ?? expense.type.name,
+                          style: context.titleSmall(),
+                        ),
                       ),
-                      Text(
-                        formatter.formatDouble(expense.amount),
-                        style: context.titleMedium(),
+                      Expanded(
+                        child: Text(
+                          formatter.formatDouble(expense.amount),
+                          textAlign: TextAlign.end,
+                          style: context.titleMedium(),
+                        ),
                       ),
                     ],
                   ),

@@ -46,4 +46,8 @@ extension NavigationExtension on BuildContext {
           fontWeight: FontWeight.bold,
         );
   }
+
+  TextStyle? titleSmall() {
+    return Theme.of(this).textTheme.titleSmall?.copyWith();
+  }
 }

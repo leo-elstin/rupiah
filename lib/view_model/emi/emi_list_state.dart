@@ -5,8 +5,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class EMIListState extends StateNotifier<List<EMIEntity>> {
   EMIListState() : super(const []);
 
+  bool asc = false;
+
   Future getAll() async {
     state = await EMITable().get();
+  }
+
+  void sort() {
+    asc = !asc;
+    state = [...state]..sort(
+        (a, b) =>
+            asc ? a.amount.compareTo(b.amount) : b.amount.compareTo(a.amount),
+      );
   }
 
   void delete(EMIEntity entity) {

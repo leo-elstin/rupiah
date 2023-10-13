@@ -35,8 +35,12 @@ class _EMIViewState extends ConsumerState<EMIView> {
         title: const Text('Existing EMIs'),
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.sort_rounded),
+            onPressed: () => ref.read(emiListProvider.notifier).sort(),
+            icon: Icon(
+              ref.read(emiListProvider.notifier).asc
+                  ? Icons.arrow_downward_sharp
+                  : Icons.arrow_upward_sharp,
+            ),
           ),
         ],
       ),

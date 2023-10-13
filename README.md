@@ -1,16 +1,12 @@
-# expense_kit
+# ₹ Rupiah 
 
-A new Flutter project.
+An Expense Tracker app built with Flutter ( WIP ).
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Steps to build the project
+1. Clone the Flutter Project:
+   * Use `https://github.com/leo-elstin/rupiah.git` to download the project from the GitHub repository.
+2. Install Dependencies:
+   * Navigate to the project directory and run `flutter pub get` to install the required dependencies.
+   * To build the generated files run `dart run build_runner build` 
+3. Run the App:
+   * Connect a device or emulator and run the app using `flutter run` or through your IDE.

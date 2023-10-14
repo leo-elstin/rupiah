@@ -143,6 +143,51 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
                           ),
                         );
                   }),
+              const SizedBox(height: 16),
+              Text(
+                'Account',
+                style: context.body(),
+              ),
+              SizedBox(
+                height: 75,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  children: [
+                    SizedBox(
+                      height: 100,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(12),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('ICICI Savings Account'),
+                              Text(
+                                'Leo Elstin',
+                                style: context.boldBody(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 150,
+                      child: Card(),
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
         ),

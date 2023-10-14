@@ -1,10 +1,26 @@
+import 'package:expense_kit/model/entity/account_entity.dart';
+import 'package:expense_kit/view/account/add_account.dart';
 import 'package:expense_kit/view/account/components/account_card.dart';
+import 'package:expense_kit/view_model/account/account_list_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-class AccountsList extends StatelessWidget {
+class AccountsList extends ConsumerStatefulWidget {
   static const route = '/accounts';
 
   const AccountsList({super.key});
+
+  @override
+  ConsumerState<AccountsList> createState() => _AccountsListState();
+}
+
+class _AccountsListState extends ConsumerState<AccountsList> {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(accountListState.notifier).getAll();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,10 +28,17 @@ class AccountsList extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Accounts'),
       ),
+      floatingActionButton: FloatingActionButton.small(
+        onPressed: () => context.push(AddAccount.route),
+        child: const Icon(Icons.add),
+      ),
       body: ListView.builder(
-        itemCount: 2,
+        itemCount: ref.watch(accountListState).length,
         itemBuilder: (context, index) {
-          return const AccountCard();
+          AccountEntity entity = ref.watch(accountListState)[index];
+          return AccountCard(
+            entity: entity,
+          );
         },
       ),
     );

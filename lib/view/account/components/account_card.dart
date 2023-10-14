@@ -1,9 +1,12 @@
+import 'package:expense_kit/model/entity/account_entity.dart';
 import 'package:expense_kit/utils/currency_utils.dart';
 import 'package:expense_kit/view/ui_extensions.dart';
 import 'package:flutter/material.dart';
 
 class AccountCard extends StatefulWidget {
-  const AccountCard({super.key});
+  final AccountEntity entity;
+
+  const AccountCard({super.key, required this.entity});
 
   @override
   State<AccountCard> createState() => _AccountCardState();
@@ -26,7 +29,9 @@ class _AccountCardState extends State<AccountCard> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
-        color: Theme.of(context).colorScheme.surfaceVariant,
+        color: widget.entity.accountName == ''
+            ? Theme.of(context).colorScheme.surfaceVariant
+            : Colors.blueGrey.shade300,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -42,11 +47,11 @@ class _AccountCardState extends State<AccountCard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Leo Elstin',
+                            widget.entity.description ?? '',
                             style: context.boldBody(),
                           ),
                           Text(
-                            'ICICI Bank',
+                            widget.entity.accountName ?? '',
                             style: context.body(),
                           ),
                         ],
@@ -64,7 +69,7 @@ class _AccountCardState extends State<AccountCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        formatter.formatDouble(125000),
+                        formatter.formatDouble(widget.entity.balance ?? 0),
                         style: context.titleMedium(),
                       ),
                       SizedBox(

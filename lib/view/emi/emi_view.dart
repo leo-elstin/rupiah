@@ -44,7 +44,7 @@ class _EMIViewState extends ConsumerState<EMIView> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.small(
         onPressed: () => context.push(page: const AddEMI()),
         child: const Icon(Icons.add),
       ),

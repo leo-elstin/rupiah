@@ -12,6 +12,10 @@ class Expense extends Table {
   IntColumn get type => intEnum<ExpenseType>()();
 
   DateTimeColumn get date => dateTime().nullable()();
+
+  IntColumn get accountId => integer()();
+
+  IntColumn get categoryId => integer()();
 }
 
 class ExpenseTable {
@@ -23,6 +27,8 @@ class ExpenseTable {
       date: Value(
         entity.dateTime ?? DateTime.now(),
       ),
+      accountId: entity.accountId!,
+      categoryId: entity.categoryId!,
     );
     return database.into(database.expense).insert(companion);
   }
@@ -41,6 +47,8 @@ class ExpenseTable {
               amount: e.amount,
               type: e.type,
               dateTime: e.date,
+              accountId: e.accountId,
+              categoryId: e.categoryId,
             ))
         .toList();
   }

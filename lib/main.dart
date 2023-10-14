@@ -1,4 +1,4 @@
-import 'package:expense_kit/view/home/home.dart';
+import 'package:expense_kit/view/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,8 +14,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'ExpenseKit',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.deepPurple,
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         textTheme: GoogleFonts.openSansTextTheme(textTheme),
       ),
-      home: const Home(),
+      routerConfig: router,
     );
   }
 }

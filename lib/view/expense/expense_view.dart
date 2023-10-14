@@ -16,7 +16,7 @@ class ExpenseView extends StatelessWidget {
       appBar: AppBar(
         title: Text('$currencySymbol Rupiah'),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.small(
         onPressed: () => context.push(page: const AddExpense()),
         child: const Icon(Icons.add),
       ),

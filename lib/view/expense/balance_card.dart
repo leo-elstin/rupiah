@@ -18,7 +18,7 @@ class BalanceCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ExpenseCardEntity value = ref.watch(expenseCardState);
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(8.0),
       child: Card(
         child: Container(
           padding: const EdgeInsets.all(16),

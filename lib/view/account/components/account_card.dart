@@ -1,6 +1,6 @@
 import 'package:expense_kit/model/entity/account_entity.dart';
 import 'package:expense_kit/utils/currency_utils.dart';
-import 'package:expense_kit/view/ui_extensions.dart';
+import 'package:expense_kit/utils/ui_extensions.dart';
 import 'package:flutter/material.dart';
 
 class AccountCard extends StatefulWidget {
@@ -29,9 +29,9 @@ class _AccountCardState extends State<AccountCard> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
-        color: widget.entity.accountName == ''
+        color: widget.entity.accountName!.contains('ICICI')
             ? Theme.of(context).colorScheme.surfaceVariant
-            : Colors.blueGrey.shade300,
+            : Colors.green.shade100,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [

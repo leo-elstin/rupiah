@@ -36,8 +36,13 @@ class _AccountsListState extends ConsumerState<AccountsList> {
         itemCount: ref.watch(accountListState).length,
         itemBuilder: (context, index) {
           AccountEntity entity = ref.watch(accountListState)[index];
-          return AccountCard(
-            entity: entity,
+          return InkWell(
+            onLongPress: () {
+              ref.read(accountListState.notifier).delete(entity);
+            },
+            child: AccountCard(
+              entity: entity,
+            ),
           );
         },
       ),

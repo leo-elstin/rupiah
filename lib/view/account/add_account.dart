@@ -1,11 +1,12 @@
 import 'package:expense_kit/model/entity/account_entity.dart';
 import 'package:expense_kit/utils/currency_utils.dart';
+import 'package:expense_kit/utils/ui_extensions.dart';
 import 'package:expense_kit/view/decorations.dart';
-import 'package:expense_kit/view/ui_extensions.dart';
 import 'package:expense_kit/view_model/account/create_account_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class AddAccount extends ConsumerStatefulWidget {
   static const route = '/add-account';

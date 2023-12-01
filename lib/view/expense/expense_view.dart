@@ -4,20 +4,31 @@ import 'package:expense_kit/utils/currency_utils.dart';
 import 'package:expense_kit/view/expense/add_expense.dart';
 import 'package:expense_kit/view/expense/balance_card.dart';
 import 'package:expense_kit/view/expense/expense_list.dart';
-import 'package:expense_kit/view/ui_extensions.dart';
+import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ExpenseView extends StatelessWidget {
   const ExpenseView({super.key});
+
+  final FeedbackNinja _ninja = const FeedbackNinja(apiKey: '');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('$currencySymbol Rupiah'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              _ninja.show(context);
+            },
+            icon: const Icon(Icons.feedback_outlined),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton.small(
-        onPressed: () => context.push(page: const AddExpense()),
+        onPressed: () => context.push(AddExpense.route),
         child: const Icon(Icons.add),
       ),
       body: Column(
@@ -33,7 +44,9 @@ class ExpenseView extends StatelessWidget {
               );
             },
           ),
-          const Expanded(child: ExpenseList()),
+          const Expanded(
+            child: ExpenseList(),
+          ),
         ],
       ),
     );

@@ -58,7 +58,7 @@ class _HomeState extends State<Home> {
           NavigationDestination(
             icon: Icon(Icons.account_box_outlined),
             selectedIcon: Icon(Icons.account_box),
-            label: 'Accounts',
+            label: 'Account',
           ),
         ],
       ),

@@ -1,18 +1,20 @@
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:expense_kit/model/entity/emi_entity.dart';
 import 'package:expense_kit/utils/currency_utils.dart';
+import 'package:expense_kit/utils/ui_extensions.dart';
 import 'package:expense_kit/view/decorations.dart';
-import 'package:expense_kit/view/ui_extensions.dart';
 import 'package:expense_kit/view_model/emi/create_emi_state.dart';
 import 'package:expense_kit/view_model/emi/emi_list_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 
 class AddEMI extends ConsumerStatefulWidget {
+  static const route = '/add-emi';
   const AddEMI({super.key});
 
   @override

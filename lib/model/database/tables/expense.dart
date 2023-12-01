@@ -28,7 +28,7 @@ class ExpenseTable {
         entity.dateTime ?? DateTime.now(),
       ),
       accountId: entity.accountId!,
-      categoryId: entity.categoryId!,
+      categoryId: entity.categoryId ?? 0,
     );
     return database.into(database.expense).insert(companion);
   }
@@ -64,7 +64,8 @@ class ExpenseTable {
     //   );
 
     var customQuery = database.customSelect(
-      'SELECT * FROM expense WHERE date < ${DateTime.now().microsecondsSinceEpoch.toString().substring(0, 10)}',
+      // 'SELECT * FROM expense WHERE date < ${DateTime.now().microsecondsSinceEpoch.toString().substring(0, 10)}',
+      'SELECT * FROM expense',
     );
 
     final expenses = await customQuery.get();
@@ -75,11 +76,15 @@ class ExpenseTable {
   }
 
   Stream<List<QueryRow>> stream() {
+    // var customQuery = database.customSelect(
+    //   'SELECT * FROM expense WHERE date < ${DateTime.now().microsecondsSinceEpoch.toString().substring(0, 10)}',
+    // );
     var customQuery = database.customSelect(
-      'SELECT * FROM expense WHERE date < ${DateTime.now().microsecondsSinceEpoch.toString().substring(0, 10)}',
+      'SELECT * FROM expense',
     );
 
-    // var query = database.select(database.expense);
+    var query = database.select(database.expense);
+
     return customQuery.watch();
   }
 }

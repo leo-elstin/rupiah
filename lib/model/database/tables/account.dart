@@ -29,7 +29,7 @@ class AccountTable {
   }
 
   Future remove(AccountEntity entity) async {
-    return database.emi.deleteWhere(
+    return database.account.deleteWhere(
       (tbl) => tbl.id.isValue(entity.id!),
     );
   }

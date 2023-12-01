@@ -4,7 +4,7 @@ class EMIEntity {
   final String? description;
   final double amount;
   final DateTime? endDate;
-  final int? id;
+  final String? id;
 
   const EMIEntity({
     this.description,
@@ -21,7 +21,7 @@ class EMIEntity {
     String? description,
     double? amount,
     DateTime? endDate,
-    int? id,
+    String? id,
   }) {
     return EMIEntity(
       description: description ?? this.description,

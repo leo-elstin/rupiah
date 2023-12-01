@@ -1,6 +1,10 @@
+import 'package:expense_kit/utils/extensions.dart';
 import 'package:expense_kit/view/account/account_list.dart';
 import 'package:expense_kit/view/auth/auth_sheet.dart';
+import 'package:expense_kit/view_model/auth/auth_cubit.dart';
+import 'package:expense_kit/view_model/settings/settings_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class AccountView extends StatefulWidget {
@@ -19,30 +23,69 @@ class _AccountViewState extends State<AccountView> {
       ),
       body: ListView(
         children: [
-          ListTile(
-            leading: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.deepOrange,
-              ),
-              child: const Icon(
-                Icons.login_outlined,
-                color: Colors.white,
-                size: 16,
-              ),
-            ),
-            title: const Text('Login/SignUp'),
-            subtitle: const Text(
-              'Login or Sign up to keep the data sync between devices',
-            ),
-            onTap: () => showModalBottomSheet(
-              isDismissible: false,
-              enableDrag: false,
-              isScrollControlled: true,
-              context: context,
-              builder: (context) => const AuthSheet(),
-            ),
+          BlocBuilder<AuthCubit, AuthState>(
+            builder: (context, state) {
+              var cubit = context.read<AuthCubit>();
+              return cubit.user == null
+                  ? ListTile(
+                      leading: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.deepOrange,
+                        ),
+                        child: const Icon(
+                          Icons.login_outlined,
+                          color: Colors.white,
+                          size: 16,
+                        ),
+                      ),
+                      title: const Text('Login/SignUp'),
+                      subtitle: const Text(
+                        'Login or Sign up to keep the data sync between devices',
+                      ),
+                      onTap: () => showModalBottomSheet(
+                        isDismissible: false,
+                        enableDrag: false,
+                        isScrollControlled: true,
+                        context: context,
+                        builder: (context) => const AuthSheet(),
+                      ),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        child: ListTile(
+                          leading: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.teal,
+                            ),
+                            child: const Icon(
+                              Icons.verified_user,
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                          ),
+                          trailing: IconButton(
+                            onPressed: () {
+                              context.read<AuthCubit>().logout();
+                              context.go('/');
+                            },
+                            icon: const Icon(
+                              Icons.logout_outlined,
+                            ),
+                          ),
+                          title: const Text('Logged In'),
+                          subtitle: Text(
+                            cubit.user?.phone ?? '',
+                            style: context.boldBody(),
+                          ),
+                        ),
+                      ),
+                    );
+            },
           ),
           ListTile(
             leading: Container(
@@ -132,13 +175,41 @@ class _AccountViewState extends State<AccountView> {
             ),
             onTap: () {},
           ),
+          BlocBuilder<SettingsCubit, SettingsState>(
+            builder: (context, state) {
+              var cubit = context.read<SettingsCubit>();
+              bool dark = cubit.brightness == Brightness.dark;
+              return ListTile(
+                title: const Text('Dark Theme'),
+                subtitle: const Text('Switch between light and dark theme'),
+                leading: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: dark ? Colors.white : Colors.black,
+                  ),
+                  child: Icon(
+                    dark ? Icons.dark_mode : Icons.light_mode,
+                    color: !dark ? Colors.white : Colors.black,
+                    size: 16,
+                  ),
+                ),
+                trailing: Switch(
+                  value: dark,
+                  onChanged: (value) {
+                    cubit.changeBrightness();
+                  },
+                ),
+              );
+            },
+          ),
           ListTile(
             title: const Text('Export Data'),
             leading: Container(
               padding: const EdgeInsets.all(8),
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.black,
+                color: Colors.blueGrey,
               ),
               child: const Icon(
                 Icons.import_export_outlined,

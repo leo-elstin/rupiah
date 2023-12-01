@@ -3,7 +3,7 @@ import 'package:expense_kit/model/database/database.dart';
 import 'package:expense_kit/model/entity/account_entity.dart';
 
 class Account extends Table {
-  IntColumn get id => integer().autoIncrement()();
+  TextColumn get id => text()();
 
   TextColumn get accountName => text()();
 
@@ -19,6 +19,7 @@ class Account extends Table {
 class AccountTable {
   Future insert(AccountEntity entity) async {
     var companion = AccountCompanion.insert(
+      id: entity.id!,
       description: Value(entity.description),
       accountName: entity.accountName ?? '',
       colorCode: Value(entity.colorCode),

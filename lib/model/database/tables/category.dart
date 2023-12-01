@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
 
 class CategoryDb extends Table {
-  IntColumn get id => integer().autoIncrement()();
+  TextColumn get id => text()();
 
   TextColumn get categoryName => text()();
 

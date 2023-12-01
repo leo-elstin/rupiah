@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:expense_kit/utils/ui_extensions.dart';
+import 'package:expense_kit/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

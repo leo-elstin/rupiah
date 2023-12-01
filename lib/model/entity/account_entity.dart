@@ -6,7 +6,7 @@ class AccountEntity {
   final String? colorCode;
   final String? iconCode;
   final double? balance;
-  final int? id;
+  final String? id;
 
   AccountEntity({
     this.accountName,
@@ -23,7 +23,7 @@ class AccountEntity {
     String? description,
     String? colorCode,
     String? iconCode,
-    int? id,
+    String? id,
     double? balance,
   }) {
     return AccountEntity(

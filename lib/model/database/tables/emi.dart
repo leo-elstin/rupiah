@@ -1,9 +1,10 @@
+import 'package:appwrite/appwrite.dart';
 import 'package:drift/drift.dart';
 import 'package:expense_kit/model/database/database.dart';
 import 'package:expense_kit/model/entity/emi_entity.dart';
 
 class Emi extends Table {
-  IntColumn get id => integer().autoIncrement()();
+  TextColumn get id => text().nullable()();
 
   TextColumn get description => text().nullable()();
 
@@ -15,6 +16,7 @@ class Emi extends Table {
 class EMITable {
   Future insert(EMIEntity entity) async {
     var companion = EmiCompanion.insert(
+      id: Value(ID.unique()),
       description: Value(entity.description),
       amount: entity.amount,
       endDate: Value(

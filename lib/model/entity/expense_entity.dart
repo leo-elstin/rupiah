@@ -4,16 +4,16 @@ import 'package:intl/intl.dart';
 @immutable
 class ExpenseEntity {
   final double amount;
-  final int id;
+  final String id;
 
   final ExpenseType type;
   final DateTime? dateTime;
   final String? description;
-  final int? accountId;
+  final String? accountId;
   final int? categoryId;
 
   const ExpenseEntity({
-    this.id = 0,
+    this.id = '',
     this.amount = 0.0,
     this.type = ExpenseType.outgoing,
     this.dateTime,
@@ -47,7 +47,7 @@ class ExpenseEntity {
     ExpenseType? type,
     DateTime? dateTime,
     String? description,
-    int? accountId,
+    String? accountId,
     int? categoryId,
   }) {
     return ExpenseEntity(

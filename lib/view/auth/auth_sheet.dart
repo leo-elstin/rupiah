@@ -1,4 +1,4 @@
-import 'package:expense_kit/utils/ui_extensions.dart';
+import 'package:expense_kit/utils/extensions.dart';
 import 'package:expense_kit/view/components/circular_indicator.dart';
 import 'package:expense_kit/view/decorations.dart';
 import 'package:expense_kit/view_model/auth/auth_cubit.dart';

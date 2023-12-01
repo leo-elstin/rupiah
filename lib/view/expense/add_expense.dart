@@ -2,7 +2,7 @@ import 'package:currency_text_input_formatter/currency_text_input_formatter.dart
 import 'package:expense_kit/model/entity/account_entity.dart';
 import 'package:expense_kit/model/entity/expense_entity.dart';
 import 'package:expense_kit/utils/currency_utils.dart';
-import 'package:expense_kit/utils/ui_extensions.dart';
+import 'package:expense_kit/utils/extensions.dart';
 import 'package:expense_kit/view/decorations.dart';
 import 'package:expense_kit/view_model/account/account_list_state.dart';
 import 'package:expense_kit/view_model/create_expense.dart';

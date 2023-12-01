@@ -6,9 +6,9 @@ class LoginService {
 
   LoginService.init() {
     client
-        .setEndpoint('https://cloud.appwrite.io/v1') // Your API Endpoint
-        .setProject('rupiah') // Your project ID
-        .setSelfSigned(); // Remove in production
+        .setEndpoint('https://cloud.appwrite.io/v1')
+        .setProject('rupiah')
+        .setSelfSigned();
   }
 
   static Future<Token> createAccount(String phoneNo, String userId) async {
@@ -21,7 +21,7 @@ class LoginService {
 
   static Future<User> updateSession(String userId, String otp) async {
     Account account = Account(client);
-    final session = await account.updatePhoneSession(
+    await account.updatePhoneSession(
       userId: userId,
       secret: otp,
     );
@@ -29,8 +29,17 @@ class LoginService {
     return await account.get();
   }
 
-  static Future<User> getUser() async {
+  static Future<User?> getUser() async {
     Account account = Account(client);
-    return await account.get();
+    try {
+      return await account.get();
+    } on Exception catch (e) {
+      return null;
+    }
+  }
+
+  static Future logout() async {
+    Account account = Account(client);
+    return await account.deleteSessions();
   }
 }

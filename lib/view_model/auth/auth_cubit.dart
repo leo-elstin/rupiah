@@ -32,8 +32,12 @@ class AuthCubit extends Cubit<AuthState> {
   bool validNumber() => _phone != null && _phone!.length == 10;
 
   void validateLogin() async {
-    emit(UserLoggedIn());
+    emit(UserNotLoggedIn());
+
     _user = await LoginService.getUser();
+    if (_user != null) {
+      emit(UserLoggedIn());
+    }
     emit(UserNotLoggedIn());
   }
 
@@ -48,5 +52,10 @@ class AuthCubit extends Cubit<AuthState> {
     emit(ValidatingOTP());
     _user = await LoginService.updateSession(_token!.userId, otp);
     emit(AuthSuccess());
+  }
+
+  void logout() async {
+    _user = await LoginService.logout();
+    emit(UserNotLoggedIn());
   }
 }

@@ -1,7 +1,7 @@
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:expense_kit/model/entity/emi_entity.dart';
 import 'package:expense_kit/utils/currency_utils.dart';
-import 'package:expense_kit/utils/ui_extensions.dart';
+import 'package:expense_kit/utils/extensions.dart';
 import 'package:expense_kit/view/emi/add_emi.dart';
 import 'package:expense_kit/view_model/emi/emi_list_state.dart';
 import 'package:flutter/material.dart';
@@ -84,6 +84,7 @@ class _EMIViewState extends ConsumerState<EMIView> {
               itemCount: ref.watch(emiListProvider).length,
               itemBuilder: (context, index) {
                 EMIEntity entity = ref.watch(emiListProvider)[index];
+                print(entity.id);
                 return ListTile(
                   onLongPress: () {
                     ref.read(emiListProvider.notifier).delete(entity);

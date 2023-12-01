@@ -1,3 +1,4 @@
+import 'package:expense_kit/model/database/tables/sync.dart';
 import 'package:expense_kit/view/account/account_view.dart';
 import 'package:expense_kit/view/emi/emi_view.dart';
 import 'package:expense_kit/view/expense/expense_view.dart';
@@ -17,6 +18,9 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    SyncTable().get().then((value) {
+      print(value);
+    });
   }
 
   @override

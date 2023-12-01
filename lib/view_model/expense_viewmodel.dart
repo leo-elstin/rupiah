@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:expense_kit/model/database/tables/emi.dart';
 import 'package:expense_kit/model/database/tables/expense.dart';
+import 'package:expense_kit/model/database/tables/sync.dart';
 import 'package:expense_kit/model/entity/expense_entity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -8,6 +11,10 @@ class ExpenseNotifier extends StateNotifier<List<ExpenseEntity>> {
 
   Future addExpense(ExpenseEntity expense) async {
     await ExpenseTable().insert(expense);
+    await SyncTable().insert(
+      data: jsonEncode(expense.toMap()),
+      type: TableType.expense,
+    );
     await getAll();
   }
 

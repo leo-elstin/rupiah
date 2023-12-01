@@ -1,3 +1,4 @@
+import 'package:appwrite/appwrite.dart';
 import 'package:drift/drift.dart';
 import 'package:expense_kit/model/database/database.dart';
 import 'package:expense_kit/model/entity/account_entity.dart';
@@ -19,7 +20,7 @@ class Account extends Table {
 class AccountTable {
   Future insert(AccountEntity entity) async {
     var companion = AccountCompanion.insert(
-      id: entity.id!,
+      id: ID.unique(),
       description: Value(entity.description),
       accountName: entity.accountName ?? '',
       colorCode: Value(entity.colorCode),

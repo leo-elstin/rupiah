@@ -38,6 +38,19 @@ class ExpenseEntity {
     );
   }
 
+  // to json
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'amount': amount,
+      'type': type.index,
+      'date': dateTime?.millisecondsSinceEpoch,
+      'description': description,
+      'accountId': accountId,
+      'categoryId': categoryId,
+    };
+  }
+
   String formattedDate() {
     return DateFormat('MMM, dd hh:mm a').format(dateTime!);
   }

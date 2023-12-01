@@ -4,10 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class CreateNotifier extends StateNotifier<ExpenseEntity> {
   CreateNotifier() : super(const ExpenseEntity());
 
-  void addExpense(ExpenseEntity expense) {
-    state = expense;
-  }
-
   void updateExpense(ExpenseEntity expense) {
     state = expense;
   }

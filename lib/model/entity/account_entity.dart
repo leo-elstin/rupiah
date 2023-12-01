@@ -35,4 +35,28 @@ class AccountEntity {
       balance: balance ?? this.balance,
     );
   }
+
+  // toMap
+  Map<String, dynamic> toMap() {
+    return {
+      'accountName': accountName,
+      'description': description,
+      'colorCode': colorCode,
+      'iconCode': iconCode,
+      'balance': balance,
+      'id': id,
+    };
+  }
+
+  // from json
+  factory AccountEntity.fromMap(Map<String, dynamic> map) {
+    return AccountEntity(
+      accountName: map['accountName'],
+      description: map['description'],
+      colorCode: map['colorCode'],
+      iconCode: map['iconCode'],
+      balance: map['balance'],
+      id: map['id'],
+    );
+  }
 }

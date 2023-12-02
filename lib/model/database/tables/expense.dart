@@ -3,6 +3,9 @@ import 'package:expense_kit/model/database/database.dart';
 import 'package:expense_kit/model/entity/expense_entity.dart';
 
 class Expense extends Table {
+  @override
+  Set<Column> get primaryKey => {id};
+
   TextColumn get id => text()();
 
   TextColumn get description => text().nullable()();
@@ -23,7 +26,7 @@ class ExpenseTable {
     var companion = ExpenseCompanion.insert(
       id: entity.id,
       description: Value(entity.description),
-      amount: entity.amount,
+      amount: entity.amount.toDouble(),
       type: entity.type,
       date: Value(
         entity.dateTime ?? DateTime.now(),
@@ -31,7 +34,23 @@ class ExpenseTable {
       accountId: entity.accountId!,
       categoryId: entity.categoryId ?? 0,
     );
-    return database.into(database.expense).insert(companion);
+    return database.into(database.expense).insertOnConflictUpdate(companion);
+  }
+
+  Future updateInsert(ExpenseEntity entity) async {
+    var companion = ExpenseCompanion.insert(
+      id: entity.id,
+      description: Value(entity.description),
+      amount: entity.amount.toDouble(),
+      type: entity.type,
+      date: Value(
+        entity.dateTime ?? DateTime.now(),
+      ),
+      accountId: entity.accountId!,
+      categoryId: entity.categoryId ?? 0,
+    );
+
+    return database.into(database.expense).insertOnConflictUpdate(companion);
   }
 
   Future remove(ExpenseEntity entity) async {

@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 
 @immutable
 class ExpenseEntity {
-  final double amount;
+  final num amount;
   final String id;
 
   final ExpenseType type;
@@ -30,7 +30,10 @@ class ExpenseEntity {
     return ExpenseEntity(
       dateTime: map['date'] != null ? date : null,
       amount: map['amount'] ?? 0.0,
-      type: ExpenseType.values[map['type']],
+      type: ExpenseType.values.firstWhere(
+        (element) => element.name == map['type'],
+        orElse: () => ExpenseType.outgoing,
+      ),
       description: map['description'],
       id: map['id'],
       accountId: map['accountId'],
@@ -43,7 +46,7 @@ class ExpenseEntity {
     return {
       'id': id,
       'amount': amount,
-      'type': type.index,
+      'type': type.name,
       'date': dateTime?.millisecondsSinceEpoch,
       'description': description,
       'accountId': accountId,
@@ -62,9 +65,11 @@ class ExpenseEntity {
     String? description,
     String? accountId,
     int? categoryId,
+    String? id,
   }) {
     return ExpenseEntity(
       amount: amount ?? this.amount,
+      id: id ?? this.id,
       type: type ?? this.type,
       dateTime: dateTime ?? this.dateTime,
       description: description ?? this.description,

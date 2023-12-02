@@ -84,7 +84,6 @@ class _EMIViewState extends ConsumerState<EMIView> {
               itemCount: ref.watch(emiListProvider).length,
               itemBuilder: (context, index) {
                 EMIEntity entity = ref.watch(emiListProvider)[index];
-                print(entity.id);
                 return ListTile(
                   onLongPress: () {
                     ref.read(emiListProvider.notifier).delete(entity);

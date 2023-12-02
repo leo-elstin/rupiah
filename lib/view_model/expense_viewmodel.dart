@@ -10,9 +10,12 @@ class ExpenseNotifier extends StateNotifier<List<ExpenseEntity>> {
   ExpenseNotifier() : super([]);
 
   Future addExpense(ExpenseEntity expense) async {
-    await ExpenseTable().insert(expense);
+    var temp = expense.copyWith(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+    );
+    await ExpenseTable().insert(temp);
     await SyncTable().insert(
-      data: jsonEncode(expense.toMap()),
+      data: jsonEncode(temp.toMap()),
       type: TableType.expense,
     );
     await getAll();

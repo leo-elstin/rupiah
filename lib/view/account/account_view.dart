@@ -1,3 +1,4 @@
+import 'package:expense_kit/model/database/tables/sync.dart';
 import 'package:expense_kit/utils/extensions.dart';
 import 'package:expense_kit/view/account/account_list.dart';
 import 'package:expense_kit/view/auth/auth_sheet.dart';
@@ -217,7 +218,9 @@ class _AccountViewState extends State<AccountView> {
                 size: 16,
               ),
             ),
-            onTap: () {},
+            onTap: () {
+              SyncTable().clear();
+            },
           ),
         ],
       ),

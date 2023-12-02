@@ -69,7 +69,8 @@ class _AccountCardState extends State<AccountCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        formatter.formatDouble(widget.entity.balance ?? 0),
+                        formatter.formatDouble(
+                            widget.entity.balance?.toDouble() ?? 0.0),
                         style: context.titleMedium(),
                       ),
                       SizedBox(

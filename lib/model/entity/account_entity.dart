@@ -5,7 +5,7 @@ class AccountEntity {
   final String? description;
   final String? colorCode;
   final String? iconCode;
-  final double? balance;
+  final num? balance;
   final String? id;
 
   AccountEntity({

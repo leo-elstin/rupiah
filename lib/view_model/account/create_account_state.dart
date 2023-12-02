@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:appwrite/appwrite.dart';
 import 'package:expense_kit/model/database/tables/account.dart';
 import 'package:expense_kit/model/database/tables/sync.dart';
 import 'package:expense_kit/model/entity/account_entity.dart';
@@ -13,7 +12,7 @@ class CreateAccountState extends StateNotifier<AccountEntity> {
 
   Future addAccount(AccountEntity entity) async {
     AccountEntity temp = entity.copyWith(
-      id: ID.unique(),
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
     );
     await SyncTable().insert(
       data: jsonEncode(temp.toMap()),

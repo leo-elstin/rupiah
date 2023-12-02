@@ -16,6 +16,8 @@ class Sync extends Table {
   IntColumn get type => intEnum<TableType>()();
 
   DateTimeColumn get createdAt => dateTime()();
+
+  BoolColumn get synced => boolean().withDefault(const Constant(false))();
 }
 
 class SyncTable {
@@ -30,5 +32,15 @@ class SyncTable {
 
   Future<List<SyncData>> get() async {
     return database.select(database.sync).get();
+  }
+
+  Future delete(int id) async {
+    return database.sync.deleteWhere(
+      (tbl) => tbl.id.isValue(id),
+    );
+  }
+
+  Future clear() async {
+    return database.delete(database.sync).go();
   }
 }

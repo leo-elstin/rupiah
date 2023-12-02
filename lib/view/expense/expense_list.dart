@@ -3,7 +3,6 @@ import 'package:expense_kit/model/entity/expense_entity.dart';
 import 'package:expense_kit/utils/currency_utils.dart';
 import 'package:expense_kit/utils/extensions.dart';
 import 'package:expense_kit/view_model/expense_viewmodel.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -37,10 +36,6 @@ class _ExpenseListState extends ConsumerState<ExpenseList> {
         .watch(expenseProvider)
         .map((e) => DateFormat(format).format(e.dateTime!))
         .toSet();
-
-    if (kDebugMode) {
-      print(dates);
-    }
 
     Map<String, List<ExpenseEntity>> dateMap = {};
 
@@ -105,7 +100,7 @@ class _ExpenseListState extends ConsumerState<ExpenseList> {
                       ),
                       Expanded(
                         child: Text(
-                          formatter.formatDouble(expense.amount),
+                          formatter.formatDouble(expense.amount.toDouble()),
                           textAlign: TextAlign.end,
                           style: context.titleMedium(),
                         ),

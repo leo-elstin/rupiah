@@ -15,10 +15,15 @@ class AuthSheet extends StatefulWidget {
 }
 
 class _AuthSheetState extends StateModel<AuthSheet, AuthCubit> {
+  final TextEditingController _controller = TextEditingController();
+
   @override
   void listener(state) {
     if (state is AuthSuccess) {
       context.pop();
+    }
+    if (state is FetchedOTP) {
+      _controller.clear();
     }
     super.listener(state);
   }
@@ -44,11 +49,14 @@ class _AuthSheetState extends StateModel<AuthSheet, AuthCubit> {
                 ),
                 if (cubit.otpSent)
                   TextField(
+                    controller: _controller,
                     enabled: cubit.state is! FetchingOTP,
                     keyboardType: const TextInputType.numberWithOptions(
                       decimal: false,
                     ),
-                    style: context.titleMedium(),
+                    style: context.titleMedium()?.copyWith(
+                          letterSpacing: 16,
+                        ),
                     inputFormatters: [
                       FilteringTextInputFormatter.digitsOnly,
                     ],
@@ -57,6 +65,7 @@ class _AuthSheetState extends StateModel<AuthSheet, AuthCubit> {
                       labelStyle: context.titleLarge(),
                       counterText: '',
                     ),
+                    textAlign: TextAlign.center,
                     maxLength: 6,
                     onChanged: (value) {
                       if (value.length == 6) {
@@ -66,6 +75,7 @@ class _AuthSheetState extends StateModel<AuthSheet, AuthCubit> {
                   )
                 else
                   TextField(
+                    controller: _controller,
                     enabled: cubit.state is! FetchingOTP,
                     keyboardType: const TextInputType.numberWithOptions(
                       decimal: false,
@@ -125,7 +135,7 @@ class _AuthSheetState extends StateModel<AuthSheet, AuthCubit> {
                                 ),
                                 onPressed: () {
                                   context.hideKeyboard();
-                                  // cubit.validateOTP(otp);
+                                  cubit.validateOTP(_controller.text);
                                 },
                                 child: const Text('Verify OTP'),
                               ),

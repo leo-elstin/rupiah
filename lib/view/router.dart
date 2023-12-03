@@ -1,3 +1,4 @@
+import 'package:expense_kit/model/entity/expense_entity.dart';
 import 'package:expense_kit/view/account/account_list.dart';
 import 'package:expense_kit/view/account/add_account.dart';
 import 'package:expense_kit/view/emi/add_emi.dart';
@@ -21,7 +22,10 @@ final router = GoRouter(
     ),
     GoRoute(
       path: AddExpense.route,
-      builder: (context, state) => const AddExpense(),
+      builder: (context, state) => AddExpense(
+        expenseEntity:
+            state.extra != null ? state.extra as ExpenseEntity : null,
+      ),
     ),
     GoRoute(
       path: AddEMI.route,

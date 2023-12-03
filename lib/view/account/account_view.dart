@@ -1,5 +1,7 @@
 import 'package:expense_kit/view/account/account_list.dart';
+import 'package:expense_kit/view_model/settings/settings_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class AccountView extends StatefulWidget {
@@ -130,6 +132,34 @@ class _AccountViewState extends State<AccountView> {
               ),
             ),
             onTap: () {},
+          ),
+          BlocBuilder<SettingsCubit, SettingsState>(
+            builder: (context, state) {
+              var cubit = context.read<SettingsCubit>();
+              bool dark = cubit.brightness == Brightness.dark;
+              return ListTile(
+                title: const Text('Dark Theme'),
+                subtitle: const Text('Switch between light and dark theme'),
+                leading: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: dark ? Colors.white : Colors.black,
+                  ),
+                  child: Icon(
+                    dark ? Icons.dark_mode : Icons.light_mode,
+                    color: !dark ? Colors.white : Colors.black,
+                    size: 16,
+                  ),
+                ),
+                trailing: Switch(
+                  value: dark,
+                  onChanged: (value) {
+                    cubit.changeBrightness();
+                  },
+                ),
+              );
+            },
           ),
           ListTile(
             title: const Text('Export Data'),

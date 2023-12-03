@@ -16,7 +16,10 @@ import 'package:intl/intl.dart';
 
 class AddExpense extends ConsumerStatefulWidget {
   static const route = '/add-expense';
-  const AddExpense({super.key});
+
+  final ExpenseEntity? expenseEntity;
+
+  const AddExpense({super.key, this.expenseEntity});
 
   @override
   ConsumerState<AddExpense> createState() => _AddExpenseState();
@@ -24,30 +27,40 @@ class AddExpense extends ConsumerStatefulWidget {
 
 class _AddExpenseState extends ConsumerState<AddExpense> {
   TextEditingController dateController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController amountController = TextEditingController();
+  final CurrencyTextInputFormatter formatter = CurrencyTextInputFormatter(
+    symbol: '${CurrencyUtils.currencySymbol} ',
+    locale: 'en_IN',
+  );
+
+  DateFormat dateFormat = DateFormat('dd MMM, yy h:mm aa');
 
   @override
   void initState() {
     super.initState();
 
     ref.read(accountListState.notifier).getAll();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (widget.expenseEntity != null) {
+        ref.invalidate(createExpense);
+        ref.read(createExpense.notifier).updateExpense(widget.expenseEntity!);
+
+        dateController.text = dateFormat.format(
+          widget.expenseEntity!.dateTime!,
+        );
+        descriptionController.text = widget.expenseEntity!.description ?? '';
+        amountController.text = formatter.formatDouble(
+          widget.expenseEntity!.amount * 100,
+        );
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    // ref.listen(createExpense, (previous, next) {
-    //   if (next.dateTime != null) {
-    //
-    //   }
-    // });
-
-    AccountEntity? accountEntity =
-        ref.watch(accountListState.notifier).selected;
-
-    final CurrencyTextInputFormatter formatter = CurrencyTextInputFormatter(
-      symbol: '${CurrencyUtils.currencySymbol} ',
-      locale: 'en_IN',
-    );
     ExpenseEntity expense = ref.watch(createExpense);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Expense'),
@@ -86,6 +99,7 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
               ),
               const SizedBox(height: 32),
               TextField(
+                controller: amountController,
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
                 ),
@@ -117,8 +131,7 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
                     showDayOfWeek: true,
                     // This is called when the user changes the date.
                     onDateTimeChanged: (DateTime newDate) {
-                      dateController.text =
-                          DateFormat('dd MMM, yy h:mm aa').format(
+                      dateController.text = dateFormat.format(
                         newDate,
                       );
                       ref.read(createExpense.notifier).updateExpense(
@@ -136,14 +149,10 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
                   ),
                   labelStyle: context.titleLarge(),
                 ),
-                onChanged: (value) {
-                  // ref.read(createExpense.notifier).amount(
-                  //       formatter.getUnformattedValue().toDouble(),
-                  //     );
-                },
               ),
               const SizedBox(height: 32),
               TextField(
+                  controller: descriptionController,
                   style: context.body(),
                   decoration: textDecoration.copyWith(
                     labelText: 'Description',
@@ -172,14 +181,18 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
                     AccountEntity entity = ref.watch(accountListState)[index];
                     return InkWell(
                       onTap: () {
-                        ref.read(accountListState.notifier).setSelected(entity);
+                        ref.read(createExpense.notifier).updateExpense(
+                              expense.copyWith(
+                                accountId: entity.id,
+                              ),
+                            );
                       },
                       child: SizedBox(
                         height: 100,
                         child: Card(
                           shape: RoundedRectangleBorder(
                             side: BorderSide(
-                              color: accountEntity?.id == entity.id
+                              color: expense.accountId == entity.id
                                   ? Theme.of(context).colorScheme.primary
                                   : Theme.of(context)
                                       .colorScheme
@@ -231,13 +244,10 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
                   style: ElevatedButton.styleFrom(
                     elevation: 4,
                   ),
-                  onPressed: expense.amount > 0 && accountEntity != null
+                  onPressed: expense.amount > 0 && expense.accountId != null
                       ? () {
                           ref
-                            ..read(expenseProvider.notifier)
-                                .addExpense(expense.copyWith(
-                              accountId: accountEntity.id,
-                            ))
+                            ..read(expenseProvider.notifier).add(expense)
                             ..invalidate(createExpense);
 
                           context.pop();

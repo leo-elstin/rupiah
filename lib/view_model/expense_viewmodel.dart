@@ -6,7 +6,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class ExpenseNotifier extends StateNotifier<List<ExpenseEntity>> {
   ExpenseNotifier() : super([]);
 
-  Future addExpense(ExpenseEntity expense) async {
+  Future add(ExpenseEntity expense) async {
+    await ExpenseTable().insert(expense);
+    await getAll();
+  }
+
+  Future update(ExpenseEntity expense) async {
     await ExpenseTable().insert(expense);
     await getAll();
   }

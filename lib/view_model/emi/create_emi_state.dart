@@ -23,7 +23,7 @@ class CreateEMIState extends StateNotifier<EMIEntity> {
           isEMI: const Value(true),
           emiId: Value(data.id),
           description: Value(emi.description),
-          date: Value(Jiffy.now().add(months: index + 1).dateTime),
+          date: Value(Jiffy.now().add(months: index - 1).dateTime),
         ),
       );
     });

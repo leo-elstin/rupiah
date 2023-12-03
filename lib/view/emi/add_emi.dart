@@ -90,7 +90,7 @@ class _AddEMIState extends ConsumerState<AddEMI> {
                   if (value.isNotEmpty) {
                     count = int.parse(value);
                     var jiffy = Jiffy.now().add(
-                      months: int.parse(value),
+                      months: int.parse(value) - 1,
                     );
 
                     if (kDebugMode) {

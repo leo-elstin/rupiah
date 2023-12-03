@@ -4,8 +4,10 @@ import 'package:expense_kit/utils/currency_utils.dart';
 import 'package:expense_kit/utils/ui_extensions.dart';
 import 'package:expense_kit/view/expense/add_expense.dart';
 import 'package:expense_kit/view_model/expense_viewmodel.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -93,13 +95,52 @@ class _ExpenseListState extends ConsumerState<ExpenseList> {
                 final expense = expenseMap.value[index];
                 return ListTile(
                   dense: true,
-                  onTap: () {
-                    context.push(AddExpense.route, extra: expense);
-                  },
-                  onLongPress: () =>
-                      ref.read(expenseProvider.notifier).removeExpense(
-                            expense,
+                  onTap: () {},
+                  onLongPress: () {
+                    showCupertinoModalPopup(
+                      context: context,
+                      builder: (context) => CupertinoActionSheet(
+                        actions: [
+                          CupertinoActionSheet(
+                            title: Text(
+                              formatter.formatDouble(expense.amount),
+                            ),
+                            message: const Text(
+                              'Deletion is a permanent action.',
+                            ),
                           ),
+                          CupertinoActionSheetAction(
+                            onPressed: () {
+                              HapticFeedback.lightImpact();
+                              context
+                                ..push(AddExpense.route, extra: expense)
+                                ..pop();
+                            },
+                            child: const Text('Edit'),
+                          ),
+                          CupertinoActionSheetAction(
+                            onPressed: () {
+                              ref.read(expenseProvider.notifier).removeExpense(
+                                    expense,
+                                  );
+                              Navigator.pop(context);
+                              HapticFeedback.heavyImpact();
+                            },
+                            isDestructiveAction: true,
+                            child: const Text('Delete'),
+                          ),
+                        ],
+                        cancelButton: CupertinoActionSheetAction(
+                          onPressed: () {
+                            HapticFeedback.lightImpact();
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Cancel'),
+                        ),
+                      ),
+                    );
+                    HapticFeedback.mediumImpact();
+                  },
                   title: Row(
                     children: [
                       Expanded(

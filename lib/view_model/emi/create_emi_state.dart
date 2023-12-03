@@ -14,6 +14,8 @@ class CreateEMIState extends StateNotifier<EMIEntity> {
 
     List<ExpenseCompanion> companion = [];
     List.generate(count, (index) {
+      print(index);
+      print(Jiffy.now().add(months: index).dateTime);
       companion.add(
         ExpenseCompanion.insert(
           amount: emi.amount,
@@ -23,7 +25,7 @@ class CreateEMIState extends StateNotifier<EMIEntity> {
           isEMI: const Value(true),
           emiId: Value(data.id),
           description: Value(emi.description),
-          date: Value(Jiffy.now().add(months: index - 1).dateTime),
+          date: Value(Jiffy.now().add(months: index).dateTime),
         ),
       );
     });

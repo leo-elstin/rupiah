@@ -1,4 +1,3 @@
-import 'package:expense_kit/model/database/tables/emi.dart';
 import 'package:expense_kit/model/database/tables/expense.dart';
 import 'package:expense_kit/model/entity/expense_card_entity.dart';
 import 'package:expense_kit/model/entity/expense_entity.dart';
@@ -21,28 +20,6 @@ class ExpenseCardState extends StateNotifier<ExpenseCardEntity> {
         } else if (entity.type == ExpenseType.outgoing) {
           expense += entity.amount;
         }
-      }
-
-      var emiList = await EMITable().get();
-      var newList = emiList
-          .where(
-            (element) => DateTime.now().isBefore(element.endDate!),
-          )
-          .toList();
-
-      var temps = newList
-          .map(
-            (e) => ExpenseEntity(
-              description: e.description,
-              amount: e.amount,
-              type: ExpenseType.outgoing,
-              dateTime: DateTime(DateTime.now().year, DateTime.now().month),
-            ),
-          )
-          .toList();
-
-      for (var element in temps) {
-        expense += element.amount;
       }
 
       state = ExpenseCardEntity(

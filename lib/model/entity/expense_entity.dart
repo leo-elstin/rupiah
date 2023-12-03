@@ -33,8 +33,8 @@ class ExpenseEntity {
       type: ExpenseType.values[map['type']],
       description: map['description'],
       id: map['id'],
-      accountId: map['accountId'],
-      categoryId: map['categoryId'],
+      accountId: map['account_id'],
+      categoryId: map['category_id'],
     );
   }
 

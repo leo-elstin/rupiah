@@ -4,7 +4,9 @@ import 'package:expense_kit/utils/currency_utils.dart';
 import 'package:expense_kit/utils/ui_extensions.dart';
 import 'package:expense_kit/view/emi/add_emi.dart';
 import 'package:expense_kit/view_model/emi/emi_list_state.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -45,7 +47,7 @@ class _EMIViewState extends ConsumerState<EMIView> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.small(
+      floatingActionButton: FloatingActionButton(
         onPressed: () => context.push(AddEMI.route),
         child: const Icon(Icons.add),
       ),
@@ -86,7 +88,39 @@ class _EMIViewState extends ConsumerState<EMIView> {
                 EMIEntity entity = ref.watch(emiListProvider)[index];
                 return ListTile(
                   onLongPress: () {
-                    ref.read(emiListProvider.notifier).delete(entity);
+                    showCupertinoModalPopup(
+                      context: context,
+                      builder: (context) => CupertinoActionSheet(
+                        actions: [
+                          CupertinoActionSheet(
+                            title: Text(
+                              formatter.formatDouble(entity.amount),
+                            ),
+                            message: const Text(
+                              'Deletion is a permanent action.',
+                            ),
+                          ),
+                          CupertinoActionSheetAction(
+                            onPressed: () {},
+                            child: const Text('Edit'),
+                          ),
+                          CupertinoActionSheetAction(
+                            onPressed: () {
+                              ref.read(emiListProvider.notifier).delete(entity);
+                              Navigator.pop(context);
+                              HapticFeedback.heavyImpact();
+                            },
+                            isDestructiveAction: true,
+                            child: const Text('Delete'),
+                          ),
+                        ],
+                        cancelButton: CupertinoActionSheetAction(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text('Cancel'),
+                        ),
+                      ),
+                    );
+                    HapticFeedback.mediumImpact();
                   },
                   title: Row(
                     children: [

@@ -27,8 +27,10 @@ class ExpenseView extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.small(
-        onPressed: () => context.push(AddExpense.route),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.push(AddExpense.route);
+        },
         child: const Icon(Icons.add),
       ),
       body: Column(

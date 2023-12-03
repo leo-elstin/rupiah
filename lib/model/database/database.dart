@@ -18,7 +18,24 @@ final database = Database();
 class Database extends _$Database {
   Database() : super(_openConnection());
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration {
+    return MigrationStrategy(
+      onCreate: (Migrator m) async {
+        await m.createAll();
+      },
+      onUpgrade: (Migrator m, int from, int to) async {
+        if (from < 2) {
+          // we added the dueDate property in the change from version 1 to
+          // version 2
+          await m.addColumn(expense, expense.isEMI);
+          await m.addColumn(expense, expense.emiId);
+        }
+      },
+    );
+  }
 }
 
 LazyDatabase _openConnection() {

@@ -1,6 +1,7 @@
 import 'package:expense_kit/model/service/login_service.dart';
 import 'package:expense_kit/view/router.dart';
 import 'package:expense_kit/view_model/auth/auth_cubit.dart';
+import 'package:expense_kit/view_model/settings/settings_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,25 +27,39 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     return MultiBlocProvider(
       providers: [
         BlocProvider(
           create: (context) => AuthCubit()..validateLogin(),
         ),
-      ],
-      child: MaterialApp.router(
-        title: 'Rupiah',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.deepPurple,
-            brightness: Brightness.light,
-          ),
-          useMaterial3: true,
-          textTheme: GoogleFonts.openSansTextTheme(textTheme),
+        BlocProvider(
+          create: (context) => SettingsCubit()..init(),
         ),
-        routerConfig: router,
+      ],
+      child: BlocBuilder<SettingsCubit, SettingsState>(
+        buildWhen: (previous, current) => current is ThemeChanged,
+        builder: (context, state) {
+          var textTheme = Theme.of(context).textTheme;
+          if (state is ThemeChanged && state.brightness == Brightness.dark) {
+            textTheme = Theme.of(context).primaryTextTheme;
+          } else {
+            textTheme = Theme.of(context).textTheme;
+          }
+          return MaterialApp.router(
+            title: 'Rupiah',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: Colors.deepPurple,
+                brightness:
+                    state is ThemeChanged ? state.brightness : Brightness.light,
+              ),
+              useMaterial3: true,
+              textTheme: GoogleFonts.openSansTextTheme(textTheme),
+            ),
+            routerConfig: router,
+          );
+        },
       ),
     );
   }

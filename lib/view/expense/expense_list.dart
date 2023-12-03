@@ -2,10 +2,12 @@ import 'package:currency_text_input_formatter/currency_text_input_formatter.dart
 import 'package:expense_kit/model/entity/expense_entity.dart';
 import 'package:expense_kit/utils/currency_utils.dart';
 import 'package:expense_kit/utils/ui_extensions.dart';
+import 'package:expense_kit/view/expense/add_expense.dart';
 import 'package:expense_kit/view_model/expense_viewmodel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class ExpenseList extends ConsumerStatefulWidget {
@@ -91,6 +93,9 @@ class _ExpenseListState extends ConsumerState<ExpenseList> {
                 final expense = expenseMap.value[index];
                 return ListTile(
                   dense: true,
+                  onTap: () {
+                    context.push(AddExpense.route, extra: expense);
+                  },
                   onLongPress: () =>
                       ref.read(expenseProvider.notifier).removeExpense(
                             expense,

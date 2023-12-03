@@ -16,6 +16,10 @@ class Expense extends Table {
   IntColumn get accountId => integer()();
 
   IntColumn get categoryId => integer()();
+
+  BoolColumn get isEMI => boolean().withDefault(const Constant(false))();
+
+  IntColumn get emiId => integer().withDefault(const Constant(-1))();
 }
 
 class ExpenseTable {
@@ -30,11 +34,15 @@ class ExpenseTable {
       accountId: entity.accountId!,
       categoryId: entity.categoryId ?? 0,
     );
-    return database.into(database.expense).insert(companion);
+    return await database.into(database.expense).insert(companion);
   }
 
   Future remove(ExpenseEntity entity) async {
     return database.expense.deleteWhere((tbl) => tbl.id.isValue(entity.id));
+  }
+
+  Future removeByEMI(int emiID) async {
+    return database.expense.deleteWhere((tbl) => tbl.emiId.isValue(emiID));
   }
 
   Future<List<ExpenseEntity>> allExpenses() async {
@@ -55,44 +63,26 @@ class ExpenseTable {
 
   // get all expenses before today date
   Future<List<ExpenseEntity>> allExpensesBeforeToday() async {
-    // var query = database.select(database.expense)
-    //   ..where(
-    //     (tbl) => Variable(
-    //       tbl.date.month == Variable(DateTime.now().month) &&
-    //           tbl.date.year == Variable(DateTime.now().year),
-    //     ),
-    //   );
+    var query = database.select(database.expense)
+      ..where(
+        (row) =>
+            row.date.year.equals(DateTime.now().year) &
+            row.date.month.equals(DateTime.now().month),
+      );
 
-    var customQuery = database.customSelect(
-      // 'SELECT * FROM expense WHERE date < ${DateTime.now().microsecondsSinceEpoch.toString().substring(0, 10)}',
-      'SELECT * FROM expense',
-    );
-
-    final expenses = await customQuery.get();
+    final expenses = await query.get();
 
     return expenses.map((e) {
-      return ExpenseEntity.fromMap(e.data);
+      return ExpenseEntity.fromMap(e.toJson());
     }).toList();
   }
 
   MultiSelectable<ExpenseData> expenseStream() {
-    return database.select(database.expense);
+    return database.select(database.expense)
+      ..where(
+        (row) =>
+            row.date.year.equals(DateTime.now().year) &
+            row.date.month.equals(DateTime.now().month),
+      );
   }
-
-  // Stream<List<ExpenseData>> expenseStream() {
-  // _watchExpense().watch().listen((event) {
-  //   print(event);
-  // });
-
-  // var customQuery = database.customSelect(
-  //   'SELECT * FROM expense WHERE date < ${DateTime.now().microsecondsSinceEpoch.toString().substring(0, 10)}',
-  // );
-  // var customQuery = database.customSelect(
-  //   'SELECT * FROM expense',
-  // );
-  //
-  // var query = database.select(database.expense);
-
-  //   return watchExpense().watch();
-  // }
 }

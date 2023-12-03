@@ -13,7 +13,7 @@ class Emi extends Table {
 }
 
 class EMITable {
-  Future insert(EMIEntity entity) async {
+  Future<EmiData> insert(EMIEntity entity) async {
     var companion = EmiCompanion.insert(
       description: Value(entity.description),
       amount: entity.amount,
@@ -21,7 +21,8 @@ class EMITable {
         entity.endDate ?? DateTime.now(),
       ),
     );
-    return database.into(database.emi).insert(companion);
+
+    return database.into(database.emi).insertReturning(companion);
   }
 
   Future remove(EMIEntity entity) async {

@@ -24,6 +24,8 @@ class AddEMI extends ConsumerStatefulWidget {
 class _AddEMIState extends ConsumerState<AddEMI> {
   TextEditingController dateController = TextEditingController();
 
+  int count = 0;
+
   @override
   void initState() {
     super.initState();
@@ -86,9 +88,11 @@ class _AddEMIState extends ConsumerState<AddEMI> {
                 ],
                 onChanged: (value) {
                   if (value.isNotEmpty) {
+                    count = int.parse(value);
                     var jiffy = Jiffy.now().add(
                       months: int.parse(value),
                     );
+
                     if (kDebugMode) {
                       print(jiffy.dateTime);
                     }
@@ -149,7 +153,7 @@ class _AddEMIState extends ConsumerState<AddEMI> {
                   onPressed: emiEntity.amount > 0 && emiEntity.endDate != null
                       ? () {
                           ref
-                            ..read(emiState.notifier).addEMI(emiEntity)
+                            ..read(emiState.notifier).addEMI(emiEntity, count)
                             ..invalidate(emiState)
                             ..read(emiListProvider.notifier).getAll();
 

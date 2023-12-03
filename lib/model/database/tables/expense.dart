@@ -16,6 +16,10 @@ class Expense extends Table {
   IntColumn get accountId => integer()();
 
   IntColumn get categoryId => integer()();
+
+  BoolColumn get isEMI => boolean().withDefault(const Constant(false))();
+
+  IntColumn get emiId => integer().withDefault(const Constant(-1))();
 }
 
 class ExpenseTable {
@@ -35,6 +39,10 @@ class ExpenseTable {
 
   Future remove(ExpenseEntity entity) async {
     return database.expense.deleteWhere((tbl) => tbl.id.isValue(entity.id));
+  }
+
+  Future removeByEMI(int emiID) async {
+    return database.expense.deleteWhere((tbl) => tbl.emiId.isValue(emiID));
   }
 
   Future<List<ExpenseEntity>> allExpenses() async {
@@ -79,20 +87,20 @@ class ExpenseTable {
     return database.select(database.expense);
   }
 
-  // Stream<List<ExpenseData>> expenseStream() {
-  // _watchExpense().watch().listen((event) {
-  //   print(event);
-  // });
+// Stream<List<ExpenseData>> expenseStream() {
+// _watchExpense().watch().listen((event) {
+//   print(event);
+// });
 
-  // var customQuery = database.customSelect(
-  //   'SELECT * FROM expense WHERE date < ${DateTime.now().microsecondsSinceEpoch.toString().substring(0, 10)}',
-  // );
-  // var customQuery = database.customSelect(
-  //   'SELECT * FROM expense',
-  // );
-  //
-  // var query = database.select(database.expense);
+// var customQuery = database.customSelect(
+//   'SELECT * FROM expense WHERE date < ${DateTime.now().microsecondsSinceEpoch.toString().substring(0, 10)}',
+// );
+// var customQuery = database.customSelect(
+//   'SELECT * FROM expense',
+// );
+//
+// var query = database.select(database.expense);
 
-  //   return watchExpense().watch();
-  // }
+//   return watchExpense().watch();
+// }
 }

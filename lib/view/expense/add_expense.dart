@@ -1,8 +1,9 @@
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
-import 'package:expense_kit/model/entity/account_entity.dart';
 import 'package:expense_kit/model/entity/expense_entity.dart';
 import 'package:expense_kit/utils/currency_utils.dart';
 import 'package:expense_kit/utils/ui_extensions.dart';
+import 'package:expense_kit/view/account/add_account.dart';
+import 'package:expense_kit/view/components/add_button.dart';
 import 'package:expense_kit/view/decorations.dart';
 import 'package:expense_kit/view_model/account/account_list_state.dart';
 import 'package:expense_kit/view_model/create_expense.dart';
@@ -173,55 +174,62 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
               ),
               SizedBox(
                 height: 75,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
+                child: ListView(
                   shrinkWrap: true,
-                  itemCount: ref.watch(accountListState).length,
-                  itemBuilder: (BuildContext context, int index) {
-                    AccountEntity entity = ref.watch(accountListState)[index];
-                    return InkWell(
-                      onTap: () {
-                        ref.read(createExpense.notifier).updateExpense(
-                              expense.copyWith(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    AddButton(
+                      onTap: () => context.push(AddAccount.route),
+                    ),
+                    ...ref.watch(accountListState).map((entity) {
+                      return InkWell(
+                        onTap: () {
+                          ref
+                              .read(createExpense.notifier)
+                              .updateExpense(expense.copyWith(
                                 accountId: entity.id,
-                              ),
-                            );
-                      },
-                      child: SizedBox(
-                        height: 100,
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                              color: expense.accountId == entity.id
-                                  ? Theme.of(context).colorScheme.primary
-                                  : Theme.of(context)
-                                      .colorScheme
-                                      .surfaceVariant,
-                            ),
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(12),
-                            ),
+                              ));
+                        },
+                        child: Container(
+                          constraints: const BoxConstraints(
+                            minWidth: 125,
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(entity.accountName ?? ''),
-                                Text(
-                                  entity.description ?? '',
-                                  style: context.boldBody(),
-                                ),
-                              ],
+                          height: 75,
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                color: expense.accountId == entity.id
+                                    ? Theme.of(context).colorScheme.primary
+                                    : Theme.of(context)
+                                        .colorScheme
+                                        .surfaceVariant,
+                              ),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(4),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(entity.accountName ?? ''),
+                                  Text(
+                                    entity.description ?? '',
+                                    style: context.boldBody(),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    })
+                  ],
                 ),
-              )
+              ),
             ],
           ),
         ),

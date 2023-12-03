@@ -1,5 +1,4 @@
 import 'package:expense_kit/view/account/account_list.dart';
-import 'package:expense_kit/view/auth/auth_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -19,31 +18,31 @@ class _AccountViewState extends State<AccountView> {
       ),
       body: ListView(
         children: [
-          ListTile(
-            leading: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.deepOrange,
-              ),
-              child: const Icon(
-                Icons.login_outlined,
-                color: Colors.white,
-                size: 16,
-              ),
-            ),
-            title: const Text('Login/SignUp'),
-            subtitle: const Text(
-              'Login or Sign up to keep the data sync between devices',
-            ),
-            onTap: () => showModalBottomSheet(
-              isDismissible: false,
-              enableDrag: false,
-              isScrollControlled: true,
-              context: context,
-              builder: (context) => const AuthSheet(),
-            ),
-          ),
+          // ListTile(
+          //   leading: Container(
+          //     padding: const EdgeInsets.all(8),
+          //     decoration: const BoxDecoration(
+          //       shape: BoxShape.circle,
+          //       color: Colors.deepOrange,
+          //     ),
+          //     child: const Icon(
+          //       Icons.login_outlined,
+          //       color: Colors.white,
+          //       size: 16,
+          //     ),
+          //   ),
+          //   title: const Text('Login/SignUp'),
+          //   subtitle: const Text(
+          //     'Login or Sign up to keep the data sync between devices',
+          //   ),
+          //   onTap: () => showModalBottomSheet(
+          //     isDismissible: false,
+          //     enableDrag: false,
+          //     isScrollControlled: true,
+          //     context: context,
+          //     builder: (context) => const AuthSheet(),
+          //   ),
+          // ),
           ListTile(
             leading: Container(
               padding: const EdgeInsets.all(8),

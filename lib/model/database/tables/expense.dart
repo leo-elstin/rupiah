@@ -75,16 +75,24 @@ class ExpenseTable {
     }).toList();
   }
 
-  Stream<List<QueryRow>> stream() {
-    // var customQuery = database.customSelect(
-    //   'SELECT * FROM expense WHERE date < ${DateTime.now().microsecondsSinceEpoch.toString().substring(0, 10)}',
-    // );
-    var customQuery = database.customSelect(
-      'SELECT * FROM expense',
-    );
-
-    var query = database.select(database.expense);
-
-    return customQuery.watch();
+  MultiSelectable<ExpenseData> expenseStream() {
+    return database.select(database.expense);
   }
+
+  // Stream<List<ExpenseData>> expenseStream() {
+  // _watchExpense().watch().listen((event) {
+  //   print(event);
+  // });
+
+  // var customQuery = database.customSelect(
+  //   'SELECT * FROM expense WHERE date < ${DateTime.now().microsecondsSinceEpoch.toString().substring(0, 10)}',
+  // );
+  // var customQuery = database.customSelect(
+  //   'SELECT * FROM expense',
+  // );
+  //
+  // var query = database.select(database.expense);
+
+  //   return watchExpense().watch();
+  // }
 }

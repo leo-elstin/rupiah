@@ -7,6 +7,11 @@ class EMIListState extends StateNotifier<List<EMIEntity>> {
 
   bool asc = false;
 
+  double totalAmount() {
+    return state.fold(
+        0, (previousValue, element) => previousValue + element.amount);
+  }
+
   Future getAll() async {
     state = await EMITable().get();
   }

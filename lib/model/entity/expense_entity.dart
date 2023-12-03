@@ -9,6 +9,8 @@ class ExpenseEntity {
   final ExpenseType type;
   final DateTime? dateTime;
   final String? description;
+  final int? accountId;
+  final int? categoryId;
 
   const ExpenseEntity({
     this.id = 0,
@@ -16,6 +18,8 @@ class ExpenseEntity {
     this.type = ExpenseType.outgoing,
     this.dateTime,
     this.description,
+    this.accountId,
+    this.categoryId,
   });
 
   factory ExpenseEntity.fromMap(
@@ -29,6 +33,8 @@ class ExpenseEntity {
       type: ExpenseType.values[map['type']],
       description: map['description'],
       id: map['id'],
+      accountId: map['accountId'],
+      categoryId: map['categoryId'],
     );
   }
 
@@ -41,12 +47,16 @@ class ExpenseEntity {
     ExpenseType? type,
     DateTime? dateTime,
     String? description,
+    int? accountId,
+    int? categoryId,
   }) {
     return ExpenseEntity(
       amount: amount ?? this.amount,
       type: type ?? this.type,
       dateTime: dateTime ?? this.dateTime,
       description: description ?? this.description,
+      accountId: accountId ?? this.accountId,
+      categoryId: categoryId ?? this.categoryId,
     );
   }
 }

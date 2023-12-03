@@ -12,6 +12,10 @@ class Expense extends Table {
   IntColumn get type => intEnum<ExpenseType>()();
 
   DateTimeColumn get date => dateTime().nullable()();
+
+  IntColumn get accountId => integer()();
+
+  IntColumn get categoryId => integer()();
 }
 
 class ExpenseTable {
@@ -23,6 +27,8 @@ class ExpenseTable {
       date: Value(
         entity.dateTime ?? DateTime.now(),
       ),
+      accountId: entity.accountId!,
+      categoryId: entity.categoryId ?? 0,
     );
     return database.into(database.expense).insert(companion);
   }
@@ -41,6 +47,8 @@ class ExpenseTable {
               amount: e.amount,
               type: e.type,
               dateTime: e.date,
+              accountId: e.accountId,
+              categoryId: e.categoryId,
             ))
         .toList();
   }
@@ -56,7 +64,8 @@ class ExpenseTable {
     //   );
 
     var customQuery = database.customSelect(
-      'SELECT * FROM expense WHERE date < ${DateTime.now().microsecondsSinceEpoch.toString().substring(0, 10)}',
+      // 'SELECT * FROM expense WHERE date < ${DateTime.now().microsecondsSinceEpoch.toString().substring(0, 10)}',
+      'SELECT * FROM expense',
     );
 
     final expenses = await customQuery.get();
@@ -66,12 +75,24 @@ class ExpenseTable {
     }).toList();
   }
 
-  Stream<List<QueryRow>> stream() {
-    var customQuery = database.customSelect(
-      'SELECT * FROM expense WHERE date < ${DateTime.now().microsecondsSinceEpoch.toString().substring(0, 10)}',
-    );
-
-    // var query = database.select(database.expense);
-    return customQuery.watch();
+  MultiSelectable<ExpenseData> expenseStream() {
+    return database.select(database.expense);
   }
+
+  // Stream<List<ExpenseData>> expenseStream() {
+  // _watchExpense().watch().listen((event) {
+  //   print(event);
+  // });
+
+  // var customQuery = database.customSelect(
+  //   'SELECT * FROM expense WHERE date < ${DateTime.now().microsecondsSinceEpoch.toString().substring(0, 10)}',
+  // );
+  // var customQuery = database.customSelect(
+  //   'SELECT * FROM expense',
+  // );
+  //
+  // var query = database.select(database.expense);
+
+  //   return watchExpense().watch();
+  // }
 }

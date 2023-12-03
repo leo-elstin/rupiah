@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
+import 'package:expense_kit/model/database/tables/account.dart';
+import 'package:expense_kit/model/database/tables/category.dart';
 import 'package:expense_kit/model/database/tables/emi.dart';
 import 'package:expense_kit/model/database/tables/expense.dart';
 import 'package:expense_kit/model/entity/expense_entity.dart';
@@ -12,7 +14,7 @@ part 'database.g.dart';
 
 final database = Database();
 
-@DriftDatabase(tables: [Expense, Emi])
+@DriftDatabase(tables: [Expense, Emi, CategoryDb, Account])
 class Database extends _$Database {
   Database() : super(_openConnection());
   @override

@@ -8,14 +8,14 @@ class ExpenseCardState extends StateNotifier<ExpenseCardEntity> {
   ExpenseCardState() : super(ExpenseCardEntity());
 
   void init() {
-    ExpenseTable().stream().listen((event) async {
+    ExpenseTable().expenseStream().watch().listen((event) async {
       state = ExpenseCardEntity();
 
       double amount = 0;
       double expense = 0;
 
       for (var value in event) {
-        ExpenseEntity entity = ExpenseEntity.fromMap(value.data);
+        ExpenseEntity entity = ExpenseEntity.fromMap(value.toJson());
         if (entity.type == ExpenseType.income) {
           amount += entity.amount;
         } else if (entity.type == ExpenseType.outgoing) {

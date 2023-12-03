@@ -1,17 +1,21 @@
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'package:expense_kit/model/entity/account_entity.dart';
 import 'package:expense_kit/model/entity/expense_entity.dart';
 import 'package:expense_kit/utils/currency_utils.dart';
+import 'package:expense_kit/utils/ui_extensions.dart';
 import 'package:expense_kit/view/decorations.dart';
-import 'package:expense_kit/view/ui_extensions.dart';
+import 'package:expense_kit/view_model/account/account_list_state.dart';
 import 'package:expense_kit/view_model/create_expense.dart';
 import 'package:expense_kit/view_model/expense_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class AddExpense extends ConsumerStatefulWidget {
+  static const route = '/add-expense';
   const AddExpense({super.key});
 
   @override
@@ -24,15 +28,20 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
   @override
   void initState() {
     super.initState();
+
+    ref.read(accountListState.notifier).getAll();
   }
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(createExpense, (previous, next) {
-      if (next.dateTime != null) {
-        dateController.text = DateFormat.yMMM().format(next.dateTime!);
-      }
-    });
+    // ref.listen(createExpense, (previous, next) {
+    //   if (next.dateTime != null) {
+    //
+    //   }
+    // });
+
+    AccountEntity? accountEntity =
+        ref.watch(accountListState.notifier).selected;
 
     final CurrencyTextInputFormatter formatter = CurrencyTextInputFormatter(
       symbol: '${CurrencyUtils.currencySymbol} ',
@@ -77,8 +86,9 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
               ),
               const SizedBox(height: 32),
               TextField(
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
                 style: context.titleMedium(),
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
@@ -101,16 +111,18 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
                 onTap: () => _showDialog(
                   CupertinoDatePicker(
                     initialDateTime: DateTime.now(),
-                    mode: CupertinoDatePickerMode.date,
+                    mode: CupertinoDatePickerMode.dateAndTime,
                     use24hFormat: true,
                     // This shows day of week alongside day of month
                     showDayOfWeek: true,
                     // This is called when the user changes the date.
                     onDateTimeChanged: (DateTime newDate) {
+                      dateController.text =
+                          DateFormat('dd MMM, yy h:mm aa').format(
+                        newDate,
+                      );
                       ref.read(createExpense.notifier).updateExpense(
-                            expense.copyWith(
-                              dateTime: newDate.add(const Duration(hours: 12)),
-                            ),
+                            expense.copyWith(dateTime: newDate),
                           );
                     },
                   ),
@@ -118,14 +130,16 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
                 style: context.titleMedium(),
                 readOnly: true,
                 decoration: textDecoration.copyWith(
-                  labelText: 'Year & month',
-                  hintText: DateFormat.yMMM().format(DateTime.now()),
+                  labelText: 'Date & Time',
+                  hintText: DateFormat('dd MMM, yy h:mm aa').format(
+                    DateTime.now(),
+                  ),
                   labelStyle: context.titleLarge(),
                 ),
                 onChanged: (value) {
-                  ref.read(createExpense.notifier).amount(
-                        formatter.getUnformattedValue().toDouble(),
-                      );
+                  // ref.read(createExpense.notifier).amount(
+                  //       formatter.getUnformattedValue().toDouble(),
+                  //     );
                 },
               ),
               const SizedBox(height: 32),
@@ -143,6 +157,58 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
                           ),
                         );
                   }),
+              const SizedBox(height: 16),
+              Text(
+                'Account',
+                style: context.body(),
+              ),
+              SizedBox(
+                height: 75,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemCount: ref.watch(accountListState).length,
+                  itemBuilder: (BuildContext context, int index) {
+                    AccountEntity entity = ref.watch(accountListState)[index];
+                    return InkWell(
+                      onTap: () {
+                        ref.read(accountListState.notifier).setSelected(entity);
+                      },
+                      child: SizedBox(
+                        height: 100,
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              color: accountEntity?.id == entity.id
+                                  ? Theme.of(context).colorScheme.primary
+                                  : Theme.of(context)
+                                      .colorScheme
+                                      .surfaceVariant,
+                            ),
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(12),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(entity.accountName ?? ''),
+                                Text(
+                                  entity.description ?? '',
+                                  style: context.boldBody(),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              )
             ],
           ),
         ),
@@ -165,10 +231,13 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
                   style: ElevatedButton.styleFrom(
                     elevation: 4,
                   ),
-                  onPressed: expense.amount > 0
+                  onPressed: expense.amount > 0 && accountEntity != null
                       ? () {
                           ref
-                            ..read(expenseProvider.notifier).addExpense(expense)
+                            ..read(expenseProvider.notifier)
+                                .addExpense(expense.copyWith(
+                              accountId: accountEntity.id,
+                            ))
                             ..invalidate(createExpense);
 
                           context.pop();

@@ -1,3 +1,4 @@
+import 'package:expense_kit/view/account/account_view.dart';
 import 'package:expense_kit/view/emi/emi_view.dart';
 import 'package:expense_kit/view/expense/expense_view.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class _HomeState extends State<Home> {
           } else if (index == 2) {
             view = const ExpenseView();
           } else if (index == 3) {
-            view = const ExpenseView();
+            view = const AccountView();
           }
           setState(() {
             currentIndex = index;
@@ -57,7 +58,7 @@ class _HomeState extends State<Home> {
           NavigationDestination(
             icon: Icon(Icons.account_box_outlined),
             selectedIcon: Icon(Icons.account_box),
-            label: 'Accounts',
+            label: 'Account',
           ),
         ],
       ),

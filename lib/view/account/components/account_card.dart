@@ -17,21 +17,9 @@ class _AccountCardState extends State<AccountCard> {
 
   @override
   Widget build(BuildContext context) {
-    final MaterialStateProperty<Icon?> thumbIcon =
-        MaterialStateProperty.resolveWith<Icon?>(
-      (Set<MaterialState> states) {
-        if (states.contains(MaterialState.selected)) {
-          return const Icon(Icons.check);
-        }
-        return null;
-      },
-    );
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
-        color: widget.entity.accountName!.contains('ICICI')
-            ? Theme.of(context).colorScheme.surfaceVariant
-            : Colors.green.shade100,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -58,36 +46,15 @@ class _AccountCardState extends State<AccountCard> {
                       ),
                       const Icon(
                         Icons.savings_outlined,
-                        color: Colors.purple,
                       )
                     ],
                   ),
                   const SizedBox(
                     height: 16,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        formatter.formatDouble(widget.entity.balance ?? 0),
-                        style: context.titleMedium(),
-                      ),
-                      SizedBox(
-                        height: 32,
-                        child: FittedBox(
-                          fit: BoxFit.fill,
-                          child: Switch(
-                            thumbIcon: thumbIcon,
-                            value: selected,
-                            onChanged: (value) {
-                              setState(() {
-                                selected = value;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
+                  Text(
+                    formatter.formatDouble(widget.entity.balance ?? 0),
+                    style: context.titleMedium(),
                   ),
                 ],
               ),
@@ -118,7 +85,7 @@ class _AccountCardState extends State<AccountCard> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Income',
+                              'Balance',
                               style: context.small(),
                             ),
                             Text(

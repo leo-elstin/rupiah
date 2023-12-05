@@ -28,7 +28,7 @@ class _AccountsListState extends ConsumerState<AccountsList> {
       appBar: AppBar(
         title: const Text('Accounts'),
       ),
-      floatingActionButton: FloatingActionButton.small(
+      floatingActionButton: FloatingActionButton(
         onPressed: () => context.push(AddAccount.route),
         child: const Icon(Icons.add),
       ),

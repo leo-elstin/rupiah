@@ -26,7 +26,7 @@ class ExpenseEntity {
     Map<String, dynamic> map,
   ) {
     int seconds = map['date'] ?? 0;
-    var date = DateTime.fromMillisecondsSinceEpoch(seconds * 1000);
+    var date = DateTime.fromMillisecondsSinceEpoch(seconds);
     return ExpenseEntity(
       dateTime: map['date'] != null ? date : null,
       amount: map['amount'] ?? 0.0,

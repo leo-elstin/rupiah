@@ -1,3 +1,4 @@
+import 'package:expense_kit/model/database/database.dart';
 import 'package:expense_kit/view/account/account_list.dart';
 import 'package:expense_kit/view_model/settings/settings_cubit.dart';
 import 'package:flutter/material.dart';
@@ -176,6 +177,24 @@ class _AccountViewState extends State<AccountView> {
               ),
             ),
             onTap: () {},
+          ),
+          ListTile(
+            title: const Text('Reset Expense Table'),
+            leading: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.black,
+              ),
+              child: const Icon(
+                Icons.lock_reset_outlined,
+                color: Colors.deepOrange,
+                size: 16,
+              ),
+            ),
+            onLongPress: () {
+              database.delete(database.expense).go();
+            },
           ),
         ],
       ),

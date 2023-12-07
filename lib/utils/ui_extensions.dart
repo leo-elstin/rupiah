@@ -26,14 +26,32 @@ extension NavigationExtension on BuildContext {
     return Theme.of(this).textTheme.bodyMedium?.copyWith();
   }
 
+  TextStyle? mediumBold() {
+    return Theme.of(this).textTheme.bodyMedium?.copyWith(
+          fontWeight: FontWeight.bold,
+        );
+  }
+
   TextStyle? small() {
     return Theme.of(this).textTheme.bodySmall?.copyWith();
   }
 
+  TextStyle? smallBold() {
+    return Theme.of(this).textTheme.bodySmall?.copyWith(
+          fontWeight: FontWeight.bold,
+        );
+  }
+
   TextStyle? smaller() {
     return Theme.of(this).textTheme.bodySmall?.copyWith(
-          color: Colors.white,
           fontSize: 12,
+        );
+  }
+
+  TextStyle? smallerBold() {
+    return Theme.of(this).textTheme.bodySmall?.copyWith(
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
         );
   }
 

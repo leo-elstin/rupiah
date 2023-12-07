@@ -1,22 +1,20 @@
-import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
-import 'package:expense_kit/model/entity/expense_card_entity.dart';
 import 'package:expense_kit/utils/currency_utils.dart';
-import 'package:expense_kit/view_model/expense_card_state.dart';
+import 'package:expense_kit/utils/ui_extensions.dart';
+import 'package:expense_kit/view_model/savings/savings_cubit.dart';
+import 'package:expense_kit/view_model/state_vm.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final CurrencyTextInputFormatter formatter = CurrencyTextInputFormatter(
-  symbol: '$currencySymbol ',
-  locale: 'en_IN',
-  decimalDigits: 2,
-);
-
-class SavingsDetails extends ConsumerWidget {
+class SavingsDetails extends StatefulWidget {
   const SavingsDetails({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final ExpenseCardEntity value = ref.watch(expenseCardState);
+  StateModel<SavingsDetails, SavingsCubit> createState() =>
+      _SavingsDetailsState();
+}
+
+class _SavingsDetailsState extends StateModel<SavingsDetails, SavingsCubit> {
+  @override
+  Widget buildMobile(BuildContext context, SavingsCubit cubit) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
@@ -29,14 +27,14 @@ class SavingsDetails extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Total Savings',
+                    'My Assets',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
-                    formatter.formatDouble(value.totalBalance),
+                    formatter.formatDouble(cubit.mutualFundBalance),
                     style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -51,35 +49,42 @@ class SavingsDetails extends ConsumerWidget {
                     child: Row(
                       children: [
                         Text(
-                          'Income',
+                          'Invested',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(width: 16),
-                        Icon(
-                          Icons.trending_up,
-                          color: Colors.green,
-                        )
                       ],
                     ),
                   ),
                   Expanded(
                     child: Row(
                       children: [
-                        Text(
-                          'Expense',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            'Gain/Loss',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                        SizedBox(width: 16),
-                        Icon(
-                          Icons.trending_down,
-                          color: Colors.red,
-                        )
+                        SizedBox(width: 8),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: RotatedBox(
+                              quarterTurns: 3,
+                              child: Icon(
+                                Icons.play_arrow_sharp,
+                                color: Colors.green,
+                                size: 18,
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -89,7 +94,7 @@ class SavingsDetails extends ConsumerWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      '+ ${formatter.formatDouble(value.income)}',
+                      '+ ${formatter.formatDouble(cubit.invested)}',
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -97,12 +102,31 @@ class SavingsDetails extends ConsumerWidget {
                     ),
                   ),
                   Expanded(
-                    child: Text(
-                      '- ${formatter.formatDouble(value.expense)}',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            formatter.formatDouble(cubit.profit),
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        Expanded(
+                          child: Text(
+                            '${cubit.profitPercentage.toStringAsFixed(1)}%',
+                            style: context.smallBold()?.copyWith(
+                                  color: Colors.green,
+                                ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

@@ -1,4 +1,5 @@
 import 'package:expense_kit/model/entity/mutual_fund.dart';
+import 'package:expense_kit/model/entity/scheme_entity.dart';
 import 'package:expense_kit/model/service/api_client.dart';
 import 'package:flutter/foundation.dart';
 
@@ -15,5 +16,18 @@ class MutualFundService {
       print(response);
     }
     return MutualFund.fromJson(response);
+  }
+
+  Future<List<Scheme>> getFunds() async {
+    var response = await _client.get('https://api.mfapi.in/mf');
+
+    if (response == null) {
+      return [];
+    }
+    if (kDebugMode) {
+      print(response);
+    }
+
+    return schemesFromJson(response);
   }
 }

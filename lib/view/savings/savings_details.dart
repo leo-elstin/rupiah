@@ -112,7 +112,7 @@ class _SavingsDetailsState extends StateModel<SavingsDetails, SavingsCubit> {
                   ),
                 ],
               ),
-              SavingList(),
+              const SavingList(),
             ],
           ),
         ),

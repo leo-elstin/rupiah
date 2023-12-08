@@ -2,6 +2,7 @@ import 'package:expense_kit/model/service/login_service.dart';
 import 'package:expense_kit/view/router.dart';
 import 'package:expense_kit/view_model/auth/auth_cubit.dart';
 import 'package:expense_kit/view_model/dashboard/dashboard_cubit.dart';
+import 'package:expense_kit/view_model/mutual_fund/mutual_fund_cubit.dart';
 import 'package:expense_kit/view_model/savings/savings_cubit.dart';
 import 'package:expense_kit/view_model/settings/settings_cubit.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +45,9 @@ class _MyAppState extends State<MyApp> {
           create: (context) => SavingsCubit(
             dashboardCubit: context.read<DashboardCubit>(),
           )..getFunds(),
+        ),
+        BlocProvider(
+          create: (context) => MutualFundCubit(),
         ),
       ],
       child: BlocBuilder<SettingsCubit, SettingsState>(

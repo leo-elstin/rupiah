@@ -1,5 +1,6 @@
 import 'package:expense_kit/utils/currency_utils.dart';
 import 'package:expense_kit/utils/ui_extensions.dart';
+import 'package:expense_kit/view/savings/savings_list.dart';
 import 'package:expense_kit/view_model/savings/savings_cubit.dart';
 import 'package:expense_kit/view_model/state_vm.dart';
 import 'package:flutter/material.dart';
@@ -27,18 +28,12 @@ class _SavingsDetailsState extends StateModel<SavingsDetails, SavingsCubit> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'My Assets',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    'INVESTMENTS',
                   ),
+                  const SizedBox(height: 4),
                   Text(
                     formatter.formatDouble(cubit.mutualFundBalance),
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: context.titleLarge(),
                   ),
                 ],
               ),
@@ -50,10 +45,6 @@ class _SavingsDetailsState extends StateModel<SavingsDetails, SavingsCubit> {
                       children: [
                         Text(
                           'Invested',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
                         ),
                       ],
                     ),
@@ -65,10 +56,6 @@ class _SavingsDetailsState extends StateModel<SavingsDetails, SavingsCubit> {
                           flex: 2,
                           child: Text(
                             'Gain/Loss',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
                           ),
                         ),
                         SizedBox(width: 8),
@@ -94,11 +81,8 @@ class _SavingsDetailsState extends StateModel<SavingsDetails, SavingsCubit> {
                 children: [
                   Expanded(
                     child: Text(
-                      '+ ${formatter.formatDouble(cubit.invested)}',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      formatter.formatDouble(cubit.invested),
+                      style: context.titleMedium(),
                     ),
                   ),
                   Expanded(
@@ -109,10 +93,7 @@ class _SavingsDetailsState extends StateModel<SavingsDetails, SavingsCubit> {
                           flex: 2,
                           child: Text(
                             formatter.formatDouble(cubit.profit),
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: context.titleMedium(),
                           ),
                         ),
                         const SizedBox(
@@ -131,6 +112,7 @@ class _SavingsDetailsState extends StateModel<SavingsDetails, SavingsCubit> {
                   ),
                 ],
               ),
+              SavingList(),
             ],
           ),
         ),

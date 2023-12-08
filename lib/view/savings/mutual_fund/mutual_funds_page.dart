@@ -15,7 +15,6 @@ class MutualFundPage extends StatefulWidget {
 class _MutualFundPageState extends StateModel<MutualFundPage, SavingsCubit> {
   @override
   void initView(SavingsCubit cubit) {
-    cubit.getFunds();
     super.initView(cubit);
   }
 

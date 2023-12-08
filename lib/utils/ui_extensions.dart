@@ -65,10 +65,14 @@ extension NavigationExtension on BuildContext {
     return Theme.of(this).textTheme.titleLarge;
   }
 
-  TextStyle? titleMedium() {
-    return Theme.of(this).textTheme.titleMedium?.copyWith(
+  TextStyle? titleLargeBold() {
+    return Theme.of(this).textTheme.titleLarge?.copyWith(
           fontWeight: FontWeight.bold,
         );
+  }
+
+  TextStyle? titleMedium() {
+    return Theme.of(this).textTheme.titleMedium?.copyWith();
   }
 
   TextStyle? titleSmall() {

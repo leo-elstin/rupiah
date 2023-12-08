@@ -1,6 +1,7 @@
 import 'package:expense_kit/model/entity/fund_detail.dart';
 import 'package:expense_kit/model/service/mutual_fund_service.dart';
 import 'package:expense_kit/utils/currency_utils.dart';
+import 'package:expense_kit/view_model/dashboard/dashboard_cubit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -8,7 +9,9 @@ import 'package:intl/intl.dart';
 part 'savings_state.dart';
 
 class SavingsCubit extends Cubit<SavingsState> {
-  SavingsCubit() : super(SavingsInitial());
+  final DashboardCubit dashboardCubit;
+
+  SavingsCubit({required this.dashboardCubit}) : super(SavingsInitial());
 
   final List<FundDetails> _funds = [];
 
@@ -99,6 +102,8 @@ class SavingsCubit extends Cubit<SavingsState> {
       (previousValue, element) =>
           previousValue + element.units * element.fund.currentNav,
     );
+
+    dashboardCubit.update(mutualFundBalance);
 
     emit(FundLoaded());
   }

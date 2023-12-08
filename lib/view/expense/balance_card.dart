@@ -1,6 +1,7 @@
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:expense_kit/model/entity/expense_card_entity.dart';
 import 'package:expense_kit/utils/currency_utils.dart';
+import 'package:expense_kit/utils/ui_extensions.dart';
 import 'package:expense_kit/view_model/expense_card_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,18 +30,12 @@ class BalanceCard extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Total Balance',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    'ACCOUNTS BALANCE',
                   ),
+                  const SizedBox(height: 4),
                   Text(
                     formatter.formatDouble(value.totalBalance),
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: context.titleLarge(),
                   ),
                 ],
               ),
@@ -52,10 +47,6 @@ class BalanceCard extends ConsumerWidget {
                       children: [
                         Text(
                           'Income',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
                         ),
                         SizedBox(width: 16),
                         Icon(
@@ -70,10 +61,6 @@ class BalanceCard extends ConsumerWidget {
                       children: [
                         Text(
                           'Expense',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
                         ),
                         SizedBox(width: 16),
                         Icon(
@@ -90,19 +77,13 @@ class BalanceCard extends ConsumerWidget {
                   Expanded(
                     child: Text(
                       '+ ${formatter.formatDouble(value.income)}',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: context.titleMedium(),
                     ),
                   ),
                   Expanded(
                     child: Text(
                       '- ${formatter.formatDouble(value.expense)}',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: context.titleMedium(),
                     ),
                   ),
                 ],

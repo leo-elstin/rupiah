@@ -18,7 +18,8 @@ class _FundSearchState extends StateModel<FundSearch, MutualFundCubit> {
   void initView(MutualFundCubit cubit) {
     cubit
       ..clear()
-      ..loadFunds();
+      ..loadFunds()
+      ..calculateSip();
     super.initView(cubit);
   }
 

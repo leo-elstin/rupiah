@@ -43,7 +43,7 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(
           create: (context) => SavingsCubit(
             dashboardCubit: context.read<DashboardCubit>(),
-          )..getFunds(),
+          ),
         ),
       ],
       child: BlocBuilder<SettingsCubit, SettingsState>(

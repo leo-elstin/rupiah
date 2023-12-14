@@ -3,11 +3,15 @@ import 'dart:io';
 
 import 'package:expense_kit/utils/currency_utils.dart';
 import 'package:expense_kit/utils/ui_extensions.dart';
+import 'package:expense_kit/view_model/savings/savings_cubit.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pdf_text/pdf_text.dart';
 
 class PDFReader extends StatefulWidget {
+  static const route = '/pdf-reader';
+
   const PDFReader({super.key});
 
   @override
@@ -53,6 +57,11 @@ class _PDFReaderState extends State<PDFReader> {
               stocks = amounts[0];
               mf = amounts[2];
             });
+
+            context.read<SavingsCubit>().update(
+                  double.parse(stocks.replaceAll(',', '').trim()),
+                  double.parse(mf.replaceAll(',', '').trim()),
+                );
           } else {
             // User canceled the picker
           }

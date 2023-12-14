@@ -18,6 +18,10 @@ class SavingsCubit extends Cubit<SavingsState> {
   List<FundDetails> get funds => _funds;
 
   double mutualFundBalance = 0;
+  double stockBalance = 0;
+  double goldBalance = 2700000;
+
+  double get total => mutualFundBalance + stockBalance + goldBalance;
 
   String get mutualFundString {
     String locale = 'en_IN';
@@ -30,6 +34,34 @@ class SavingsCubit extends Cubit<SavingsState> {
       decimalDigits: 2,
     ).format(
       mutualFundBalance,
+    );
+  }
+
+  String get stockString {
+    String locale = 'en_IN';
+    if (stockBalance < 100000) {
+      locale = 'en_US';
+    }
+    return NumberFormat.compactCurrency(
+      symbol: '$currencySymbol ',
+      locale: locale,
+      decimalDigits: 2,
+    ).format(
+      stockBalance,
+    );
+  }
+
+  String get totalString {
+    String locale = 'en_IN';
+    if (total < 100000) {
+      locale = 'en_US';
+    }
+    return NumberFormat.compactCurrency(
+      symbol: '$currencySymbol ',
+      locale: locale,
+      decimalDigits: 2,
+    ).format(
+      total,
     );
   }
 
@@ -104,6 +136,14 @@ class SavingsCubit extends Cubit<SavingsState> {
     );
 
     dashboardCubit.update(mutualFundBalance);
+
+    emit(FundLoaded());
+  }
+
+  void update(double stocks, double mf) {
+    mutualFundBalance = mf;
+    stockBalance = stocks;
+    dashboardCubit.update(mf);
 
     emit(FundLoaded());
   }

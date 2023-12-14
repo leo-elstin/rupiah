@@ -1,6 +1,6 @@
 import 'package:expense_kit/utils/currency_utils.dart';
 import 'package:expense_kit/utils/ui_extensions.dart';
-import 'package:expense_kit/view/savings/mutual_fund/mutual_funds_page.dart';
+import 'package:expense_kit/view/pdf/pdf_reader.dart';
 import 'package:expense_kit/view_model/savings/savings_cubit.dart';
 import 'package:expense_kit/view_model/state_vm.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +29,7 @@ class _SavingListState extends StateModel<SavingList, SavingsCubit> {
           ),
           children: [
             InkWell(
-              onTap: () => context.push(MutualFundPage.route),
+              onTap: () => context.push(PDFReader.route),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -69,9 +69,7 @@ class _SavingListState extends StateModel<SavingList, SavingsCubit> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '$currencySymbol ${NumberFormat.compactCurrency(symbol: '', locale: 'en_IN').format(
-                      14300,
-                    )}',
+                    cubit.stockString,
                     style: context.smallBold(),
                   )
                 ],

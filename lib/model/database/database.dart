@@ -6,6 +6,7 @@ import 'package:expense_kit/model/database/tables/account.dart';
 import 'package:expense_kit/model/database/tables/category.dart';
 import 'package:expense_kit/model/database/tables/emi.dart';
 import 'package:expense_kit/model/database/tables/expense.dart';
+import 'package:expense_kit/model/database/tables/investment.dart';
 import 'package:expense_kit/model/entity/expense_entity.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -14,7 +15,7 @@ part 'database.g.dart';
 
 final database = Database();
 
-@DriftDatabase(tables: [Expense, Emi, CategoryDb, Account])
+@DriftDatabase(tables: [Expense, Emi, CategoryDb, Account, Investment])
 class Database extends _$Database {
   Database() : super(_openConnection());
   @override

@@ -4,6 +4,7 @@ import 'package:expense_kit/view/account/add_account.dart';
 import 'package:expense_kit/view/emi/add_emi.dart';
 import 'package:expense_kit/view/expense/add_expense.dart';
 import 'package:expense_kit/view/home/home.dart';
+import 'package:expense_kit/view/pdf/pdf_reader.dart';
 import 'package:expense_kit/view/savings/mutual_fund/mutual_funds_page.dart';
 import 'package:go_router/go_router.dart';
 
@@ -35,6 +36,10 @@ final router = GoRouter(
     GoRoute(
       path: MutualFundPage.route,
       builder: (context, state) => const MutualFundPage(),
+    ),
+    GoRoute(
+      path: PDFReader.route,
+      builder: (context, state) => const PDFReader(),
     ),
   ],
 );

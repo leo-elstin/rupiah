@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:expense_kit/utils/currency_utils.dart';
 import 'package:expense_kit/utils/ui_extensions.dart';
+import 'package:expense_kit/view/savings/investment/add_investment.dart';
 import 'package:expense_kit/view_model/savings/savings_cubit.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,13 @@ class _PDFReaderState extends State<PDFReader> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
+          showModalBottomSheet(
+            isScrollControlled: true,
+            context: context,
+            builder: (context) => const AddInvestment(),
+          );
+
+          return;
           FilePickerResult? result = await FilePicker.platform.pickFiles();
 
           if (result != null) {
@@ -51,10 +59,7 @@ class _PDFReaderState extends State<PDFReader> {
               }
             }
 
-            setState(() {
-              stocks = amounts[0];
-              mf = amounts[2];
-            });
+            setState(() {});
 
             // TODO: move it above the future call
             context.read<SavingsCubit>().update(

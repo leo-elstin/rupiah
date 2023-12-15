@@ -1,5 +1,5 @@
 import 'package:expense_kit/utils/ui_extensions.dart';
-import 'package:expense_kit/view/pdf/pdf_reader.dart';
+import 'package:expense_kit/view/savings/investment/investments.dart';
 import 'package:expense_kit/view_model/savings/savings_cubit.dart';
 import 'package:expense_kit/view_model/state_vm.dart';
 import 'package:flutter/material.dart';

@@ -35,12 +35,13 @@ class DashboardCubit extends Cubit<DashboardState> {
   String totalAmount() {
     double balance = savings + mutualFund;
     String locale = 'en_IN';
+
     if (balance < 100000) {
       locale = 'en_US';
     }
     return NumberFormat.compactCurrency(
       symbol: currencySymbol,
       locale: locale,
-    ).format(savings + mutualFund);
+    ).format(balance);
   }
 }

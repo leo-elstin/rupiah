@@ -106,7 +106,7 @@ class SavingsCubit extends Cubit<SavingsState> {
   void update(double stocks, double mf) {
     mutualFundBalance = mf;
     stockBalance = stocks;
-    dashboardCubit.update(mf);
+    dashboardCubit.update(total);
 
     emit(FundLoaded());
   }

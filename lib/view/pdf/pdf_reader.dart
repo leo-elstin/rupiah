@@ -45,8 +45,6 @@ class _PDFReaderState extends State<PDFReader> {
             var splitAmounts = spText[1].split('Click Here');
             var amounts = splitAmounts[0].split(' ');
 
-            log('Amounts  ↓ ', error: amounts);
-
             for (var value in amounts) {
               if (value.isNotEmpty) {
                 log(value.replaceAll('\n', ''));
@@ -58,6 +56,7 @@ class _PDFReaderState extends State<PDFReader> {
               mf = amounts[2];
             });
 
+            // TODO: move it above the future call
             context.read<SavingsCubit>().update(
                   double.parse(stocks.replaceAll(',', '').trim()),
                   double.parse(mf.replaceAll(',', '').trim()),

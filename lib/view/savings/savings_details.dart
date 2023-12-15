@@ -32,7 +32,7 @@ class _SavingsDetailsState extends StateModel<SavingsDetails, SavingsCubit> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    cubit.totalString,
+                    cubit.total.toCurrency(),
                     style: context.titleLarge(),
                   ),
                 ],

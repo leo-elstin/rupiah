@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:expense_kit/utils/currency_utils.dart';
@@ -181,6 +182,7 @@ class _AddInvestmentState extends StateModel<AddInvestment, SavingsCubit> {
                       ),
                       onPressed: () {
                         if (date != null) {
+                          validatePDF(file!.path, password!);
                           return;
                         }
                         if (password != null &&
@@ -210,7 +212,8 @@ class _AddInvestmentState extends StateModel<AddInvestment, SavingsCubit> {
       password: password.toUpperCase(),
     );
 
-    String text = await doc.text;
+    String text = await doc.pageAt(1).text;
+
     var spText = text.split('Mutual Fund Folios');
 
     var splitAmounts = spText[1].split('Click Here');
@@ -225,5 +228,16 @@ class _AddInvestmentState extends StateModel<AddInvestment, SavingsCubit> {
     setState(() {
       date = DateFormat('dd-MM-yyyy').parse(item!);
     });
+
+    /// Parsing the portfolios
+    String mutualFunds = await doc.pageAt(8).text;
+
+    mutualFunds.indexOf('pattern');
+    RegExp regex = RegExp(r'[A-Za-z0-9 ]+(?= - [A-Za-z][A-Za-z0-9]+)');
+    var finds = regex.allMatches(mutualFunds.split('Grand Total')[0]);
+
+    log(mutualFunds);
+
+    log(finds.map((e) => e.group(0)).toList().toString());
   }
 }

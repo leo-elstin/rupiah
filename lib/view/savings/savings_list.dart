@@ -1,11 +1,9 @@
-import 'package:expense_kit/utils/currency_utils.dart';
 import 'package:expense_kit/utils/ui_extensions.dart';
-import 'package:expense_kit/view/savings/mutual_fund/mutual_funds_page.dart';
+import 'package:expense_kit/view/savings/investment/investments.dart';
 import 'package:expense_kit/view_model/savings/savings_cubit.dart';
 import 'package:expense_kit/view_model/state_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
 class SavingList extends StatefulWidget {
   const SavingList({super.key});
@@ -29,7 +27,7 @@ class _SavingListState extends StateModel<SavingList, SavingsCubit> {
           ),
           children: [
             InkWell(
-              onTap: () => context.push(MutualFundPage.route),
+              onTap: () => context.push(PDFReader.route),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -46,7 +44,7 @@ class _SavingListState extends StateModel<SavingList, SavingsCubit> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      cubit.mutualFundString,
+                      cubit.mutualFundBalance.toCurrency(),
                       style: context.smallBold(),
                     )
                   ],
@@ -69,9 +67,7 @@ class _SavingListState extends StateModel<SavingList, SavingsCubit> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '$currencySymbol ${NumberFormat.compactCurrency(symbol: '', locale: 'en_IN').format(
-                      14300,
-                    )}',
+                    cubit.stockBalance.toCurrency(),
                     style: context.smallBold(),
                   )
                 ],
@@ -93,9 +89,51 @@ class _SavingListState extends StateModel<SavingList, SavingsCubit> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '$currencySymbol ${NumberFormat.compactCurrency(symbol: '', locale: 'en_IN').format(
-                      2720000,
-                    )}',
+                    cubit.goldBalance.toCurrency(),
+                    style: context.smallBold(),
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Image.asset(
+                    'assets/icons/epf.png',
+                    width: 32,
+                    height: 32,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'EPF',
+                    style: context.smaller(),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    cubit.epfBalance.toCurrency(),
+                    style: context.smallBold(),
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Image.asset(
+                    'assets/icons/market.png',
+                    width: 32,
+                    height: 32,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Real Estate',
+                    style: context.smaller(),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    cubit.realEstateBalance.toCurrency(),
                     style: context.smallBold(),
                   )
                 ],

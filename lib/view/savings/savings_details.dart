@@ -32,7 +32,7 @@ class _SavingsDetailsState extends StateModel<SavingsDetails, SavingsCubit> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    formatter.formatDouble(cubit.mutualFundBalance),
+                    cubit.total.toCurrency(),
                     style: context.titleLarge(),
                   ),
                 ],
@@ -112,7 +112,7 @@ class _SavingsDetailsState extends StateModel<SavingsDetails, SavingsCubit> {
                   ),
                 ],
               ),
-              SavingList(),
+              const SavingList(),
             ],
           ),
         ),

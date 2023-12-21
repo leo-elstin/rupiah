@@ -1,5 +1,7 @@
+import 'package:expense_kit/utils/currency_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 extension ValidateEmail on String {
   bool isValidEmail() =>
@@ -129,4 +131,18 @@ extension SizeExtension on double {
   SizedBox height() => SizedBox(
         height: this,
       );
+
+  String toCurrency() {
+    String locale = 'en_IN';
+    if (this < 100000) {
+      locale = 'en_US';
+    }
+    return NumberFormat.compactCurrency(
+      symbol: '$currencySymbol ',
+      locale: locale,
+      decimalDigits: 2,
+    ).format(
+      this,
+    );
+  }
 }

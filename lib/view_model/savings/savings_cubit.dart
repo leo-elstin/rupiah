@@ -1,10 +1,8 @@
 import 'package:expense_kit/model/entity/fund_detail.dart';
 import 'package:expense_kit/model/service/mutual_fund_service.dart';
-import 'package:expense_kit/utils/currency_utils.dart';
 import 'package:expense_kit/view_model/dashboard/dashboard_cubit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 part 'savings_state.dart';
 
@@ -18,20 +16,17 @@ class SavingsCubit extends Cubit<SavingsState> {
   List<FundDetails> get funds => _funds;
 
   double mutualFundBalance = 0;
+  double stockBalance = 0;
+  double goldBalance = 2700000;
+  double epfBalance = 420000;
+  double realEstateBalance = 10700000;
 
-  String get mutualFundString {
-    String locale = 'en_IN';
-    if (mutualFundBalance < 100000) {
-      locale = 'en_US';
-    }
-    return NumberFormat.compactCurrency(
-      symbol: '$currencySymbol ',
-      locale: locale,
-      decimalDigits: 2,
-    ).format(
-      mutualFundBalance,
-    );
-  }
+  double get total =>
+      mutualFundBalance +
+      stockBalance +
+      goldBalance +
+      epfBalance +
+      realEstateBalance;
 
   double get profit => _funds.fold(
         0.0,
@@ -104,6 +99,14 @@ class SavingsCubit extends Cubit<SavingsState> {
     );
 
     dashboardCubit.update(mutualFundBalance);
+
+    emit(FundLoaded());
+  }
+
+  void update(double stocks, double mf) {
+    mutualFundBalance = mf;
+    stockBalance = stocks;
+    dashboardCubit.update(total);
 
     emit(FundLoaded());
   }

@@ -1,5 +1,7 @@
 # ₹ Rupiah 
 
+![UI](https://github.com/leo-elstin/rupiah/blob/main/screenshots/file%20cover%20-%201.png?raw=true)
+
 An Expense Tracker app built with Flutter ( WIP ).
 
 ### Steps to build the project

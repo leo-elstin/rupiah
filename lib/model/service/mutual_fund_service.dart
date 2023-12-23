@@ -19,14 +19,9 @@ class MutualFundService {
   }
 
   Future<List<Scheme>> getFunds() async {
-    var response = await _client.get('https://api.mfapi.in/mf');
+    dynamic response;
 
-    if (response == null) {
-      return [];
-    }
-    if (kDebugMode) {
-      print(response);
-    }
+    response = await _client.get('https://api.mfapi.in/mf');
 
     return schemesFromJson(response);
   }

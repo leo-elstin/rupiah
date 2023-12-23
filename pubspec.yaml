@@ -58,8 +58,7 @@ dependencies:
   pdf_text:
     path: plugin/pdf_reader
   file_picker: ^6.1.1
-  feedback:
-    path: ../feedback
+  logger: ^2.0.2+1
 
 dev_dependencies:
   flutter_test:

@@ -3,9 +3,9 @@ import 'package:expense_kit/view/components/circular_indicator.dart';
 import 'package:expense_kit/view/decorations.dart';
 import 'package:expense_kit/view_model/auth/auth_cubit.dart';
 import 'package:expense_kit/view_model/state_vm.dart';
-import 'package:feedback/view/ui_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 
 class AuthSheet extends StatefulWidget {
   const AuthSheet({super.key});

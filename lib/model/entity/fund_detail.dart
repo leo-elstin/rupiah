@@ -4,7 +4,7 @@ class FundDetails {
   final String fundId;
   final double units;
   final double invested;
-  final MutualFund fund;
+  final MutualFundEntity fund;
   final String logoPath;
 
   FundDetails({

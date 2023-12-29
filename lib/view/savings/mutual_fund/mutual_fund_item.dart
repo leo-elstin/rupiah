@@ -1,5 +1,4 @@
 import 'package:expense_kit/model/entity/fund_detail.dart';
-import 'package:expense_kit/utils/currency_utils.dart';
 import 'package:expense_kit/utils/ui_extensions.dart';
 import 'package:flutter/material.dart';
 
@@ -64,9 +63,13 @@ class MutualFundItem extends StatelessWidget {
                 ),
               ),
               Expanded(
+                flex: 2,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
+                    const SizedBox(
+                      width: 16,
+                    ),
                     Text(
                       'Gain/Loss',
                       style: context.smaller()?.copyWith(
@@ -93,26 +96,24 @@ class MutualFundItem extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  formatter.formatDouble(
-                    fund.invested,
-                  ),
+                  fund.invested.toCurrency(),
                   style: context.mediumBold(),
                 ),
               ),
               Expanded(
                 child: Text(
-                  formatter.formatDouble(
-                    fund.units * fund.fund.currentNav,
-                  ),
+                  (fund.units * fund.fund.currentNav).toCurrency(),
                   style: context.mediumBold(),
                 ),
               ),
               Expanded(
+                flex: 2,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    const SizedBox(width: 16),
                     Text(
-                      formatter.formatDouble(fund.profit),
+                      fund.profit.toCurrency(),
                       style: context.mediumBold(),
                     ),
                     Text(

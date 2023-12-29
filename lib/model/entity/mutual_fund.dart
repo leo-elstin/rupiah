@@ -1,14 +1,15 @@
-class MutualFund {
+class MutualFundEntity {
   Meta meta;
   List<Data> data;
   String status;
 
   double get currentNav => double.parse(data.first.nav);
 
-  MutualFund({required this.meta, required this.data, required this.status});
+  MutualFundEntity(
+      {required this.meta, required this.data, required this.status});
 
-  factory MutualFund.fromJson(Map<String, dynamic> json) {
-    return MutualFund(
+  factory MutualFundEntity.fromJson(Map<String, dynamic> json) {
+    return MutualFundEntity(
       meta: Meta.fromJson(json['meta']),
       data: List<Data>.from(json['data'].map((data) => Data.fromJson(data))),
       status: json['status'],

@@ -1,9 +1,7 @@
-import 'dart:math';
-
-import 'package:bloc/bloc.dart';
 import 'package:expense_kit/model/entity/scheme_entity.dart';
 import 'package:expense_kit/model/service/mutual_fund_service.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'mutual_fund_state.dart';
 
@@ -17,21 +15,20 @@ class MutualFundCubit extends Cubit<MutualFundState> {
 
   List<Scheme> get funds => _funds;
 
-  void searchFund(String query) {
+  void searchFund(String query) async {
+    if (query.length < 4) {
+      return;
+    }
     emit(MutualFundLoading());
-    _funds = _masterFunds
-        .where(
-          (element) => element.schemeName
-              .replaceAll('-', ' ')
-              .toLowerCase()
-              .contains(query.toLowerCase()),
-        )
-        .toList();
+
+    _funds = await _service.searchFund(query: query);
+
     emit(MutualFundLoaded());
   }
 
   void clear() {
     _funds.clear();
+    emit(MutualFundInitial());
   }
 
   void loadFunds() async {
@@ -47,25 +44,25 @@ class MutualFundCubit extends Cubit<MutualFundState> {
     emit(MutualFundLoaded());
   }
 
-  void calculateSip() async {
-    // var fund1 = await MutualFundService().getDetails('120828');
-    double _monthlyInvestment = 2000;
-    double _expectedReturnRate = 9.85;
-    double _timePeriod = 1;
-    double _investedAmount = 8000;
-    double _totalInvestment;
-    double _result;
-    double i;
-
-    i = (_expectedReturnRate) / (12 * 100);
-
-    _result = (_monthlyInvestment *
-            (((pow((1 + i), (_timePeriod * 12))) - 1) / i) *
-            (1 + i)) -
-        _investedAmount;
-
-    _totalInvestment = _investedAmount + _result;
-
-    print(_totalInvestment);
-  }
+// void calculateSip() async {
+//   // var fund1 = await MutualFundService().getDetails('120828');
+//   double monthlyInvestment = 2000;
+//   double expectedReturnRate = 9.85;
+//   double timePeriod = 1;
+//   double investedAmount = 8000;
+//   double totalInvestment;
+//   double result;
+//   double i;
+//
+//   i = (expectedReturnRate) / (12 * 100);
+//
+//   result = (monthlyInvestment *
+//           (((pow((1 + i), (timePeriod * 12))) - 1) / i) *
+//           (1 + i)) -
+//       investedAmount;
+//
+//   totalInvestment = investedAmount + result;
+//
+//   print(totalInvestment);
+// }
 }

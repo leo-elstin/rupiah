@@ -16,10 +16,7 @@ class FundSearch extends StatefulWidget {
 class _FundSearchState extends StateModel<FundSearch, MutualFundCubit> {
   @override
   void initView(MutualFundCubit cubit) {
-    cubit
-      ..clear()
-      ..loadFunds()
-      ..calculateSip();
+    cubit.clear();
     super.initView(cubit);
   }
 
@@ -32,12 +29,22 @@ class _FundSearchState extends StateModel<FundSearch, MutualFundCubit> {
           child: Column(
             children: [
               TextField(
+                autofocus: true,
                 decoration: InputDecoration(
                   hintText: 'Search',
                   prefixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
+                  suffix: cubit.state is MutualFundLoading
+                      ? const SizedBox(
+                          height: 16,
+                          width: 16,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : const Offstage(),
                 ),
                 onChanged: (value) => cubit.searchFund(value),
               ),

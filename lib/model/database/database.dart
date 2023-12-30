@@ -7,6 +7,7 @@ import 'package:expense_kit/model/database/tables/category.dart';
 import 'package:expense_kit/model/database/tables/emi.dart';
 import 'package:expense_kit/model/database/tables/expense.dart';
 import 'package:expense_kit/model/database/tables/investment.dart';
+import 'package:expense_kit/model/database/tables/mutual_fund.dart';
 import 'package:expense_kit/model/entity/expense_entity.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -15,11 +16,19 @@ part 'database.g.dart';
 
 final database = Database();
 
-@DriftDatabase(tables: [Expense, Emi, CategoryDb, Account, Investment])
+@DriftDatabase(tables: [
+  Expense,
+  Emi,
+  CategoryDb,
+  Account,
+  Investment,
+  MutualFund,
+])
 class Database extends _$Database {
   Database() : super(_openConnection());
+
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration {
@@ -33,6 +42,10 @@ class Database extends _$Database {
           // version 2
           await m.addColumn(expense, expense.isEMI);
           await m.addColumn(expense, expense.emiId);
+        }
+
+        if (from < 4) {
+          await m.createTable(database.mutualFund);
         }
       },
     );

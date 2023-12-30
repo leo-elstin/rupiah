@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart';
+import 'package:expense_kit/model/database/database.dart';
 
 enum MFType { sip, lumpSum }
 
@@ -15,6 +16,8 @@ class MutualFund extends Table {
 
   RealColumn get amount => real()();
 
+  RealColumn get units => real()();
+
   TextColumn get type => textEnum<MFType>()();
 
   TextColumn get period => textEnum<SipPeriod>()();
@@ -24,4 +27,36 @@ class MutualFund extends Table {
   IntColumn get accountId => integer()();
 
   BoolColumn get isActive => boolean().withDefault(const Constant(true))();
+}
+
+class MutualFundQuery {
+  Future insert(MutualFundCompanion companion) async {
+    return await database.into(database.mutualFund).insert(companion);
+  }
+
+  Future<List<MutualFundData>> allMutualFunds() async {
+    final funds = await database.select(database.mutualFund).get();
+
+    return funds
+        .map((e) => MutualFundData(
+              id: e.id,
+              fundId: e.fundId,
+              name: e.name,
+              description: e.description,
+              amount: e.amount,
+              units: e.units,
+              type: e.type,
+              period: e.period,
+              investedDate: e.investedDate,
+              accountId: e.accountId,
+              isActive: e.isActive,
+            ))
+        .toList();
+  }
+
+  Future delete(int id) async {
+    return await database.mutualFund.deleteWhere(
+      (tbl) => tbl.id.isValue(id),
+    );
+  }
 }

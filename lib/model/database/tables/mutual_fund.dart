@@ -53,4 +53,10 @@ class MutualFundQuery {
             ))
         .toList();
   }
+
+  Future delete(int id) async {
+    return await database.mutualFund.deleteWhere(
+      (tbl) => tbl.id.isValue(id),
+    );
+  }
 }

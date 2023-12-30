@@ -28,6 +28,7 @@ class MutualFundCubit extends Cubit<MutualFundState> {
 
   void clear() {
     _funds.clear();
+    emit(MutualFundInitial());
   }
 
   void loadFunds() async {

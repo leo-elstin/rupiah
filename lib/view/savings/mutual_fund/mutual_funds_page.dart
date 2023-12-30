@@ -31,6 +31,9 @@ class _MutualFundPageState extends StateModel<MutualFundPage, SavingsCubit> {
         itemBuilder: (BuildContext context, int index) {
           return MutualFundItem(
             fund: cubit.funds[index],
+            onTap: () {
+              cubit.deleteFund(cubit.funds[index]);
+            },
           );
         },
         separatorBuilder: (BuildContext context, int index) {

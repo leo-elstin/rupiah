@@ -12,6 +12,7 @@ An Expense Tracker app built with Flutter ( WIP ).
    * To build the generated files run `dart run build_runner build` 
 3. Run the App:
    * Connect a device or emulator and run the app using `flutter run` or through your IDE.
+   * To build the APK directly, run `flutter build apk --release` 
 
 
 ## Authors

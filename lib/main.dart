@@ -1,6 +1,7 @@
 import 'package:expense_kit/model/service/login_service.dart';
 import 'package:expense_kit/view/router.dart';
 import 'package:expense_kit/view_model/auth/auth_cubit.dart';
+import 'package:expense_kit/view_model/category/category_cubit.dart';
 import 'package:expense_kit/view_model/dashboard/dashboard_cubit.dart';
 import 'package:expense_kit/view_model/mutual_fund/create/create_mf_cubit.dart';
 import 'package:expense_kit/view_model/mutual_fund/mutual_fund_cubit.dart';
@@ -52,6 +53,9 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider(
           create: (context) => CreateMfCubit(),
+        ),
+        BlocProvider(
+          create: (context) => CategoryCubit()..get(),
         ),
       ],
       child: BlocBuilder<SettingsCubit, SettingsState>(

@@ -33,8 +33,8 @@ class ExpenseEntity {
       type: ExpenseType.values[map['type']],
       description: map['description'],
       id: map['id'],
-      accountId: map['account_id'],
-      categoryId: map['category_id'],
+      accountId: map['accountId'],
+      categoryId: map['categoryId'],
     );
   }
 
@@ -43,6 +43,7 @@ class ExpenseEntity {
   }
 
   ExpenseEntity copyWith({
+    int? id,
     double? amount,
     ExpenseType? type,
     DateTime? dateTime,
@@ -51,6 +52,7 @@ class ExpenseEntity {
     int? categoryId,
   }) {
     return ExpenseEntity(
+      id: id ?? this.id,
       amount: amount ?? this.amount,
       type: type ?? this.type,
       dateTime: dateTime ?? this.dateTime,

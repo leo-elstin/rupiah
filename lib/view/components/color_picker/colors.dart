@@ -42,8 +42,6 @@ const List<ColorSwatch> accentColors = <ColorSwatch>[
 ];
 
 const List<ColorSwatch> fullMaterialColors = <ColorSwatch>[
-  ColorSwatch(0xFFFFFFFF, {500: Colors.white}),
-  ColorSwatch(0xFF000000, {500: Colors.black}),
   Colors.red,
   Colors.redAccent,
   Colors.pink,

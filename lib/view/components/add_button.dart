@@ -2,7 +2,16 @@ import 'package:flutter/material.dart';
 
 class AddButton extends StatelessWidget {
   final VoidCallback onTap;
-  const AddButton({super.key, required this.onTap});
+  final double? width;
+  final double? height;
+  final bool horizontal;
+
+  const AddButton(
+      {super.key,
+      required this.onTap,
+      required this.width,
+      this.horizontal = false,
+      required this.height});
 
   @override
   Widget build(BuildContext context) {
@@ -18,27 +27,42 @@ class AddButton extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(4),
         onTap: onTap,
-        child: const SizedBox(
-          width: 75,
-          height: 75,
+        child: SizedBox(
+          width: width,
+          height: height,
           child: Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.add,
-                  size: 16,
-                ),
-                Text(
-                  'Add',
-                  style: TextStyle(
-                    fontSize: 16,
+            padding: const EdgeInsets.all(8.0),
+            child: horizontal
+                ? const Row(
+                    children: [
+                      Icon(
+                        Icons.add,
+                        size: 16,
+                      ),
+                      Text(
+                        'Add',
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  )
+                : const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.add,
+                        size: 16,
+                      ),
+                      Text(
+                        'Add',
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
           ),
         ),
       ),

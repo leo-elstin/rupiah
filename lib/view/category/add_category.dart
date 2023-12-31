@@ -43,8 +43,6 @@ class _AddCategoryState extends StateModel<AddCategory, CategoryCubit> {
             const Divider(),
             const SizedBox(height: 32),
             TextField(
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
               style: context.titleMedium(),
               decoration: textDecoration.copyWith(
                 labelText: 'Category Name',
@@ -55,8 +53,6 @@ class _AddCategoryState extends StateModel<AddCategory, CategoryCubit> {
             ),
             const SizedBox(height: 32),
             TextField(
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
               style: context.titleMedium(),
               decoration: textDecoration.copyWith(
                 labelText: 'Description',

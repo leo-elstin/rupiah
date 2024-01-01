@@ -1,5 +1,6 @@
 import 'package:expense_kit/model/database/database.dart';
 import 'package:expense_kit/view/account/account_list.dart';
+import 'package:expense_kit/view/category/category_list.dart';
 import 'package:expense_kit/view_model/settings/settings_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -112,7 +113,7 @@ class _AccountViewState extends State<AccountView> {
               ),
             ),
             subtitle: const Text('add or remove categories'),
-            onTap: () {},
+            onTap: () => context.push(CategoryList.route),
           ),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),

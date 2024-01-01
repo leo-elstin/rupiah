@@ -11,7 +11,7 @@ class ExpenseNotifier extends StateNotifier<List<ExpenseEntity>> {
   }
 
   Future update(ExpenseEntity expense) async {
-    await ExpenseTable().insert(expense);
+    await ExpenseTable().update(expense);
     await getAll();
   }
 

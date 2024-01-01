@@ -1,13 +1,18 @@
+import 'package:collection/collection.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'package:expense_kit/model/entity/category_entiry.dart';
 import 'package:expense_kit/model/entity/expense_entity.dart';
 import 'package:expense_kit/utils/currency_utils.dart';
 import 'package:expense_kit/utils/ui_extensions.dart';
+import 'package:expense_kit/view/components/custom_icon.dart';
 import 'package:expense_kit/view/expense/add_expense.dart';
+import 'package:expense_kit/view_model/category/category_cubit.dart';
 import 'package:expense_kit/view_model/expense_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -59,6 +64,8 @@ class _ExpenseListState extends ConsumerState<ExpenseList> {
 
     var items = dateMap.entries.toList().reversed;
 
+    List<CategoryEntity> categories = context.read<CategoryCubit>().list;
+
     return ListView.builder(
       padding: EdgeInsets.zero,
       itemCount: dateMap.length,
@@ -66,6 +73,7 @@ class _ExpenseListState extends ConsumerState<ExpenseList> {
         MapEntry<String, List<ExpenseEntity>> expenseMap = items.elementAt(
           index,
         );
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -93,6 +101,9 @@ class _ExpenseListState extends ConsumerState<ExpenseList> {
               itemCount: expenseMap.value.length,
               itemBuilder: (context, index) {
                 final expense = expenseMap.value[index];
+                CategoryEntity? category = categories.firstWhereOrNull(
+                  (element) => element.id == expense.categoryId,
+                );
                 return ListTile(
                   dense: true,
                   onTap: () {},
@@ -158,12 +169,46 @@ class _ExpenseListState extends ConsumerState<ExpenseList> {
                       ),
                     ],
                   ),
-                  subtitle: Text(
-                    expense.formattedDate(),
-                    style: context.small(),
+                  subtitle: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        expense.formattedDate(),
+                        style: context.small(),
+                      ),
+                      const SizedBox(width: 8),
+                      if (category != null)
+                        Container(
+                          padding: const EdgeInsets.only(
+                            right: 8,
+                            top: 2,
+                            bottom: 2,
+                            left: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: category.colorCode == null
+                                ? Colors.white24
+                                : Color(int.parse(category.colorCode!)),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Row(
+                            children: [
+                              CustomIcon(
+                                iconCode: category.iconCode,
+                                size: 14,
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                category.name,
+                                style: context.small(),
+                              ),
+                            ],
+                          ),
+                        ),
+                    ],
                   ),
                   leading: Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: expense.type == ExpenseType.income
@@ -173,7 +218,7 @@ class _ExpenseListState extends ConsumerState<ExpenseList> {
                     child: const Icon(
                       Icons.currency_rupee,
                       color: Colors.white,
-                      size: 16,
+                      size: 14,
                     ),
                   ),
                 );

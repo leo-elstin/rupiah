@@ -1,6 +1,8 @@
 import 'package:expense_kit/model/entity/expense_entity.dart';
 import 'package:expense_kit/view/account/account_list.dart';
 import 'package:expense_kit/view/account/add_account.dart';
+import 'package:expense_kit/view/category/add_category.dart';
+import 'package:expense_kit/view/category/category_list.dart';
 import 'package:expense_kit/view/emi/add_emi.dart';
 import 'package:expense_kit/view/expense/add_expense.dart';
 import 'package:expense_kit/view/home/home.dart';
@@ -45,6 +47,14 @@ final router = GoRouter(
     GoRoute(
       path: CreateFund.route,
       builder: (context, state) => const CreateFund(),
+    ),
+    GoRoute(
+      path: AddCategory.route,
+      builder: (context, state) => const AddCategory(),
+    ),
+    GoRoute(
+      path: CategoryList.route,
+      builder: (context, state) => const CategoryList(),
     ),
   ],
 );

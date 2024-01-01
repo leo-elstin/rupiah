@@ -3,14 +3,18 @@ import 'package:expense_kit/model/entity/expense_entity.dart';
 import 'package:expense_kit/utils/currency_utils.dart';
 import 'package:expense_kit/utils/ui_extensions.dart';
 import 'package:expense_kit/view/account/add_account.dart';
+import 'package:expense_kit/view/category/add_category.dart';
 import 'package:expense_kit/view/components/add_button.dart';
+import 'package:expense_kit/view/components/custom_icon.dart';
 import 'package:expense_kit/view/decorations.dart';
 import 'package:expense_kit/view_model/account/account_list_state.dart';
+import 'package:expense_kit/view_model/category/category_cubit.dart';
 import 'package:expense_kit/view_model/create_expense.dart';
 import 'package:expense_kit/view_model/expense_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -180,6 +184,8 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
                   children: [
                     AddButton(
                       onTap: () => context.push(AddAccount.route),
+                      width: 75,
+                      height: 75,
                     ),
                     ...ref.watch(accountListState).map((entity) {
                       return InkWell(
@@ -230,6 +236,64 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
                   ],
                 ),
               ),
+              const SizedBox(height: 16),
+              Text(
+                'Category',
+                style: context.body(),
+              ),
+              BlocBuilder<CategoryCubit, CategoryState>(
+                builder: (context, state) {
+                  return Wrap(
+                    children: [
+                      AddButton(
+                        horizontal: true,
+                        onTap: () {
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (context) => const AddCategory(),
+                          );
+                        },
+                        width: 75,
+                        height: null,
+                      ),
+                      ...context
+                          .read<CategoryCubit>()
+                          .list
+                          .map(
+                            (e) => Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 4),
+                              child: InkWell(
+                                onTap: () {
+                                  ref
+                                      .read(createExpense.notifier)
+                                      .updateExpense(expense.copyWith(
+                                        categoryId: e.id,
+                                      ));
+                                },
+                                child: Chip(
+                                  side: BorderSide(
+                                    color: expense.categoryId == e.id
+                                        ? Theme.of(context).colorScheme.primary
+                                        : Theme.of(context)
+                                            .colorScheme
+                                            .surfaceVariant,
+                                  ),
+                                  avatar: CustomIcon(
+                                    iconCode: e.iconCode,
+                                  ),
+                                  label: Text(e.name),
+                                  elevation: 4,
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList()
+                    ],
+                  );
+                },
+              ),
             ],
           ),
         ),
@@ -254,14 +318,22 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
                   ),
                   onPressed: expense.amount > 0 && expense.accountId != null
                       ? () {
-                          ref
-                            ..read(expenseProvider.notifier).add(expense)
-                            ..invalidate(createExpense);
+                          if (widget.expenseEntity == null) {
+                            ref
+                              ..read(expenseProvider.notifier).add(expense)
+                              ..invalidate(createExpense);
+                          } else {
+                            ref
+                              ..read(expenseProvider.notifier).update(expense)
+                              ..invalidate(createExpense);
+                          }
 
                           context.pop();
                         }
                       : null,
-                  child: const Text('Add Expense'),
+                  child: widget.expenseEntity == null
+                      ? const Text('Add Expense')
+                      : const Text('Update Expense'),
                 ),
               ),
             ],

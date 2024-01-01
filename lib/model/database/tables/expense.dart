@@ -37,6 +37,21 @@ class ExpenseTable {
     return await database.into(database.expense).insert(companion);
   }
 
+  Future update(ExpenseEntity entity) async {
+    var companion = ExpenseCompanion.insert(
+      id: Value(entity.id),
+      description: Value(entity.description),
+      amount: entity.amount,
+      type: entity.type,
+      date: Value(
+        entity.dateTime ?? DateTime.now(),
+      ),
+      accountId: entity.accountId!,
+      categoryId: entity.categoryId ?? 0,
+    );
+    return await database.expense.insertOnConflictUpdate(companion);
+  }
+
   Future remove(ExpenseEntity entity) async {
     return database.expense.deleteWhere((tbl) => tbl.id.isValue(entity.id));
   }

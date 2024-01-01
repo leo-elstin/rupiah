@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
 class EMIEntity {
@@ -15,6 +16,20 @@ class EMIEntity {
 
   String formattedDate() {
     return endDate != null ? DateFormat('yyyy MMM').format(endDate!) : '';
+  }
+
+  double pending() {
+    final now = DateTime.now();
+    Duration? difference = endDate?.difference(now);
+
+    int years = difference!.inDays ~/ 365;
+    int months = (difference.inDays - years * 365) ~/ 30;
+
+    if (kDebugMode) {
+      print(months);
+    }
+
+    return amount * months;
   }
 
   EMIEntity copyWith({

@@ -29,173 +29,179 @@ class _CreateFundState extends StateModel<CreateFund, CreateMfCubit> {
         title: const Text('Create Fund'),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ListView(
-            children: [
-              TextField(
-                controller: fundController,
-                onTap: () {
-                  showModalBottomSheet(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    backgroundColor: Colors.white,
-                    context: context,
-                    builder: (BuildContext context) {
-                      return FundSearch(
-                        onSelect: (Scheme value) {
-                          cubit.scheme = value;
-                          fundController.text = value.schemeName;
-                          cubit.fundDetails();
-                        },
-                      );
-                    },
-                  );
-                },
-                readOnly: true,
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ListView(
+              children: [
+                TextField(
+                  controller: fundController,
+                  onTap: () {
+                    showModalBottomSheet(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      backgroundColor: Colors.white,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return FundSearch(
+                          onSelect: (Scheme value) {
+                            cubit.scheme = value;
+                            fundController.text = value.schemeName;
+                            cubit.fundDetails();
+                          },
+                        );
+                      },
+                    );
+                  },
+                  readOnly: true,
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
+                  style: context.titleMedium(),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    formatter,
+                  ],
+                  decoration: textDecoration.copyWith(
+                    labelText: 'Fund',
+                    hintText: 'Search Fund',
+                    labelStyle: context.titleLarge(),
+                  ),
+                  onChanged: (value) {},
                 ),
-                style: context.titleMedium(),
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  formatter,
-                ],
-                decoration: textDecoration.copyWith(
-                  labelText: 'Fund',
-                  hintText: 'Search Fund',
-                  labelStyle: context.titleLarge(),
-                ),
-                onChanged: (value) {},
-              ),
-              const SizedBox(height: 16),
-              if (cubit.fund != null)
-                Column(
-                  children: [
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text('Fund Details'),
-                            const Divider(),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            // Row(
-                            //   children: [
-                            //     const Expanded(child: Text('Month/Year')),
-                            //     Expanded(
-                            //       child: Text(
-                            //         DateFormat('MMM, yyyy').format(
-                            //           date!,
-                            //         ),
-                            //         style: context.boldBody(),
-                            //       ),
-                            //     ),
-                            //   ],
-                            // ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            Row(
-                              children: [
-                                const Expanded(child: Text('NAV')),
-                                Expanded(
-                                  child: Text(
-                                    cubit.fund?.currentNav.toCurrency() ?? 'NA',
-                                    style: context.boldBody(),
+                const SizedBox(height: 16),
+                if (cubit.fund != null)
+                  Column(
+                    children: [
+                      Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text('Fund Details'),
+                              const Divider(),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              // Row(
+                              //   children: [
+                              //     const Expanded(child: Text('Month/Year')),
+                              //     Expanded(
+                              //       child: Text(
+                              //         DateFormat('MMM, yyyy').format(
+                              //           date!,
+                              //         ),
+                              //         style: context.boldBody(),
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                children: [
+                                  const Expanded(child: Text('NAV')),
+                                  Expanded(
+                                    child: Text(
+                                      cubit.fund?.currentNav.toCurrency() ??
+                                          'NA',
+                                      style: context.boldBody(),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            Row(
-                              children: [
-                                const Expanded(child: Text('Fund House')),
-                                Expanded(
-                                  child: Text(
-                                    cubit.fund?.meta.fundHouse ?? 'NA',
-                                    style: context.boldBody(),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              Row(
+                                children: [
+                                  const Expanded(child: Text('Fund House')),
+                                  Expanded(
+                                    child: Text(
+                                      cubit.fund?.meta.fundHouse ?? 'NA',
+                                      style: context.boldBody(),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
+                      const SizedBox(height: 16),
+                    ],
+                  ),
+                SegmentedButton<MFType>(
+                  showSelectedIcon: false,
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
                     ),
-                    const SizedBox(height: 16),
+                  ),
+                  segments: const [
+                    ButtonSegment<MFType>(
+                      value: MFType.sip,
+                      label: Text('SIP'),
+                    ),
+                    ButtonSegment<MFType>(
+                      value: MFType.lumpSum,
+                      label: Text('Lump sum'),
+                    ),
                   ],
+                  selected: <MFType>{cubit.type},
+                  onSelectionChanged: (Set<MFType> newSelection) {
+                    cubit.type = newSelection.first;
+                  },
                 ),
-              SegmentedButton<MFType>(
-                showSelectedIcon: false,
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4),
-                    ),
+                const SizedBox(height: 32),
+                TextField(
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
                   ),
-                ),
-                segments: const [
-                  ButtonSegment<MFType>(
-                    value: MFType.sip,
-                    label: Text('SIP'),
+                  style: context.titleMedium(),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    formatter,
+                  ],
+                  decoration: textDecoration.copyWith(
+                    labelText: 'Invested Amount',
+                    hintText: '$currencySymbol 0.00',
+                    labelStyle: context.titleLarge(),
                   ),
-                  ButtonSegment<MFType>(
-                    value: MFType.lumpSum,
-                    label: Text('Lump sum'),
+                  onChanged: (value) {
+                    cubit.amount = formatter.getUnformattedValue();
+                  },
+                ),
+                const SizedBox(height: 32),
+                TextField(
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
                   ),
-                ],
-                selected: <MFType>{cubit.type},
-                onSelectionChanged: (Set<MFType> newSelection) {
-                  cubit.type = newSelection.first;
-                },
-              ),
-              const SizedBox(height: 32),
-              TextField(
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
+                  style: context.titleMedium(),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    formatter,
+                  ],
+                  decoration: textDecoration.copyWith(
+                    labelText: 'Current Value',
+                    hintText: '$currencySymbol 0.00',
+                    labelStyle: context.titleLarge(),
+                  ),
+                  onChanged: (value) {
+                    cubit.currentValue = formatter.getUnformattedValue();
+                  },
                 ),
-                style: context.titleMedium(),
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  formatter,
-                ],
-                decoration: textDecoration.copyWith(
-                  labelText: 'Invested Amount',
-                  hintText: '$currencySymbol 0.00',
-                  labelStyle: context.titleLarge(),
-                ),
-                onChanged: (value) {
-                  cubit.amount = formatter.getUnformattedValue();
-                },
-              ),
-              const SizedBox(height: 32),
-              TextField(
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
-                ),
-                style: context.titleMedium(),
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  formatter,
-                ],
-                decoration: textDecoration.copyWith(
-                  labelText: 'Current Value',
-                  hintText: '$currencySymbol 0.00',
-                  labelStyle: context.titleLarge(),
-                ),
-                onChanged: (value) {
-                  cubit.currentValue = formatter.getUnformattedValue();
-                },
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
+import 'package:jiffy/jiffy.dart';
 
 class EMIEntity {
   final String? description;
@@ -19,17 +20,20 @@ class EMIEntity {
   }
 
   double pending() {
-    final now = DateTime.now();
-    Duration? difference = endDate?.difference(now);
-
-    int years = difference!.inDays ~/ 365;
-    int months = (difference.inDays - years * 365) ~/ 30;
+    num val = Jiffy.parseFromDateTime(
+      DateTime(
+        endDate!.year,
+        endDate!.month,
+        30,
+      ),
+    ).diff(Jiffy.now(), unit: Unit.month);
 
     if (kDebugMode) {
-      print(months);
+      print(val);
+      print(endDate);
     }
 
-    return amount * months;
+    return amount * val;
   }
 
   EMIEntity copyWith({

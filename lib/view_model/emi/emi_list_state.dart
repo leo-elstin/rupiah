@@ -25,6 +25,11 @@ class EMIListState extends StateNotifier<List<EMIEntity>> {
       );
   }
 
+  double pending() {
+    return state.fold(
+        0, (previousValue, element) => previousValue + element.pending());
+  }
+
   void delete(EMIEntity entity) async {
     await EMITable().remove(entity);
     await ExpenseTable().removeByEMI(entity.id!);
@@ -34,5 +39,5 @@ class EMIListState extends StateNotifier<List<EMIEntity>> {
 
 final emiListProvider =
     StateNotifierProvider<EMIListState, List<EMIEntity>>((ref) {
-  return EMIListState();
+  return EMIListState()..getAll();
 });

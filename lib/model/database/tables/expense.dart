@@ -80,9 +80,7 @@ class ExpenseTable {
   Future<List<ExpenseEntity>> allExpensesBeforeToday() async {
     var query = database.select(database.expense)
       ..where(
-        (row) =>
-            row.date.year.equals(DateTime.now().year) &
-            row.date.month.equals(DateTime.now().month),
+        (row) => row.date.isSmallerThanValue(DateTime.now()),
       );
 
     final expenses = await query.get();
@@ -95,9 +93,7 @@ class ExpenseTable {
   MultiSelectable<ExpenseData> expenseStream() {
     return database.select(database.expense)
       ..where(
-        (row) =>
-            row.date.year.equals(DateTime.now().year) &
-            row.date.month.equals(DateTime.now().month),
+        (row) => row.date.isSmallerThanValue(DateTime.now()),
       );
   }
 }

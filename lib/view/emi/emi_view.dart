@@ -139,12 +139,17 @@ class _EMIViewState extends ConsumerState<EMIView> {
                       ),
                     ],
                   ),
-                  subtitle: Column(
+                  subtitle: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         entity.formattedDate(),
                         style: context.small(),
+                      ),
+                      Text(
+                        entity.pending().toCurrency(),
+                        style: context.mediumBold(),
                       ),
                     ],
                   ),

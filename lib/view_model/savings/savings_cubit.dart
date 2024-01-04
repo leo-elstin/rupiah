@@ -73,58 +73,15 @@ class SavingsCubit extends Cubit<SavingsState> {
       }
     }
 
-    // // quand
-    // var fund1 = await MutualFundService().getDetails('120828');
-    // if (fund1 != null) {
-    //   _funds.add(
-    //     FundDetails(
-    //       fund: fund1,
-    //       fundId: '120828',
-    //       units: 40.435,
-    //       invested: 8000,
-    //       logoPath:
-    //           'https://indcdn.indmoney.com/cdn-cgi/image/quality=90,format=auto,metadata=copyright,width=100/https://indcdn.indmoney.com/public/images/amc_quant.png',
-    //     ),
-    //   );
-    // }
-    //
-    // // icici
-    // var icici = await MutualFundService().getDetails('120620');
-    // if (icici != null) {
-    //   _funds.add(
-    //     FundDetails(
-    //       fund: icici,
-    //       fundId: '120684',
-    //       units: 62.801,
-    //       invested: 12800,
-    //       logoPath:
-    //           'https://indcdn.indmoney.com/cdn-cgi/image/quality=90,format=auto,metadata=copyright,width=100/https://indcdn.indmoney.com/public/images/amc_icici.png',
-    //     ),
-    //   );
-    // }
-    //
-    // // Nippon
-    // var nippon = await MutualFundService().getDetails('118778');
-    // if (nippon != null) {
-    //   _funds.add(
-    //     FundDetails(
-    //       fund: nippon,
-    //       fundId: '118778',
-    //       units: 58.186,
-    //       invested: 8000,
-    //       logoPath:
-    //           'https://indcdn.indmoney.com/cdn-cgi/image/quality=90,format=auto,metadata=copyright,width=100/https://indcdn.indmoney.com/public/images/amc_nippon.png',
-    //     ),
-    //   );
-    // }
-
     mutualFundBalance = _funds.fold(
       0.0,
       (previousValue, element) =>
           previousValue + element.units * element.fund.currentNav,
     );
 
-    dashboardCubit.update(mutualFundBalance);
+    dashboardCubit.update(
+      mutualFundBalance + stockBalance + goldBalance + epfBalance,
+    );
 
     emit(FundLoaded());
   }

@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
+import 'package:jiffy/jiffy.dart';
 
 class EMIEntity {
   final String? description;
@@ -15,6 +17,23 @@ class EMIEntity {
 
   String formattedDate() {
     return endDate != null ? DateFormat('yyyy MMM').format(endDate!) : '';
+  }
+
+  double pending() {
+    num val = Jiffy.parseFromDateTime(
+      DateTime(
+        endDate!.year,
+        endDate!.month,
+        30,
+      ),
+    ).diff(Jiffy.now(), unit: Unit.month);
+
+    if (kDebugMode) {
+      print(val);
+      print(endDate);
+    }
+
+    return amount * val;
   }
 
   EMIEntity copyWith({

@@ -44,4 +44,6 @@ class DashboardCubit extends Cubit<DashboardState> {
       locale: locale,
     ).format(balance);
   }
+
+  double get balance => savings + mutualFund;
 }

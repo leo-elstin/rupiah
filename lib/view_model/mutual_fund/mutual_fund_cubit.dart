@@ -21,7 +21,7 @@ class MutualFundCubit extends Cubit<MutualFundState> {
     }
     emit(MutualFundLoading());
 
-    _funds = await _service.searchFund(query: query);
+    // _funds = await _service.searchFund(query: query);
 
     emit(MutualFundLoaded());
   }
@@ -39,8 +39,8 @@ class MutualFundCubit extends Cubit<MutualFundState> {
       return;
     }
     emit(MutualFundLoading());
-    _masterFunds = await _service.getFunds();
-    _funds.addAll(_masterFunds);
+    // _masterFunds = await _service.getFunds();
+    // _funds.addAll(_masterFunds);
     emit(MutualFundLoaded());
   }
 

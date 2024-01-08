@@ -60,6 +60,8 @@ dependencies:
   file_picker: ^6.1.1
   logger: ^2.0.2+1
   material_design_icons_flutter: ^7.0.7296
+  webview_flutter: ^4.4.3
+  flutter_inappwebview: ^6.0.0
 
 dev_dependencies:
   flutter_test:

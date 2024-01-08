@@ -28,7 +28,7 @@ class Database extends _$Database {
   Database() : super(_openConnection());
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 9;
 
   @override
   MigrationStrategy get migration {
@@ -46,6 +46,13 @@ class Database extends _$Database {
 
         if (from < 4) {
           await m.createTable(database.mutualFund);
+        }
+        if (from < 6) {
+          await m.addColumn(mutualFund, mutualFund.currentValue);
+          await m.addColumn(mutualFund, mutualFund.gainPercentage);
+        }
+        if (from < 9) {
+          await m.addColumn(mutualFund, mutualFund.nav);
         }
       },
     );

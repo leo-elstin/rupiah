@@ -18,6 +18,12 @@ class MutualFund extends Table {
 
   RealColumn get units => real()();
 
+  RealColumn get nav => real().nullable()();
+
+  RealColumn get currentValue => real().nullable()();
+
+  RealColumn get gainPercentage => real().nullable()();
+
   TextColumn get type => textEnum<MFType>()();
 
   TextColumn get period => textEnum<SipPeriod>()();
@@ -31,7 +37,9 @@ class MutualFund extends Table {
 
 class MutualFundQuery {
   Future insert(MutualFundCompanion companion) async {
-    return await database.into(database.mutualFund).insert(companion);
+    return await database
+        .into(database.mutualFund)
+        .insertOnConflictUpdate(companion);
   }
 
   Future<List<MutualFundData>> allMutualFunds() async {
@@ -50,6 +58,9 @@ class MutualFundQuery {
               investedDate: e.investedDate,
               accountId: e.accountId,
               isActive: e.isActive,
+              nav: e.nav,
+              currentValue: e.currentValue,
+              gainPercentage: e.gainPercentage,
             ))
         .toList();
   }

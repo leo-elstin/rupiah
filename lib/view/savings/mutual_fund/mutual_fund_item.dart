@@ -1,9 +1,9 @@
-import 'package:expense_kit/model/entity/fund_detail.dart';
+import 'package:expense_kit/model/database/database.dart';
 import 'package:expense_kit/utils/ui_extensions.dart';
 import 'package:flutter/material.dart';
 
 class MutualFundItem extends StatelessWidget {
-  final FundDetails fund;
+  final MutualFundData fund;
   final VoidCallback onTap;
 
   const MutualFundItem({
@@ -27,25 +27,25 @@ class MutualFundItem extends StatelessWidget {
           children: [
             Row(
               children: [
-                if (fund.logoPath != '')
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(45),
-                    child: Image.network(
-                      fund.logoPath,
-                      width: 24,
-                    ),
-                  )
-                else
-                  const SizedBox(
-                    width: 24,
-                    height: 24,
-                  ),
+                // if (fund.logoPath != '')
+                //   ClipRRect(
+                //     borderRadius: BorderRadius.circular(45),
+                //     child: Image.network(
+                //       fund.logoPath,
+                //       width: 24,
+                //     ),
+                //   )
+                // else
+                //   const SizedBox(
+                //     width: 24,
+                //     height: 24,
+                //   ),
                 const SizedBox(
                   width: 16,
                 ),
                 Expanded(
                   child: Text(
-                    fund.fund.meta.schemeName.toUpperCase(),
+                    fund.name ?? '',
                     style: context.smaller(),
                   ),
                 )
@@ -106,13 +106,13 @@ class MutualFundItem extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    fund.invested.toCurrency(),
+                    fund.amount.toCurrency(),
                     style: context.mediumBold(),
                   ),
                 ),
                 Expanded(
                   child: Text(
-                    (fund.units * fund.fund.currentNav).toCurrency(),
+                    fund.currentValue?.toCurrency() ?? '',
                     style: context.mediumBold(),
                   ),
                 ),
@@ -123,15 +123,15 @@ class MutualFundItem extends StatelessWidget {
                     children: [
                       const SizedBox(width: 16),
                       Text(
-                        fund.profit.toCurrency(),
+                        fund.gainPercentage.toString(),
                         style: context.mediumBold(),
                       ),
-                      Text(
-                        '    ${fund.profitPercent.toStringAsFixed(2)}%',
-                        style: context.smallerBold()?.copyWith(
-                              color: Colors.green,
-                            ),
-                      ),
+                      // Text(
+                      //   '    ${fund.profitPercent.toStringAsFixed(2)}%',
+                      //   style: context.smallerBold()?.copyWith(
+                      //         color: Colors.green,
+                      //       ),
+                      // ),
                     ],
                   ),
                 ),

@@ -1,3 +1,4 @@
+import 'package:expense_kit/model/database/tables/account.dart';
 import 'package:expense_kit/model/entity/account_entity.dart';
 import 'package:expense_kit/utils/currency_utils.dart';
 import 'package:expense_kit/utils/ui_extensions.dart';
@@ -49,20 +50,15 @@ class _AccountCardState extends State<AccountCard> {
                       )
                     ],
                   ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Text(
-                    formatter.formatDouble(widget.entity.balance ?? 0),
-                    style: context.titleMedium(),
-                  ),
                 ],
               ),
             ),
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.2),
+                color: widget.entity.accountType == AccountType.savings
+                    ? Colors.blue.withOpacity(0.50)
+                    : Colors.grey.withOpacity(0.25),
                 borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(8),
                   bottomRight: Radius.circular(8),
@@ -71,10 +67,6 @@ class _AccountCardState extends State<AccountCard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'This Month',
-                    style: context.body(),
-                  ),
                   const SizedBox(
                     height: 4,
                   ),
@@ -89,7 +81,7 @@ class _AccountCardState extends State<AccountCard> {
                               style: context.small(),
                             ),
                             Text(
-                              formatter.formatDouble(125000),
+                              widget.entity.balance?.toCurrency() ?? 'NA',
                               style: context.boldBody(),
                             ),
                           ],

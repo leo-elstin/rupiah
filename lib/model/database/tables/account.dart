@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:expense_kit/model/database/database.dart';
+import 'package:expense_kit/model/database/tables/expense.dart';
 import 'package:expense_kit/model/entity/account_entity.dart';
 
 enum AccountType { savings, credit, loan }
@@ -17,8 +18,7 @@ class Account extends Table {
 
   RealColumn get balance => real()();
 
-  IntColumn get accountType =>
-      intEnum<AccountType>().withDefault(const Constant(0))();
+  IntColumn get accountType => intEnum<AccountType>().withDefault(const Constant(0))();
 }
 
 class AccountTable {
@@ -42,16 +42,26 @@ class AccountTable {
 
   Future<List<AccountEntity>> get() async {
     final emiList = await database.select(database.account).get();
+    final expenseList = await ExpenseTable().allExpensesBeforeToday();
 
-    return emiList
-        .map((e) => AccountEntity(
-              id: e.id,
-              description: e.description ?? '',
-              accountName: e.accountName,
-              colorCode: e.colorCode ?? '',
-              iconCode: e.iconCode ?? '',
-              balance: e.balance,
-            ))
-        .toList();
+    List<AccountEntity> accountList = [];
+    for (var e in emiList) {
+      double balance = expenseList.fold(0.0, (previousValue, element) {
+        if (element.accountId == e.id) {
+          return previousValue + element.amount;
+        }
+        return previousValue;
+      });
+      accountList.add(AccountEntity(
+        id: e.id,
+        description: e.description ?? '',
+        accountName: e.accountName,
+        colorCode: e.colorCode ?? '',
+        iconCode: e.iconCode ?? '',
+        balance: balance,
+      ));
+    }
+
+    return accountList;
   }
 }

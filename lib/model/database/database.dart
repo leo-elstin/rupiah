@@ -28,7 +28,7 @@ class Database extends _$Database {
   Database() : super(_openConnection());
 
   @override
-  int get schemaVersion => 9;
+  int get schemaVersion => 10;
 
   @override
   MigrationStrategy get migration {
@@ -53,6 +53,9 @@ class Database extends _$Database {
         }
         if (from < 9) {
           await m.addColumn(mutualFund, mutualFund.nav);
+        }
+        if (from < 10) {
+          await m.addColumn(account, account.accountType);
         }
       },
     );

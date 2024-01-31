@@ -2,6 +2,8 @@ import 'package:drift/drift.dart';
 import 'package:expense_kit/model/database/database.dart';
 import 'package:expense_kit/model/entity/account_entity.dart';
 
+enum AccountType { savings, credit, loan }
+
 class Account extends Table {
   IntColumn get id => integer().autoIncrement()();
 
@@ -14,6 +16,9 @@ class Account extends Table {
   TextColumn get iconCode => text().nullable()();
 
   RealColumn get balance => real()();
+
+  IntColumn get accountType =>
+      intEnum<AccountType>().withDefault(const Constant(0))();
 }
 
 class AccountTable {
@@ -24,6 +29,7 @@ class AccountTable {
       colorCode: Value(entity.colorCode),
       iconCode: Value(entity.iconCode),
       balance: entity.balance ?? 0.0,
+      accountType: const Value(AccountType.savings),
     );
     return database.into(database.account).insert(companion);
   }

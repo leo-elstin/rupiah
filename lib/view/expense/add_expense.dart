@@ -199,6 +199,7 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
                         child: Container(
                           constraints: const BoxConstraints(
                             minWidth: 125,
+                            maxWidth: 200,
                           ),
                           height: 75,
                           child: Card(
@@ -222,9 +223,33 @@ class _AddExpenseState extends ConsumerState<AddExpense> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(entity.accountName ?? ''),
-                                  Text(
-                                    entity.description ?? '',
-                                    style: context.boldBody(),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          entity.description ?? '',
+                                          style: context.boldBody(),
+                                        ),
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.blue,
+                                          borderRadius: BorderRadius.circular(
+                                            2,
+                                          ),
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 1,
+                                          horizontal: 4,
+                                        ),
+                                        child: Text(
+                                          entity.accountType.name.capitalize(),
+                                          style: context.smaller()?.copyWith(
+                                                color: Colors.white,
+                                              ),
+                                        ),
+                                      )
+                                    ],
                                   ),
                                 ],
                               ),

@@ -134,7 +134,7 @@ extension SizeExtension on double {
 
   String toCurrency() {
     String locale = 'en_IN';
-    if (this < 100000) {
+    if (this > 0 && this < 100000) {
       locale = 'en_US';
     }
     return NumberFormat.compactCurrency(

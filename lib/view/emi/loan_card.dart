@@ -10,7 +10,7 @@ class LoanCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final List<EMIEntity> value = ref.watch(emiListProvider);
+    final List<EMIEntity> loans = ref.watch(emiListProvider);
     var notifier = ref.read(emiListProvider.notifier);
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -33,6 +33,56 @@ class LoanCard extends ConsumerWidget {
                   ),
                 ],
               ),
+              const Divider(),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: loans.length,
+                itemBuilder: (context, index) {
+                  EMIEntity entity = loans[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  entity.description ?? 'Loan ${index + 1}',
+                                  style: context.smallBold(),
+                                ),
+                                const SizedBox(height: 3),
+                                Text(
+                                  formatter.formatDouble(entity.amount),
+                                  style: context.small(),
+                                ),
+                              ],
+                            ),
+                            Text(
+                              entity.pending().toCurrency(),
+                              style: context.mediumBold()?.copyWith(
+                                    color: Colors.red,
+                                  ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          '${entity.pendingMonths()} months emi pending',
+                          style: context.smaller()?.copyWith(
+                                color: Colors.grey.withOpacity(0.5),
+                              ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+
               // const SizedBox(height: 16),
               // const Row(
               //   children: [

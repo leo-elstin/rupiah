@@ -1,7 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.expense_kit">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
    <application
-        android:label="expense_kit"
+        android:label="Rupiah"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

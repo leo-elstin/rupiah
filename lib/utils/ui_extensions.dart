@@ -4,18 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 extension ValidateEmail on String {
-  bool isValidEmail() =>
-      RegExp(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
-          .hasMatch(this);
+  bool isValidEmail() => RegExp(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$').hasMatch(this);
 
   bool isValidPassword() =>
-      RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$')
-          .hasMatch(this);
+      RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$').hasMatch(this);
 
   String capitalize() {
-    return isNotEmpty
-        ? '${this[0].toUpperCase()}${substring(1).toLowerCase()}'
-        : '';
+    return isNotEmpty ? '${this[0].toUpperCase()}${substring(1).toLowerCase()}' : '';
   }
 }
 
@@ -47,6 +42,13 @@ extension NavigationExtension on BuildContext {
   TextStyle? smaller() {
     return Theme.of(this).textTheme.bodySmall?.copyWith(
           fontSize: 12,
+        );
+  }
+
+  TextStyle? hintText() {
+    return Theme.of(this).textTheme.bodySmall?.copyWith(
+          fontSize: 14,
+          color: Colors.grey,
         );
   }
 

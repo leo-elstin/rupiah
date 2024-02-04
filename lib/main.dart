@@ -1,3 +1,4 @@
+import 'package:expense_kit/features/investment/view_model/investments_cubit.dart';
 import 'package:expense_kit/model/service/login_service.dart';
 import 'package:expense_kit/view/router.dart';
 import 'package:expense_kit/view_model/auth/auth_cubit.dart';
@@ -63,6 +64,9 @@ class _MyAppState extends State<MyApp> {
             savingsCubit: context.read<SavingsCubit>(),
           ),
         ),
+        BlocProvider(
+          create: (context) => InvestmentsCubit(),
+        ),
       ],
       child: BlocBuilder<SettingsCubit, SettingsState>(
         buildWhen: (previous, current) => current is ThemeChanged,
@@ -79,8 +83,7 @@ class _MyAppState extends State<MyApp> {
             theme: ThemeData(
               colorScheme: ColorScheme.fromSeed(
                 seedColor: Colors.deepPurple,
-                brightness:
-                    state is ThemeChanged ? state.brightness : Brightness.light,
+                brightness: state is ThemeChanged ? state.brightness : Brightness.light,
               ),
               useMaterial3: true,
               textTheme: GoogleFonts.openSansTextTheme(textTheme),

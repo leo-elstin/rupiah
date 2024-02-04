@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
+import 'package:expense_kit/features/investment/model/investment_model.dart';
 import 'package:expense_kit/model/database/tables/account.dart';
 import 'package:expense_kit/model/database/tables/category_table.dart';
 import 'package:expense_kit/model/database/tables/emi.dart';

@@ -1,3 +1,4 @@
+import 'package:expense_kit/features/investment/view/add_investment.dart';
 import 'package:expense_kit/model/entity/expense_entity.dart';
 import 'package:expense_kit/view/account/account_list.dart';
 import 'package:expense_kit/view/account/add_account.dart';
@@ -6,7 +7,6 @@ import 'package:expense_kit/view/category/category_list.dart';
 import 'package:expense_kit/view/emi/add_emi.dart';
 import 'package:expense_kit/view/expense/add_expense.dart';
 import 'package:expense_kit/view/home/home.dart';
-import 'package:expense_kit/view/savings/investment/investments.dart';
 import 'package:expense_kit/view/savings/mf_login/mf_login.dart';
 import 'package:expense_kit/view/savings/mutual_fund/create_fund.dart';
 import 'package:expense_kit/view/savings/mutual_fund/mutual_funds_page.dart';
@@ -29,8 +29,7 @@ final router = GoRouter(
     GoRoute(
       path: AddExpense.route,
       builder: (context, state) => AddExpense(
-        expenseEntity:
-            state.extra != null ? state.extra as ExpenseEntity : null,
+        expenseEntity: state.extra != null ? state.extra as ExpenseEntity : null,
       ),
     ),
     GoRoute(
@@ -40,10 +39,6 @@ final router = GoRouter(
     GoRoute(
       path: MutualFundPage.route,
       builder: (context, state) => const MutualFundPage(),
-    ),
-    GoRoute(
-      path: PDFReader.route,
-      builder: (context, state) => const PDFReader(),
     ),
     GoRoute(
       path: CreateFund.route,
@@ -60,6 +55,10 @@ final router = GoRouter(
     GoRoute(
       path: MFLogin.route,
       builder: (context, state) => const MFLogin(),
+    ),
+    GoRoute(
+      path: AddInvestment.route,
+      builder: (context, state) => const AddInvestment(),
     ),
   ],
 );

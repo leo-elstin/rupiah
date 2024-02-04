@@ -1,14 +1,6 @@
 import 'package:drift/drift.dart';
+import 'package:expense_kit/features/investment/model/investment_model.dart';
 import 'package:expense_kit/model/database/database.dart';
-
-enum InvestmentType {
-  mutualFund,
-  stocks,
-  gold,
-  realEstate,
-  epf,
-  ppf,
-}
 
 class Investment extends Table {
   IntColumn get id => integer().autoIncrement()();

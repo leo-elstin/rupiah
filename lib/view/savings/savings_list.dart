@@ -1,3 +1,4 @@
+import 'package:expense_kit/features/investment/view/add_investment.dart';
 import 'package:expense_kit/utils/ui_extensions.dart';
 import 'package:expense_kit/view/savings/mf_login/mf_login.dart';
 import 'package:expense_kit/view/savings/mutual_fund/mutual_funds_page.dart';
@@ -125,24 +126,31 @@ class _SavingListState extends StateModel<SavingList, SavingsCubit> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Image.asset(
-                    'assets/icons/market.png',
-                    width: 32,
-                    height: 32,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Real Estate',
-                    style: context.smaller(),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    cubit.realEstateBalance.toCurrency(),
-                    style: context.smallBold(),
-                  )
-                ],
+              child: InkWell(
+                onTap: () => showModalBottomSheet(
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (context) => const AddInvestment(),
+                ),
+                child: Column(
+                  children: [
+                    Image.asset(
+                      'assets/icons/market.png',
+                      width: 32,
+                      height: 32,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Real Estate',
+                      style: context.smaller(),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      cubit.realEstateBalance.toCurrency(),
+                      style: context.smallBold(),
+                    )
+                  ],
+                ),
               ),
             ),
           ],

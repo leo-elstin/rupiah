@@ -1,3 +1,4 @@
+import 'package:expense_kit/model/database/tables/account.dart';
 import 'package:expense_kit/model/entity/account_entity.dart';
 import 'package:expense_kit/utils/currency_utils.dart';
 import 'package:expense_kit/utils/ui_extensions.dart';
@@ -18,8 +19,6 @@ class AddAccount extends ConsumerStatefulWidget {
 }
 
 class _AddAccountState extends ConsumerState<AddAccount> {
-  String? selected = 'savings';
-
   @override
   Widget build(BuildContext context) {
     var uiState = ref.read(createAccountState.notifier);
@@ -34,7 +33,7 @@ class _AddAccountState extends ConsumerState<AddAccount> {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: SegmentedButton<String?>(
+            child: SegmentedButton<AccountType>(
               showSelectedIcon: false,
               style: ButtonStyle(
                 shape: MaterialStateProperty.all(
@@ -44,27 +43,24 @@ class _AddAccountState extends ConsumerState<AddAccount> {
                 ),
               ),
               segments: const [
-                ButtonSegment<String>(
-                  value: 'savings',
+                ButtonSegment<AccountType>(
+                  value: AccountType.savings,
                   label: Text('Savings '),
                 ),
-                ButtonSegment<String>(
-                  value: 'credit',
+                ButtonSegment<AccountType>(
+                  value: AccountType.credit,
                   label: Text('Credit Card'),
                 ),
-                ButtonSegment<String>(
-                  value: 'loan',
+                ButtonSegment<AccountType>(
+                  value: AccountType.loan,
                   label: Text('Loan '),
                 ),
               ],
-              selected: <String?>{selected},
-              onSelectionChanged: (Set<String?> newSelection) {
-                setState(() {
-                  // By default there is only a single segment that can be
-                  // selected at one time, so its value is always the first
-                  // item in the selected set.
-                  selected = newSelection.first;
-                });
+              selected: <AccountType>{entity.accountType},
+              onSelectionChanged: (Set<AccountType> newSelection) {
+                uiState.updateAccount(entity.copyWith(
+                  accountType: newSelection.first,
+                ));
               },
             ),
           ),

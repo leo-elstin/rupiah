@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
+import 'package:expense_kit/features/investment/model/investment_model.dart';
 import 'package:expense_kit/model/database/tables/account.dart';
 import 'package:expense_kit/model/database/tables/category_table.dart';
 import 'package:expense_kit/model/database/tables/emi.dart';
@@ -28,7 +29,7 @@ class Database extends _$Database {
   Database() : super(_openConnection());
 
   @override
-  int get schemaVersion => 9;
+  int get schemaVersion => 10;
 
   @override
   MigrationStrategy get migration {
@@ -53,6 +54,9 @@ class Database extends _$Database {
         }
         if (from < 9) {
           await m.addColumn(mutualFund, mutualFund.nav);
+        }
+        if (from < 10) {
+          await m.addColumn(account, account.accountType);
         }
       },
     );

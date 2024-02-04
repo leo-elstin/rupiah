@@ -36,6 +36,18 @@ class EMIEntity {
     return amount * val;
   }
 
+  num pendingMonths() {
+    num val = Jiffy.parseFromDateTime(
+      DateTime(
+        endDate!.year,
+        endDate!.month,
+        30,
+      ),
+    ).diff(Jiffy.now(), unit: Unit.month);
+
+    return val;
+  }
+
   EMIEntity copyWith({
     String? description,
     double? amount,

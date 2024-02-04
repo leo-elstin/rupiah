@@ -18,28 +18,22 @@ class SavingsCubit extends Cubit<SavingsState> {
 
   double mutualFundBalance = 0;
   double stockBalance = 0;
-  double goldBalance = 2700000;
-  double epfBalance = 420000;
-  double realEstateBalance = 10700000;
+  double goldBalance = 0;
+  double epfBalance = 469195;
+  double realEstateBalance = 0;
 
   double get total =>
-      mutualFundBalance +
-      stockBalance +
-      goldBalance +
-      epfBalance +
-      realEstateBalance;
+      mutualFundBalance + stockBalance + goldBalance + epfBalance + realEstateBalance;
 
   double get profit => _funds.fold(
         0.0,
-        (previousValue, element) =>
-            previousValue + (element.currentValue ?? 0.0),
+        (previousValue, element) => previousValue + (element.currentValue ?? 0.0),
       );
 
   double get profitPercentage =>
       _funds.fold(
         0.0,
-        (previousValue, element) =>
-            previousValue + (element.gainPercentage ?? 0.0),
+        (previousValue, element) => previousValue + (element.gainPercentage ?? 0.0),
       ) /
       _funds.length;
 
@@ -54,8 +48,7 @@ class SavingsCubit extends Cubit<SavingsState> {
 
     mutualFundBalance = _funds.fold(
       0.0,
-      (previousValue, element) =>
-          previousValue + element.units * (element.nav ?? 0.0),
+      (previousValue, element) => previousValue + element.units * (element.nav ?? 0.0),
     );
 
     dashboardCubit.update(mutualFundBalance);

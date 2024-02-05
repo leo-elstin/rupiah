@@ -5,32 +5,40 @@ enum InvestmentType {
   realEstate,
   epf,
   ppf,
+  others,
 }
 
 class InvestmentModel {
   int? id;
   final String? description;
-  double? amount;
-  DateTime? endDate;
+  double? investedValue;
+  double? currentValue;
+  DateTime? investedDate;
   InvestmentType? type;
 
   InvestmentModel({
     this.id,
     this.description,
-    this.amount,
-    this.endDate,
+    this.investedValue,
+    this.currentValue,
+    this.investedDate,
     this.type,
   });
 
-  bool get isValid => description != null && amount != null && endDate != null && type != null;
+  bool get isValid =>
+      description != null &&
+      investedValue != null &&
+      currentValue != null &&
+      investedDate != null &&
+      type != null;
 
   // toString method
   @override
   String toString() {
     return 'InvestmentModel{id: $id, '
         'description: $description, '
-        'amount: $amount, '
-        'endDate: $endDate, '
+        'investedValue: $investedValue, '
+        'investedDate: $investedDate, '
         'type: $type}';
   }
 
@@ -39,9 +47,10 @@ class InvestmentModel {
     return {
       'id': id,
       'description': description,
-      'amount': amount,
-      'endDate': endDate,
-      'type': type,
+      'investedValue': investedValue,
+      'currentValue': currentValue,
+      'investedDate': investedDate?.toIso8601String(),
+      'type': type?.index,
     };
   }
 
@@ -49,15 +58,17 @@ class InvestmentModel {
   InvestmentModel copyWith({
     int? id,
     String? description,
-    double? amount,
-    DateTime? endDate,
+    double? investedValue,
+    double? currentValue,
+    DateTime? investedDate,
     InvestmentType? type,
   }) {
     return InvestmentModel(
       id: id ?? this.id,
       description: description ?? this.description,
-      amount: amount ?? this.amount,
-      endDate: endDate ?? this.endDate,
+      investedValue: investedValue ?? this.investedValue,
+      currentValue: currentValue ?? this.currentValue,
+      investedDate: investedDate ?? this.investedDate,
       type: type ?? this.type,
     );
   }

@@ -29,7 +29,7 @@ class Database extends _$Database {
   Database() : super(_openConnection());
 
   @override
-  int get schemaVersion => 10;
+  int get schemaVersion => 11;
 
   @override
   MigrationStrategy get migration {
@@ -57,6 +57,12 @@ class Database extends _$Database {
         }
         if (from < 10) {
           await m.addColumn(account, account.accountType);
+        }
+        if (from < 11) {
+          // await m.addColumn(investment, investment.investedValue);
+          // update name
+          // await m.renameColumn(investment, 'amount', investment.currentValue);
+          // await m.renameColumn(investment, 'endDate', investment.investedDate);
         }
       },
     );

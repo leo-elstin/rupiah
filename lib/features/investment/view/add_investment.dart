@@ -53,7 +53,7 @@ class _AddInvestmentState extends StateModel<AddInvestment, InvestmentsCubit> {
                     hintStyle: context.hintText(),
                   ),
                   onChanged: (value) {
-                    cubit.investmentModel.copyWith(description: value);
+                    cubit.description = value;
                   },
                 ),
                 const SizedBox(height: 16),
@@ -67,7 +67,7 @@ class _AddInvestmentState extends StateModel<AddInvestment, InvestmentsCubit> {
                     currencyFormatter,
                   ],
                   onChanged: (value) {
-                    password = value;
+                    cubit.investedValue = double.parse(value);
                   },
                 ),
                 const SizedBox(height: 16),
@@ -94,7 +94,7 @@ class _AddInvestmentState extends StateModel<AddInvestment, InvestmentsCubit> {
                     currencyFormatter,
                   ],
                   onChanged: (value) {
-                    password = value;
+                    cubit.currentValue = double.parse(value);
                   },
                 ),
                 const SizedBox(height: 8),
@@ -117,9 +117,7 @@ class _AddInvestmentState extends StateModel<AddInvestment, InvestmentsCubit> {
                     children: [
                       Expanded(
                         child: TextButton(
-                          onPressed: () {
-                            context.pop();
-                          },
+                          onPressed: () => context.pop(),
                           child: const Text('Cancel'),
                         ),
                       ),
@@ -129,8 +127,8 @@ class _AddInvestmentState extends StateModel<AddInvestment, InvestmentsCubit> {
                             elevation: 4,
                           ),
                           onPressed: cubit.investmentModel.isValid ? () {} : null,
-                          child: Text(
-                            date == null ? 'Process PDF' : 'Update Investment',
+                          child: const Text(
+                            'Add Investment',
                           ),
                         ),
                       ),

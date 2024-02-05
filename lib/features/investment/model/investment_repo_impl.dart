@@ -9,13 +9,9 @@ class InvestmentRepoImpl extends InvestmentRepository {
 
   @override
   Future<void> createInvestment(
-    int id,
-    String? description,
-    double amount,
-    DateTime? endDate,
-    InvestmentType type,
-  ) {
-    throw UnimplementedError();
+    InvestmentModel investmentModel,
+  ) async {
+    await service.addInvestment(investmentModel);
   }
 
   @override

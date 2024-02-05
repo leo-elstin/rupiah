@@ -1,4 +1,6 @@
 import 'package:expense_kit/features/investment/model/investment_model.dart';
+import 'package:expense_kit/features/investment/model/investment_repo_impl.dart';
+import 'package:expense_kit/features/investment/model/investment_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,6 +9,8 @@ part 'investments_state.dart';
 class InvestmentsCubit extends Cubit<InvestmentsState> {
   InvestmentsCubit() : super(InvestmentsInitial());
 
+  final InvestmentRepoImpl repo = InvestmentRepoImpl(service: InvestmentService());
+
   InvestmentModel investmentModel = InvestmentModel();
 
   set investmentType(InvestmentType value) {
@@ -14,20 +18,29 @@ class InvestmentsCubit extends Cubit<InvestmentsState> {
     emit(InvestmentUpdated());
   }
 
-  set investmentAmount(double value) {
-    investmentModel.copyWith(amount: value);
+  set investedValue(double value) {
+    investmentModel.copyWith(investedValue: value);
     emit(InvestmentUpdated());
   }
 
-  set investmentEndDate(DateTime value) {
-    investmentModel.copyWith(endDate: value);
+  set currentValue(double value) {
+    investmentModel.copyWith(currentValue: value);
     emit(InvestmentUpdated());
   }
 
-  set investmentDescription(String value) {
+  set investedDate(DateTime value) {
+    investmentModel.copyWith(investedDate: value);
+    emit(InvestmentUpdated());
+  }
+
+  set description(String value) {
     investmentModel.copyWith(description: value);
     emit(InvestmentUpdated());
   }
 
   List<InvestmentType> get investmentTypes => InvestmentType.values;
+
+  void saveInvestment() async {
+    repo.createInvestment(investmentModel);
+  }
 }

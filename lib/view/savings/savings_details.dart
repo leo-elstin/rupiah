@@ -1,19 +1,26 @@
+import 'package:expense_kit/features/funds/view_model/mutual_fund_cubit.dart';
 import 'package:expense_kit/utils/currency_utils.dart';
 import 'package:expense_kit/utils/ui_extensions.dart';
 import 'package:expense_kit/view/savings/savings_list.dart';
 import 'package:expense_kit/view_model/savings/savings_cubit.dart';
 import 'package:expense_kit/view_model/state_vm.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SavingsDetails extends StatefulWidget {
   const SavingsDetails({super.key});
 
   @override
-  StateModel<SavingsDetails, SavingsCubit> createState() =>
-      _SavingsDetailsState();
+  StateModel<SavingsDetails, SavingsCubit> createState() => _SavingsDetailsState();
 }
 
 class _SavingsDetailsState extends StateModel<SavingsDetails, SavingsCubit> {
+  @override
+  void initView(SavingsCubit cubit) {
+    context.read<MutualFundCubit>().get();
+    super.initView(cubit);
+  }
+
   @override
   Widget buildMobile(BuildContext context, SavingsCubit cubit) {
     return Padding(

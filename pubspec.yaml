@@ -62,6 +62,7 @@ dependencies:
   material_design_icons_flutter: ^7.0.7296
   webview_flutter: ^4.4.3
   flutter_inappwebview: ^6.0.0
+  gsheets: ^0.5.0
 
 dev_dependencies:
   flutter_test:

@@ -1,9 +1,9 @@
-import 'package:expense_kit/model/database/database.dart';
+import 'package:expense_kit/features/funds/model/mutual_fund_model.dart';
 import 'package:expense_kit/utils/ui_extensions.dart';
 import 'package:flutter/material.dart';
 
 class MutualFundItem extends StatelessWidget {
-  final MutualFundData fund;
+  final MutualFundModel fund;
   final VoidCallback onTap;
 
   const MutualFundItem({
@@ -45,7 +45,7 @@ class MutualFundItem extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    fund.name ?? '',
+                    fund.name,
                     style: context.smaller(),
                   ),
                 )
@@ -106,13 +106,13 @@ class MutualFundItem extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    fund.amount.toCurrency(),
+                    fund.investedAmount,
                     style: context.mediumBold(),
                   ),
                 ),
                 Expanded(
                   child: Text(
-                    fund.currentValue?.toCurrency() ?? '',
+                    fund.currentAmount,
                     style: context.mediumBold(),
                   ),
                 ),
@@ -123,7 +123,7 @@ class MutualFundItem extends StatelessWidget {
                     children: [
                       const SizedBox(width: 16),
                       Text(
-                        fund.gainPercentage.toString(),
+                        fund.percentage,
                         style: context.mediumBold(),
                       ),
                       // Text(

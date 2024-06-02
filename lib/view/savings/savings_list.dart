@@ -1,7 +1,6 @@
+import 'package:expense_kit/features/funds/view/mutual_funds_page.dart';
 import 'package:expense_kit/features/investment/view/add_investment.dart';
 import 'package:expense_kit/utils/ui_extensions.dart';
-import 'package:expense_kit/view/savings/mf_login/mf_login.dart';
-import 'package:expense_kit/view/savings/mutual_fund/mutual_funds_page.dart';
 import 'package:expense_kit/view_model/savings/savings_cubit.dart';
 import 'package:expense_kit/view_model/state_vm.dart';
 import 'package:flutter/material.dart';
@@ -97,31 +96,26 @@ class _SavingListState extends StateModel<SavingList, SavingsCubit> {
                 ],
               ),
             ),
-            InkWell(
-              onTap: () {
-                context.push(MFLogin.route).then((value) => print(value));
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Image.asset(
-                      'assets/icons/epf.png',
-                      width: 32,
-                      height: 32,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'EPF',
-                      style: context.smaller(),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      cubit.epfBalance.toCurrency(),
-                      style: context.smallBold(),
-                    )
-                  ],
-                ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Image.asset(
+                    'assets/icons/epf.png',
+                    width: 32,
+                    height: 32,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'EPF',
+                    style: context.smaller(),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    cubit.epfBalance.toCurrency(),
+                    style: context.smallBold(),
+                  )
+                ],
               ),
             ),
             Padding(

@@ -1,3 +1,4 @@
+import 'package:expense_kit/features/funds/view/mutual_funds_page.dart';
 import 'package:expense_kit/features/investment/view/add_investment.dart';
 import 'package:expense_kit/model/entity/expense_entity.dart';
 import 'package:expense_kit/view/account/account_list.dart';
@@ -7,9 +8,6 @@ import 'package:expense_kit/view/category/category_list.dart';
 import 'package:expense_kit/view/emi/add_emi.dart';
 import 'package:expense_kit/view/expense/add_expense.dart';
 import 'package:expense_kit/view/home/home.dart';
-import 'package:expense_kit/view/savings/mf_login/mf_login.dart';
-import 'package:expense_kit/view/savings/mutual_fund/create_fund.dart';
-import 'package:expense_kit/view/savings/mutual_fund/mutual_funds_page.dart';
 import 'package:go_router/go_router.dart';
 
 final router = GoRouter(
@@ -41,20 +39,12 @@ final router = GoRouter(
       builder: (context, state) => const MutualFundPage(),
     ),
     GoRoute(
-      path: CreateFund.route,
-      builder: (context, state) => const CreateFund(),
-    ),
-    GoRoute(
       path: AddCategory.route,
       builder: (context, state) => const AddCategory(),
     ),
     GoRoute(
       path: CategoryList.route,
       builder: (context, state) => const CategoryList(),
-    ),
-    GoRoute(
-      path: MFLogin.route,
-      builder: (context, state) => const MFLogin(),
     ),
     GoRoute(
       path: AddInvestment.route,
